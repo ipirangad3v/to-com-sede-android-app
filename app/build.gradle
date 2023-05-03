@@ -3,6 +3,8 @@ plugins {
     id 'org.jetbrains.kotlin.android'
     id 'com.google.gms.google-services'
     id 'com.google.firebase.crashlytics'
+    id 'kotlin-kapt'
+    id 'com.google.dagger.hilt.android'
 }
 
 android {
@@ -69,4 +71,19 @@ dependencies {
     androidTestImplementation 'androidx.compose.ui:ui-test-junit4'
     debugImplementation 'androidx.compose.ui:ui-tooling'
     debugImplementation 'androidx.compose.ui:ui-test-manifest'
+
+    //Navigation
+    def nav_version = "2.5.3"
+
+    implementation "androidx.navigation:navigation-compose:$nav_version"
+    implementation 'androidx.hilt:hilt-navigation-compose:1.0.0'
+
+    //Hilt
+    implementation "com.google.dagger:hilt-android:2.44"
+    kapt "com.google.dagger:hilt-compiler:2.44"
+}
+
+// Allow references to generated code
+kapt {
+    correctErrorTypes true
 }

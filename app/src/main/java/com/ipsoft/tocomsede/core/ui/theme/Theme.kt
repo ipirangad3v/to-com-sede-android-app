@@ -1,4 +1,4 @@
-package com.ipsoft.tocomsede.ui.theme
+package com.ipsoft.tocomsede.core.ui.theme
 
 import android.app.Activity
 import android.os.Build

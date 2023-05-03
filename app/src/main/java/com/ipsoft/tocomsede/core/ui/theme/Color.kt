@@ -1,4 +1,4 @@
-package com.ipsoft.tocomsede.ui.theme
+package com.ipsoft.tocomsede.core.ui.theme
 
 import androidx.compose.ui.graphics.Color
 

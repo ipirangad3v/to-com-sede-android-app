@@ -7,8 +7,12 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.ui.Modifier
-import com.ipsoft.tocomsede.ui.theme.ToComSedeTheme
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.rememberNavController
+import com.ipsoft.tocomsede.core.ui.theme.ToComSedeTheme
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -19,6 +23,14 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
+                    val navController = rememberNavController()
+
+                    NavHost(navController = navController, startDestination = "profile") {
+//                        composable("profile") { ContactsContract.Profile(/*...*/) }
+//                        composable("friendslist") { FriendsList(/*...*/) }
+//                        /*...*/
+                    }
+
                 }
             }
         }
