@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">To com sede</string>
+    <string name="error_loading_itens">Ocorreu um erro ao carregar os produtos</string>
 </resources>
