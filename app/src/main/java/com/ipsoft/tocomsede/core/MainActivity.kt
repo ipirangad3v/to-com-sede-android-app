@@ -5,12 +5,12 @@ import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.wrapContentSize
-import androidx.compose.material3.Button
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
-import androidx.compose.material3.Text
 import androidx.compose.ui.Modifier
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
+import androidx.navigation.compose.rememberNavController
 import com.firebase.ui.auth.AuthUI
 import com.firebase.ui.auth.FirebaseAuthUIActivityResultContract
 import com.firebase.ui.auth.data.model.FirebaseAuthUIAuthenticationResult
@@ -20,8 +20,11 @@ import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
+import com.ipsoft.tocomsede.R
 import com.ipsoft.tocomsede.base.model.Item
 import com.ipsoft.tocomsede.core.ui.theme.ToComSedeTheme
+import com.ipsoft.tocomsede.home.ui.HomeScreen
+import com.ipsoft.tocomsede.navigation.Screen
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
@@ -75,24 +78,23 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-//                    val navController = rememberNavController()
-//
-//                    NavHost(navController = navController, startDestination = "profile") {
-////                        composable("profile") { ContactsContract.Profile(/*...*/) }
-////                        composable("friendslist") { FriendsList(/*...*/) }
-////                        /*...*/
-//                    }
+                    val navController = rememberNavController()
 
-                    Button(onClick = {
-                        signInLauncher.launch(
-                            AuthUI.getInstance()
-                                .createSignInIntentBuilder()
-                                .setAvailableProviders(providers)
-                                .build()
-                        )
-                    }, modifier = Modifier.wrapContentSize()) {
-                        Text(text = "Login")
-
+                    NavHost(
+                        navController = navController,
+                        startDestination = Screen.HomeScreen.route
+                    ) {
+                        composable(Screen.HomeScreen.route) {
+                            HomeScreen {
+                                signInLauncher.launch(
+                                    AuthUI.getInstance()
+                                        .createSignInIntentBuilder()
+                                        .setAvailableProviders(providers)
+                                        .setLogo(R.drawable.garafa)
+                                        .build()
+                                )
+                            }
+                        }
                     }
 
                 }
