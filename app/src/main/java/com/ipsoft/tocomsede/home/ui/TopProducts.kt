@@ -12,10 +12,11 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavHostController
 import com.ipsoft.tocomsede.R
 
 @Composable
-fun TopProducts(topItems: ItemState) {
+fun TopProducts(topItems: ItemState, navController: NavHostController) {
     Surface {
         Column(
             modifier = Modifier
@@ -28,7 +29,7 @@ fun TopProducts(topItems: ItemState) {
             LazyRow(modifier = Modifier.fillMaxWidth()) {
                 topItems.item.let { items ->
                     items(items.size) {
-                        CardItem(item = items[it])
+                        CardItem(item = items[it], navController = navController)
                     }
                 }
             }

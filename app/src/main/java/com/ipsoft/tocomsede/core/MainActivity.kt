@@ -13,15 +13,19 @@ import androidx.compose.material.Scaffold
 import androidx.compose.material.Surface
 import androidx.compose.material.Text
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavDestination.Companion.hierarchy
 import androidx.navigation.NavGraph.Companion.findStartDestination
+import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import androidx.navigation.navArgument
 import com.firebase.ui.auth.AuthUI
 import com.firebase.ui.auth.FirebaseAuthUIActivityResultContract
 import com.firebase.ui.auth.data.model.FirebaseAuthUIAuthenticationResult
@@ -31,12 +35,14 @@ import com.ipsoft.tocomsede.about.AboutScreen
 import com.ipsoft.tocomsede.cart.CartScreen
 import com.ipsoft.tocomsede.core.model.User
 import com.ipsoft.tocomsede.core.ui.components.Screen
+import com.ipsoft.tocomsede.core.ui.components.Screen.Companion.ITEM_ID
 import com.ipsoft.tocomsede.core.ui.components.Screen.Companion.items
-import com.ipsoft.tocomsede.core.ui.theme.lightBlue
 import com.ipsoft.tocomsede.core.ui.theme.ToComSedeTheme
+import com.ipsoft.tocomsede.core.ui.theme.lightBlue
 import com.ipsoft.tocomsede.core.ui.theme.white
 import com.ipsoft.tocomsede.data.datastore.PreferencesRepository
 import com.ipsoft.tocomsede.home.ui.HomeScreen
+import com.ipsoft.tocomsede.itemdetails.ItemDetailsScreen
 import com.ipsoft.tocomsede.orders.OrdersScreen
 import com.ipsoft.tocomsede.utils.Info.loggedUser
 import com.ipsoft.tocomsede.utils.ResultState
@@ -73,50 +79,68 @@ class MainActivity : ComponentActivity() {
                     color = MaterialTheme.colors.background
                 ) {
 
+                    val bottomBarState = rememberSaveable { (mutableStateOf(true)) }
+
                     val navController = rememberNavController()
+                    val navBackStackEntry by navController.currentBackStackEntryAsState()
+
+                    when (navBackStackEntry?.destination?.route) {
+                        Screen.ItemDetails.route -> {
+                            bottomBarState.value = false
+                        }
+
+                        else                     -> {
+                            bottomBarState.value = true
+
+                        }
+                    }
+
                     Scaffold(
                         bottomBar = {
-                            BottomNavigation(backgroundColor = lightBlue) {
-                                val navBackStackEntry by navController.currentBackStackEntryAsState()
-                                val currentDestination = navBackStackEntry?.destination
-                                items.forEach { screen ->
-                                    val iconColor =
-                                        if (currentDestination?.hierarchy?.any { it.route == screen.route } == true) {
-                                            white
-                                        } else {
-                                            MaterialTheme.colors.onBackground
-                                        }
-                                    BottomNavigationItem(
-                                        icon = {
-                                            Icon(
-                                                screen.icon,
-                                                contentDescription = null,
-                                                tint = iconColor
-                                            )
-                                        },
-                                        label = {
-                                            Text(
-                                                stringResource(screen.resourceId),
-                                                color = iconColor
-                                            )
-                                        },
-                                        selected = currentDestination?.hierarchy?.any { it.route == screen.route } == true,
-                                        onClick = {
-                                            navController.navigate(screen.route) {
-                                                // Pop up to the start destination of the graph to
-                                                // avoid building up a large stack of destinations
-                                                // on the back stack as users select items
-                                                popUpTo(navController.graph.findStartDestination().id) {
-                                                    saveState = true
+                            bottomBarState.value.let {
+                                if (it) {
+                                    BottomNavigation(backgroundColor = lightBlue) {
+                                        val currentDestination = navBackStackEntry?.destination
+                                        items.forEach { screen ->
+                                            val iconColor =
+                                                if (currentDestination?.hierarchy?.any { it.route == screen.route } == true) {
+                                                    white
+                                                } else {
+                                                    MaterialTheme.colors.onBackground
                                                 }
-                                                // Avoid multiple copies of the same destination when
-                                                // reselecting the same item
-                                                launchSingleTop = true
-                                                // Restore state when reselecting a previously selected item
-                                                restoreState = true
-                                            }
+                                            BottomNavigationItem(
+                                                icon = {
+                                                    Icon(
+                                                        screen.icon,
+                                                        contentDescription = null,
+                                                        tint = iconColor
+                                                    )
+                                                },
+                                                label = {
+                                                    Text(
+                                                        stringResource(screen.resourceId),
+                                                        color = iconColor
+                                                    )
+                                                },
+                                                selected = currentDestination?.hierarchy?.any { it.route == screen.route } == true,
+                                                onClick = {
+                                                    navController.navigate(screen.route) {
+                                                        // Pop up to the start destination of the graph to
+                                                        // avoid building up a large stack of destinations
+                                                        // on the back stack as users select items
+                                                        popUpTo(navController.graph.findStartDestination().id) {
+                                                            saveState = true
+                                                        }
+                                                        // Avoid multiple copies of the same destination when
+                                                        // reselecting the same item
+                                                        launchSingleTop = true
+                                                        // Restore state when reselecting a previously selected item
+                                                        restoreState = true
+                                                    }
+                                                }
+                                            )
                                         }
-                                    )
+                                    }
                                 }
                             }
                         }
@@ -127,7 +151,7 @@ class MainActivity : ComponentActivity() {
                             Modifier.padding(innerPadding)
                         ) {
                             composable(Screen.Home.route) {
-                                HomeScreen {
+                                HomeScreen(navController = navController) {
                                     signInLauncher.launch(
                                         AuthUI.getInstance()
                                             .createSignInIntentBuilder()
@@ -148,6 +172,19 @@ class MainActivity : ComponentActivity() {
                             }
                             composable(Screen.About.route) {
                                 AboutScreen()
+                            }
+
+                            composable(
+                                Screen.ItemDetails.route,
+                                arguments = listOf(navArgument(ITEM_ID) {
+                                    type = NavType.IntType
+                                })
+                            ) { navBackEntry ->
+                                ItemDetailsScreen(
+                                    itemId = navBackEntry.arguments?.getInt(ITEM_ID)
+                                ) {
+                                    navController.navigateUp()
+                                }
                             }
 
                         }

@@ -16,10 +16,15 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.navigation.NavHostController
 import com.ipsoft.tocomsede.R
 
 @Composable
-fun HomeScreen(homeViewModel: HomeViewModel = hiltViewModel(), onLoginClick: () -> Unit) {
+fun HomeScreen(
+    homeViewModel: HomeViewModel = hiltViewModel(),
+    navController: NavHostController,
+    onLoginClick: () -> Unit,
+) {
 
     val itemState = homeViewModel.items.value
     val userLogged = remember {
@@ -53,7 +58,7 @@ fun HomeScreen(homeViewModel: HomeViewModel = hiltViewModel(), onLoginClick: () 
                 }
             }
         } else {
-            TopProducts(itemState)
+            TopProducts(itemState, navController)
             if (!userLogged) {
                 Button(onClick = onLoginClick, modifier = Modifier.wrapContentSize()) {
                     Text(text = "Login")

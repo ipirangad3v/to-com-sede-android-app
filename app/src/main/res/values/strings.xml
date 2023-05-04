@@ -9,4 +9,5 @@
     <string name="about">sobre\n</string>
     <string name="cart">carrinho\n</string>
     <string name="orders">pedidos\n</string>
+    <string name="item_details">Detalhes\n</string>
 </resources>
