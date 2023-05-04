@@ -27,12 +27,17 @@ import com.firebase.ui.auth.FirebaseAuthUIActivityResultContract
 import com.firebase.ui.auth.data.model.FirebaseAuthUIAuthenticationResult
 import com.google.firebase.auth.FirebaseAuth
 import com.ipsoft.tocomsede.R
+import com.ipsoft.tocomsede.about.AboutScreen
+import com.ipsoft.tocomsede.cart.CartScreen
 import com.ipsoft.tocomsede.core.model.User
 import com.ipsoft.tocomsede.core.ui.components.Screen
 import com.ipsoft.tocomsede.core.ui.components.Screen.Companion.items
+import com.ipsoft.tocomsede.core.ui.theme.lightBlue
 import com.ipsoft.tocomsede.core.ui.theme.ToComSedeTheme
+import com.ipsoft.tocomsede.core.ui.theme.white
 import com.ipsoft.tocomsede.data.datastore.PreferencesRepository
 import com.ipsoft.tocomsede.home.ui.HomeScreen
+import com.ipsoft.tocomsede.orders.OrdersScreen
 import com.ipsoft.tocomsede.utils.Info.loggedUser
 import com.ipsoft.tocomsede.utils.ResultState
 import dagger.hilt.android.AndroidEntryPoint
@@ -71,18 +76,30 @@ class MainActivity : ComponentActivity() {
                     val navController = rememberNavController()
                     Scaffold(
                         bottomBar = {
-                            BottomNavigation {
+                            BottomNavigation(backgroundColor = lightBlue) {
                                 val navBackStackEntry by navController.currentBackStackEntryAsState()
                                 val currentDestination = navBackStackEntry?.destination
                                 items.forEach { screen ->
+                                    val iconColor =
+                                        if (currentDestination?.hierarchy?.any { it.route == screen.route } == true) {
+                                            white
+                                        } else {
+                                            MaterialTheme.colors.onBackground
+                                        }
                                     BottomNavigationItem(
                                         icon = {
                                             Icon(
                                                 screen.icon,
-                                                contentDescription = null
+                                                contentDescription = null,
+                                                tint = iconColor
                                             )
-                                               },
-                                        label = { Text(stringResource(screen.resourceId)) },
+                                        },
+                                        label = {
+                                            Text(
+                                                stringResource(screen.resourceId),
+                                                color = iconColor
+                                            )
+                                        },
                                         selected = currentDestination?.hierarchy?.any { it.route == screen.route } == true,
                                         onClick = {
                                             navController.navigate(screen.route) {
@@ -120,6 +137,19 @@ class MainActivity : ComponentActivity() {
                                     )
                                 }
                             }
+                            composable(Screen.Cart.route) {
+                                CartScreen()
+                            }
+                            composable(Screen.Orders.route) {
+                                OrdersScreen()
+                            }
+                            composable(Screen.About.route) {
+                                OrdersScreen()
+                            }
+                            composable(Screen.About.route) {
+                                AboutScreen()
+                            }
+
                         }
                     }
 
