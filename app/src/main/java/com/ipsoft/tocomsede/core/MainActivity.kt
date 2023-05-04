@@ -44,8 +44,8 @@ import com.ipsoft.tocomsede.data.datastore.PreferencesRepository
 import com.ipsoft.tocomsede.home.ui.HomeScreen
 import com.ipsoft.tocomsede.itemdetails.ItemDetailsScreen
 import com.ipsoft.tocomsede.orders.OrdersScreen
-import com.ipsoft.tocomsede.utils.Info.loggedUser
-import com.ipsoft.tocomsede.utils.ResultState
+import com.ipsoft.tocomsede.utils.UserInfo.loggedUser
+import com.ipsoft.tocomsede.core.model.ResultState
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 import kotlinx.coroutines.launch

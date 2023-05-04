@@ -1,4 +1,4 @@
-package com.ipsoft.tocomsede.utils
+package com.ipsoft.tocomsede.core.model
 
 sealed class ResultState<out T> {
     data class Success<out R>(val data:R) : ResultState<R>()

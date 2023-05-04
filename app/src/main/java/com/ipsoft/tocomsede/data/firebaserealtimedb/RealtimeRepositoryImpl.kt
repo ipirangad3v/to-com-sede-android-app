@@ -5,7 +5,7 @@ import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.ValueEventListener
 import com.ipsoft.tocomsede.core.model.Item
-import com.ipsoft.tocomsede.utils.ResultState
+import com.ipsoft.tocomsede.core.model.ResultState
 import javax.inject.Inject
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow

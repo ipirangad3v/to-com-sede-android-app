@@ -7,7 +7,7 @@ import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.stringPreferencesKey
 import androidx.datastore.preferences.preferencesDataStore
 import com.ipsoft.tocomsede.core.model.User
-import com.ipsoft.tocomsede.utils.ResultState
+import com.ipsoft.tocomsede.core.model.ResultState
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map
 
