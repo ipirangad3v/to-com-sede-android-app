@@ -29,7 +29,6 @@ fun HomeScreen(homeViewModel: HomeViewModel = hiltViewModel(), onLoginClick: () 
     Surface(
         modifier = Modifier
             .fillMaxSize()
-            .padding(8.dp)
     ) {
         if (itemState.isLoading) {
             Box(

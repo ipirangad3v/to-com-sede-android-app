@@ -5,4 +5,8 @@
     <string name="home">início</string>
     <string name="profile">Perfil\n</string>
     <string name="try_again">tentar novamente</string>
+    <string name="address">endereço\n</string>
+    <string name="about">sobre\n</string>
+    <string name="cart">carrinho\n</string>
+    <string name="orders">pedidos\n</string>
 </resources>
