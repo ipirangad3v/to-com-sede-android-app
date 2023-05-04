@@ -1,4 +1,4 @@
-package com.ipsoft.tocomsede.base.model
+package com.ipsoft.tocomsede.core.model
 
 data class Item(
     val id: Int,

@@ -5,8 +5,10 @@ import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.ipsoft.tocomsede.base.model.Item
+import com.bumptech.glide.Glide.init
+import com.ipsoft.tocomsede.core.model.Item
 import com.ipsoft.tocomsede.data.firebaserealtimedb.RealtimeRepository
+import com.ipsoft.tocomsede.utils.Info.isUserLogged
 import com.ipsoft.tocomsede.utils.ResultState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
@@ -15,13 +17,7 @@ import kotlinx.coroutines.launch
 @HiltViewModel
 class HomeViewModel @Inject constructor(private val repo: RealtimeRepository) :
     ViewModel() {
-
-    private val _items: MutableState<ItemState> = mutableStateOf(ItemState())
-    val items: State<ItemState> = _items
-
-
-    init {
-
+    fun loadItems() {
         viewModelScope.launch {
             repo.getItems().collect {
                 when (it) {
@@ -45,6 +41,18 @@ class HomeViewModel @Inject constructor(private val repo: RealtimeRepository) :
                 }
             }
         }
+    }
+
+    private val _items: MutableState<ItemState> = mutableStateOf(ItemState())
+    val items: State<ItemState> = _items
+
+    private val _userLogged
+        get() = mutableStateOf(isUserLogged())
+    val userLogged: State<Boolean> = _userLogged
+
+
+    init {
+        loadItems()
     }
 
 }

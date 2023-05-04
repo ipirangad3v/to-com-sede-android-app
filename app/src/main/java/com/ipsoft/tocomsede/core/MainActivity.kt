@@ -1,37 +1,37 @@
 package com.ipsoft.tocomsede.core
 
 import android.os.Bundle
-import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
-import androidx.compose.runtime.mutableStateListOf
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.firebase.ui.auth.AuthUI
 import com.firebase.ui.auth.FirebaseAuthUIActivityResultContract
 import com.firebase.ui.auth.data.model.FirebaseAuthUIAuthenticationResult
-import com.google.firebase.FirebaseApp
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.database.DataSnapshot
-import com.google.firebase.database.DatabaseError
-import com.google.firebase.database.FirebaseDatabase
-import com.google.firebase.database.ValueEventListener
 import com.ipsoft.tocomsede.R
-import com.ipsoft.tocomsede.base.model.Item
+import com.ipsoft.tocomsede.core.model.User
 import com.ipsoft.tocomsede.core.ui.theme.ToComSedeTheme
+import com.ipsoft.tocomsede.data.datastore.PreferencesRepository
 import com.ipsoft.tocomsede.home.ui.HomeScreen
 import com.ipsoft.tocomsede.navigation.Screen
+import com.ipsoft.tocomsede.utils.Info.loggedUser
+import com.ipsoft.tocomsede.utils.ResultState
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
+import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
+
+    @Inject
+    lateinit var preferencesRepository: PreferencesRepository
 
     private val signInLauncher = registerForActivityResult(
         FirebaseAuthUIActivityResultContract()
@@ -80,16 +80,43 @@ class MainActivity : ComponentActivity() {
         }
     }
 
+    override fun onResume() {
+        super.onResume()
+        loadUser()
+    }
+
+    private fun loadUser() {
+        lifecycleScope.launch {
+            preferencesRepository.readUser().let { result ->
+                if (result is ResultState.Success && result.data != null) {
+                    loggedUser = result.data
+                }
+            }
+        }
+    }
+
     private fun onSignInResult(result: FirebaseAuthUIAuthenticationResult) {
         if (result.resultCode == RESULT_OK) {
             // Successfully signed in
             FirebaseAuth.getInstance().currentUser?.let { user ->
-                Log.d("TAG", "onSignInResult: ${user.email}")
-                Log.d("TAG", "onSignInResult: ${user.displayName}")
-                Log.d("TAG", "onSignInResult: ${user.phoneNumber}")
-                Log.d("TAG", "onSignInResult: ${user.photoUrl}")
-                // ...
+
+                lifecycleScope.launch {
+                    preferencesRepository.storeUser(
+                        User(
+                            name = user.displayName ?: "",
+                            email = user.email ?: "",
+                            phone = user.phoneNumber ?: "",
+                            photoUrl = user.photoUrl?.toString() ?: ""
+                        )
+                    ).let {
+                        if (it is ResultState.Success) {
+                            loadUser()
+                        }
+
+                    }
+                }
             }
+
         } else {
             // Sign in failed. If response is null the user canceled the
             // sign-in flow using the back button. Otherwise check

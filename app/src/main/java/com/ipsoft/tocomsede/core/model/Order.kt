@@ -1,4 +1,4 @@
-package com.ipsoft.tocomsede.base.model
+package com.ipsoft.tocomsede.core.model
 
 import java.util.Date
 
