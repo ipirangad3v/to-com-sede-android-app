@@ -1,50 +1,56 @@
 package com.ipsoft.tocomsede.home.ui
 
-import android.util.Log
+import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.State
+import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
-import com.google.firebase.database.DataSnapshot
-import com.google.firebase.database.DatabaseError
-import com.google.firebase.database.FirebaseDatabase
-import com.google.firebase.database.ValueEventListener
+import androidx.lifecycle.viewModelScope
 import com.ipsoft.tocomsede.base.model.Item
+import com.ipsoft.tocomsede.data.firebaserealtimedb.RealtimeRepository
+import com.ipsoft.tocomsede.utils.ResultState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.launch
 
 @HiltViewModel
-class HomeViewModel @Inject constructor(firebaseDatabase: FirebaseDatabase) :
+class HomeViewModel @Inject constructor(private val repo: RealtimeRepository) :
     ViewModel() {
 
-    private val itemList = mutableListOf<Item>()
-    private var _homeState = MutableStateFlow(HomeState(isLoading = true, itemList))
-    val homeState
-        get() = _homeState
+    private val _items: MutableState<ItemState> = mutableStateOf(ItemState())
+    val items: State<ItemState> = _items
 
 
-    private val items = firebaseDatabase.getReference("items")
+    init {
 
+        viewModelScope.launch {
+            repo.getItems().collect {
+                when (it) {
+                    is ResultState.Success -> {
+                        _items.value = ItemState(
+                            item = it.data
+                        )
+                    }
 
-    private fun getItems() {
-        items.addValueEventListener(object : ValueEventListener {
-            override fun onDataChange(snapshot: DataSnapshot) {
-                for (itemSnapshot in snapshot.children) {
-                    val item = itemSnapshot.getValue(Item::class.java)
-                    item?.let {
-                        itemList.add(it)
-                        _homeState.update { HomeState(isLoading = false, itemList) }
+                    is ResultState.Failure -> {
+                        _items.value = ItemState(
+                            error = it.msg.toString()
+                        )
+                    }
+
+                    ResultState.Loading    -> {
+                        _items.value = ItemState(
+                            isLoading = true
+                        )
                     }
                 }
             }
-
-            override fun onCancelled(error: DatabaseError) {
-                Log.w("onDataChange", "Failed to read value.", error.toException())
-            }
-        })
-    }
-
-    init {
-        getItems()
+        }
     }
 
 }
+
+data class ItemState(
+    val item: List<Item> = emptyList(),
+    val error: String = "",
+    val isLoading: Boolean = false,
+)
