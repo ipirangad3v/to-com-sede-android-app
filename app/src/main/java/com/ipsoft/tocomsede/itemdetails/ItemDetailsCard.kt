@@ -66,15 +66,6 @@ fun ItemDetailsCard(itemState: ItemState) {
                         .padding(8.dp)
                         .fillMaxWidth()
                 ) {
-                    Text(
-                        text = it.name,
-                        fontSize = 20.sp,
-                        fontWeight = Bold,
-                        modifier = Modifier
-                            .fillMaxWidth(0.5f)
-                            .align(alignment = CenterHorizontally)
-                    )
-                    Spacer(modifier = Modifier.padding(8.dp))
                     Text(text = it.description)
                     Spacer(modifier = Modifier.padding(16.dp))
                     Row(

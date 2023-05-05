@@ -23,6 +23,7 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
@@ -48,6 +49,11 @@ fun ItemDetailsScreen(
     itemId?.let { viewModel.getItemById(itemId = it) }
 
     val selectedQuantity = remember { mutableStateOf(1) }
+    val title: MutableState<String?> = remember {
+        mutableStateOf(
+            null
+        )
+    }
 
     Scaffold(
         topBar = {
@@ -59,7 +65,12 @@ fun ItemDetailsScreen(
                         modifier = Modifier.clickable { onBack.invoke() }
                     )
                 },
-                title = { Text(text = stringResource(id = R.string.item_details), maxLines = 1) },
+                title = {
+                    Text(
+                        text = title.value ?: stringResource(id = R.string.item_details),
+                        maxLines = 1
+                    )
+                },
                 colors = TopAppBarDefaults.centerAlignedTopAppBarColors(
                     containerColor = lightBlue,
                     titleContentColor = Color.White,
@@ -72,6 +83,8 @@ fun ItemDetailsScreen(
             val item = viewModel.items.value
 
             val cartAddedSuccess = viewModel.isSuccessFullCartAdded.value
+
+            item.item?.name?.let { title.value = it }
 
             if (cartAddedSuccess) {
                 LocalContext.current.showMsg(stringResource(id = R.string.item_added_to_cart))
@@ -108,11 +121,6 @@ fun ItemDetailsScreen(
                 }
             } else {
                 Box(modifier = Modifier.padding(padding)) {
-                    Spacer(
-                        modifier = Modifier
-                            .padding(8.dp)
-                            .background(color = Gray)
-                    )
                     LazyColumn {
                         item {
                             ItemDetailsCard(item)
