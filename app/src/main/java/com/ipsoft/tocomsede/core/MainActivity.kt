@@ -4,7 +4,9 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.material.BottomNavigation
 import androidx.compose.material.BottomNavigationItem
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -12,12 +14,10 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
-import androidx.compose.material3.Text
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.stringResource
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavDestination.Companion.hierarchy
 import androidx.navigation.NavGraph.Companion.findStartDestination
@@ -41,15 +41,15 @@ import com.ipsoft.tocomsede.core.ui.components.Screen.Companion.ITEM_ID
 import com.ipsoft.tocomsede.core.ui.components.Screen.Companion.items
 import com.ipsoft.tocomsede.core.ui.theme.ToComSedeTheme
 import com.ipsoft.tocomsede.core.ui.theme.darkBlue80
-import com.ipsoft.tocomsede.core.ui.theme.white
+import com.ipsoft.tocomsede.core.ui.theme.lightBlue
 import com.ipsoft.tocomsede.data.datastore.PreferencesRepository
 import com.ipsoft.tocomsede.home.ui.HomeScreen
 import com.ipsoft.tocomsede.itemdetails.ItemDetailsScreen
 import com.ipsoft.tocomsede.orders.OrdersScreen
 import com.ipsoft.tocomsede.utils.UserInfo.loggedUser
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.launch
 import javax.inject.Inject
+import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
@@ -90,7 +90,7 @@ class MainActivity : ComponentActivity() {
                             bottomBarState.value = false
                         }
 
-                        else -> {
+                        else                     -> {
                             bottomBarState.value = true
                         }
                     }
@@ -99,12 +99,17 @@ class MainActivity : ComponentActivity() {
                         bottomBar = {
                             bottomBarState.value.let {
                                 if (it) {
-                                    BottomNavigation(backgroundColor = darkBlue80) {
+                                    BottomNavigation(
+                                        backgroundColor = darkBlue80,
+                                        modifier = Modifier
+                                            .wrapContentHeight()
+                                            .fillMaxWidth()
+                                    ) {
                                         val currentDestination = navBackStackEntry?.destination
                                         items.forEach { screen ->
                                             val iconColor =
                                                 if (currentDestination?.hierarchy?.any { currentDestination -> currentDestination.route == screen.route } == true) {
-                                                    white
+                                                    lightBlue
                                                 } else {
                                                     MaterialTheme.colorScheme.background
                                                 }
@@ -114,12 +119,6 @@ class MainActivity : ComponentActivity() {
                                                         screen.icon,
                                                         contentDescription = null,
                                                         tint = iconColor
-                                                    )
-                                                },
-                                                label = {
-                                                    Text(
-                                                        stringResource(screen.resourceId),
-                                                        color = iconColor
                                                     )
                                                 },
                                                 selected = currentDestination?.hierarchy?.any { currentDestination -> currentDestination.route == screen.route } == true,
@@ -137,7 +136,7 @@ class MainActivity : ComponentActivity() {
                                                         // Restore state when reselecting a previously selected item
                                                         restoreState = true
                                                     }
-                                                }
+                                                },
                                             )
                                         }
                                     }
