@@ -5,7 +5,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.lazy.LazyRow
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -25,13 +25,14 @@ fun HomeItemList(itemState: ItemsState, navController: NavHostController) {
 
         ) {
             Text(text = stringResource(R.string.top_products))
-            Spacer(modifier = Modifier.padding(8.dp))
-            LazyRow(
+            Spacer(modifier = Modifier.padding(4.dp))
+            LazyColumn(
                 modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.Center
+                verticalArrangement = Arrangement.Center
             ) {
                 itemState.item.let { items ->
                     items(items.size) {
+                        Spacer(modifier = Modifier.padding(8.dp))
                         CardListItem(item = items[it], navController = navController)
                     }
                 }

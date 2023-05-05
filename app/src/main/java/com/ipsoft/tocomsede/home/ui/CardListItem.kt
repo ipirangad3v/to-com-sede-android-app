@@ -60,7 +60,7 @@ fun CardListItem(item: Item, navController: NavHostController) {
                     .fillMaxSize(),
                 horizontalAlignment = Alignment.End
             ) {
-                Text(text = item.name, style = MaterialTheme.typography.headlineSmall)
+                Text(text = item.name, style = MaterialTheme.typography.headlineSmall, maxLines = 1)
                 Spacer(modifier = Modifier.weight(1f))
                 PriceTag(price = item.price)
             }
