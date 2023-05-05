@@ -12,4 +12,10 @@ object Cart {
     fun removeItem(item: Item) {
         items.remove(item)
     }
+
+    fun getItems() = items.toList()
+
+    fun clearCart() {
+        items.clear()
+    }
 }

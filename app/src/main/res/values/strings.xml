@@ -10,4 +10,5 @@
     <string name="cart">carrinho\n</string>
     <string name="orders">pedidos\n</string>
     <string name="item_details">Detalhes\n</string>
+    <string name="quantity">Quantidade disponível</string>
 </resources>

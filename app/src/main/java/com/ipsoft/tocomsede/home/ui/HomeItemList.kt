@@ -16,7 +16,7 @@ import androidx.navigation.NavHostController
 import com.ipsoft.tocomsede.R
 
 @Composable
-fun TopProducts(topItems: ItemState, navController: NavHostController) {
+fun HomeItemList(itemState: ItemsState, navController: NavHostController) {
     Surface {
         Column(
             modifier = Modifier
@@ -27,7 +27,7 @@ fun TopProducts(topItems: ItemState, navController: NavHostController) {
             Text(text = stringResource(R.string.top_products))
             Spacer(modifier = Modifier.padding(4.dp))
             LazyRow(modifier = Modifier.fillMaxWidth()) {
-                topItems.item.let { items ->
+                itemState.item.let { items ->
                     items(items.size) {
                         CardItem(item = items[it], navController = navController)
                     }

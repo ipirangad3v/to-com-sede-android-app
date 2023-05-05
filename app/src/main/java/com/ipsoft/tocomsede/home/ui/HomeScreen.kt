@@ -23,32 +23,22 @@ import com.ipsoft.tocomsede.R
 fun HomeScreen(
     homeViewModel: HomeViewModel = hiltViewModel(),
     navController: NavHostController,
-    onLoginClick: () -> Unit,
 ) {
 
     val itemState = homeViewModel.items.value
-    val userLogged = remember {
-        homeViewModel.userLogged.value
-    }
 
     Surface(
         modifier = Modifier
             .fillMaxSize()
     ) {
-        if (itemState.isLoading) {
-            Box(
-                modifier = Modifier.fillMaxSize(),
-                contentAlignment = Center
-            ) {
-                CircularProgressIndicator(modifier = Modifier.wrapContentSize())
-            }
-        } else if (itemState.error.isNotBlank()) {
+
+        itemState.error?.let {
 
             Box(
                 modifier = Modifier.fillMaxSize(),
                 contentAlignment = Center
             ) {
-                Text(text = itemState.error)
+                Text(text = it)
                 Spacer(modifier = Modifier.padding(8.dp))
                 Button(
                     onClick = { homeViewModel.loadItems() },
@@ -57,12 +47,18 @@ fun HomeScreen(
                     Text(text = stringResource(id = R.string.try_again))
                 }
             }
+        }
+
+        if (itemState.isLoading) {
+            Box(
+                modifier = Modifier.fillMaxSize(),
+                contentAlignment = Center
+            ) {
+                CircularProgressIndicator(modifier = Modifier.wrapContentSize())
+            }
         } else {
-            TopProducts(itemState, navController)
-            if (!userLogged) {
-                Button(onClick = onLoginClick, modifier = Modifier.wrapContentSize()) {
-                    Text(text = "Login")
-                }
+            Box(modifier = Modifier.fillMaxSize()) {
+                HomeItemList(itemState, navController)
             }
         }
 

@@ -151,15 +151,7 @@ class MainActivity : ComponentActivity() {
                             Modifier.padding(innerPadding)
                         ) {
                             composable(Screen.Home.route) {
-                                HomeScreen(navController = navController) {
-                                    signInLauncher.launch(
-                                        AuthUI.getInstance()
-                                            .createSignInIntentBuilder()
-                                            .setAvailableProviders(providers)
-                                            .setLogo(R.drawable.garafa)
-                                            .build()
-                                    )
-                                }
+                                HomeScreen(navController = navController)
                             }
                             composable(Screen.Cart.route) {
                                 CartScreen()
@@ -168,10 +160,30 @@ class MainActivity : ComponentActivity() {
                                 OrdersScreen()
                             }
                             composable(Screen.About.route) {
-                                OrdersScreen()
+                                AboutScreen {
+                                    {
+                                        signInLauncher.launch(
+                                            AuthUI.getInstance()
+                                                .createSignInIntentBuilder()
+                                                .setAvailableProviders(providers)
+                                                .setLogo(R.drawable.ic_launcher_foreground)
+                                                .build()
+                                        )
+                                    }
+                                }
                             }
                             composable(Screen.About.route) {
-                                AboutScreen()
+                                AboutScreen {
+                                    {
+                                        signInLauncher.launch(
+                                            AuthUI.getInstance()
+                                                .createSignInIntentBuilder()
+                                                .setAvailableProviders(providers)
+                                                .setLogo(R.drawable.ic_launcher_foreground)
+                                                .build()
+                                        )
+                                    }
+                                }
                             }
 
                             composable(

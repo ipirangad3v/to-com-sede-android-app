@@ -5,5 +5,6 @@ import com.ipsoft.tocomsede.core.model.ResultState
 import kotlinx.coroutines.flow.Flow
 
 interface RealtimeRepository {
-    fun getItems(): Flow<ResultState<List<Item>>>
+    suspend fun getItems(): Flow<ResultState<List<Item>>>
+    suspend fun getItemById(itemId: Int): Flow<ResultState<Item?>>
 }

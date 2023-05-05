@@ -11,4 +11,7 @@ data class Item(
 ) {
     @Suppress("unused")
     constructor() : this(0, "", "", 0.0, "", "", 0)
+
+    val isAvailable: Boolean
+        get() = quantity > 0
 }

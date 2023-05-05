@@ -14,7 +14,7 @@ import kotlinx.coroutines.flow.callbackFlow
 class RealtimeRepositoryImpl @Inject constructor(
     private val db: DatabaseReference,
 ) : RealtimeRepository {
-    override fun getItems(): Flow<ResultState<List<Item>>> = callbackFlow {
+    override suspend fun getItems(): Flow<ResultState<List<Item>>> = callbackFlow {
 
         trySend(ResultState.Loading)
 
@@ -39,5 +39,30 @@ class RealtimeRepositoryImpl @Inject constructor(
             close()
         }
 
+    }
+
+    override suspend fun getItemById(itemId: Int): Flow<ResultState<Item?>> = callbackFlow {
+        trySend(ResultState.Loading)
+
+        val valueEvent = object : ValueEventListener {
+
+            override fun onDataChange(snapshot: DataSnapshot) {
+                val items = snapshot.children.map {
+                    it.getValue(Item::class.java)
+                }
+                trySend(ResultState.Success(items.find { it?.id == itemId }))
+            }
+
+            override fun onCancelled(error: DatabaseError) {
+                trySend(ResultState.Failure(error.toException()))
+            }
+
+        }
+
+        db.addValueEventListener(valueEvent)
+        awaitClose {
+            db.removeEventListener(valueEvent)
+            close()
+        }
     }
 }
