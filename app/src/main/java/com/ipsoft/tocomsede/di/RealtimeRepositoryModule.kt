@@ -5,13 +5,14 @@ import com.ipsoft.tocomsede.data.firebaserealtimedb.RealtimeRepositoryImpl
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn
-import dagger.hilt.android.components.ViewModelComponent
+import dagger.hilt.components.SingletonComponent
 
 @Module
-@InstallIn(ViewModelComponent::class)
-abstract class RepositoryModule {
+@InstallIn(SingletonComponent::class)
+abstract class RealtimeRepositoryModule {
     @Binds
     abstract fun providesRealtimeRepository(
         repo: RealtimeRepositoryImpl,
     ): RealtimeRepository
+
 }

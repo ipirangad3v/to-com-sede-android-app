@@ -11,4 +11,7 @@
     <string name="orders">pedidos\n</string>
     <string name="item_details">Detalhes\n</string>
     <string name="quantity">Quantidade disponível</string>
+    <string name="add_to_cart">adicionar ao carrinho\n</string>
+    <string name="select_quantity">Selecione a quantidade</string>
+    <string name="item_added_to_cart">Item adicionado ao carrinho com sucesso</string>
 </resources>

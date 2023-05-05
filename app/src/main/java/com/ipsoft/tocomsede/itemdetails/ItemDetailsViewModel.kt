@@ -9,20 +9,34 @@ import com.ipsoft.tocomsede.core.model.Item
 import com.ipsoft.tocomsede.core.model.ResultState.Failure
 import com.ipsoft.tocomsede.core.model.ResultState.Loading
 import com.ipsoft.tocomsede.core.model.ResultState.Success
+import com.ipsoft.tocomsede.data.cart.CartRepository
+import com.ipsoft.tocomsede.data.cart.CartRepositoryImpl
 import com.ipsoft.tocomsede.data.firebaserealtimedb.RealtimeRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 import kotlinx.coroutines.launch
 
 @HiltViewModel
-class ItemDetailsViewModel @Inject constructor(private val repo: RealtimeRepository) : ViewModel() {
+class ItemDetailsViewModel @Inject constructor(
+    private val itemRepository: RealtimeRepository,
+    private val cartRepository: CartRepository,
+) : ViewModel() {
 
     private val _items: MutableState<ItemState> = mutableStateOf(ItemState())
     val items: State<ItemState> = _items
 
+    private val _isSuccessFullCartAdded = mutableStateOf(false)
+    val isSuccessFullCartAdded: State<Boolean> = _isSuccessFullCartAdded
+
+    fun addItemToCart(item: Item, quantity: Int) {
+        viewModelScope.launch {
+            _isSuccessFullCartAdded.value = cartRepository.addItemToCart(item, quantity) is Success
+        }
+    }
+
     fun getItemById(itemId: Int) {
         viewModelScope.launch {
-            repo.getItemById(itemId).collect {
+            itemRepository.getItemById(itemId).collect {
                 when (it) {
                     is Success -> {
                         _items.value = ItemState(
@@ -44,6 +58,10 @@ class ItemDetailsViewModel @Inject constructor(private val repo: RealtimeReposit
                 }
             }
         }
+    }
+
+    fun resetCartAddedStatus() {
+        _isSuccessFullCartAdded.value = false
     }
 
 }

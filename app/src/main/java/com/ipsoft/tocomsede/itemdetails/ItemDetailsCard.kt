@@ -27,71 +27,62 @@ import com.ipsoft.tocomsede.core.extensions.toCurrency
 @Composable
 fun ItemDetailsCard(itemState: ItemState) {
     itemState.item?.let {
-        LazyColumn(
+        Column(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(8.dp)
         ) {
-            item {
-                Card(
-                    modifier = Modifier
-                        .fillMaxSize()
-                ) {
-                    GlideImage(
-                        model = it.imageUrl,
-                        contentDescription = it.description,
-                        Modifier.fillMaxSize(),
-                        contentScale = ContentScale.FillWidth
-                    )
-                }
+            Card(
+                modifier = Modifier
+                    .fillMaxSize()
+            ) {
+                GlideImage(
+                    model = it.imageUrl,
+                    contentDescription = it.description,
+                    Modifier.fillMaxSize(),
+                    contentScale = ContentScale.FillWidth
+                )
             }
-
-            item {
-                Spacer(modifier = Modifier.padding(8.dp))
-            }
-            item {
-                Card(
+            Spacer(modifier = Modifier.padding(8.dp))
+            Card(
+                modifier = Modifier
+                    .fillMaxWidth()
+            ) {
+                Column(
                     modifier = Modifier
+                        .padding(8.dp)
                         .fillMaxWidth()
                 ) {
-                    Column(
+                    Text(
+                        text = it.name,
+                        fontSize = 20.sp,
+                        fontWeight = Bold,
                         modifier = Modifier
-                            .padding(8.dp)
-                            .fillMaxWidth()
+                            .fillMaxWidth(0.5f)
+                            .align(alignment = CenterHorizontally)
+                    )
+                    Spacer(modifier = Modifier.padding(8.dp))
+                    Text(text = it.description)
+                    Spacer(modifier = Modifier.padding(16.dp))
+                    Row(
+                        modifier = Modifier.fillMaxWidth(),
+                        horizontalArrangement = Arrangement.SpaceBetween
                     ) {
                         Text(
-                            text = it.name,
-                            fontSize = 20.sp,
+                            text = it.price.toString().toCurrency(), fontSize = 16.sp,
                             fontWeight = Bold,
-                            modifier = Modifier
-                                .fillMaxWidth(0.5f)
-                                .align(alignment = CenterHorizontally)
                         )
-                        Spacer(modifier = Modifier.padding(8.dp))
-                        Text(text = it.description)
-                        Spacer(modifier = Modifier.padding(16.dp))
-                        Row(
-                            modifier = Modifier.fillMaxWidth(),
-                            horizontalArrangement = Arrangement.SpaceBetween
-                        ) {
-                            Text(
-                                text = it.price.toString().toCurrency(), fontSize = 16.sp,
-                                fontWeight = Bold,
-                            )
 
-                            Text(
-                                text = stringResource(id = R.string.quantity) + ": " + it.quantity.toString(),
-                                fontSize = 16.sp,
-                                fontWeight = Bold,
-                            )
-                        }
+                        Text(
+                            text = stringResource(id = R.string.quantity) + ": " + it.quantity.toString(),
+                            fontSize = 16.sp,
+                            fontWeight = Bold,
+                        )
                     }
                 }
             }
-
-
-        }
-
     }
+
+}
 
 }
