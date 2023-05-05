@@ -48,7 +48,7 @@ fun ItemDetailsCard(itemState: ItemState) {
                     contentScale = ContentScale.FillWidth
                 )
             }
-            SquaredButton(text = it.vendor, modifier = Modifier.offset(300.dp, (-40).dp))
+            SquaredButton(text = it.vendor, modifier = Modifier.offset(300.dp, (-38).dp))
             ElevatedCard(
                 modifier = Modifier
                     .fillMaxWidth(),
