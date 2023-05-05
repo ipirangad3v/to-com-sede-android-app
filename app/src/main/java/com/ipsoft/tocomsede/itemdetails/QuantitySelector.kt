@@ -23,7 +23,7 @@ fun QuantitySelector(selectedQuantity: MutableState<Int>, maxQuantity: Int) {
     ) {
 
         Text(text = stringResource(id = R.string.select_quantity))
-        Spacer(modifier = Modifier.padding(8.dp))
+        Spacer(modifier = Modifier.padding(4.dp))
         Row(
             horizontalArrangement = Arrangement.SpaceEvenly,
             verticalAlignment = Alignment.CenterVertically,

@@ -14,8 +14,6 @@ import com.google.firebase.analytics.FirebaseAnalytics.Param.ITEM_ID
 import com.ipsoft.tocomsede.R
 
 sealed class Screen(val route: String, @StringRes val resourceId: Int, val icon: ImageVector) {
-
-
     object Home : Screen("home", R.string.home, Icons.Filled.Home)
     object Cart : Screen("cart", R.string.cart, Icons.Filled.ShoppingCart)
     object Orders : Screen("orders", R.string.orders, Icons.Filled.List)
