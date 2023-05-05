@@ -14,17 +14,20 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material3.Button
+import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.ElevatedButton
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
-import androidx.compose.material3.TopAppBar
+import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Color.Companion.Gray
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
@@ -32,6 +35,7 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.ipsoft.tocomsede.R
 import com.ipsoft.tocomsede.core.extensions.showMsg
+import com.ipsoft.tocomsede.core.ui.theme.lightBlue
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -46,7 +50,7 @@ fun ItemDetailsScreen(
 
     Scaffold(
         topBar = {
-            TopAppBar(
+            CenterAlignedTopAppBar(
                 navigationIcon = {
                     Icon(
                         imageVector = Icons.Filled.ArrowBack,
@@ -54,8 +58,12 @@ fun ItemDetailsScreen(
                         modifier = Modifier.clickable { onBack.invoke() }
                     )
                 },
-                title = { Text(text = stringResource(id = R.string.item_details)) },
-                modifier = Modifier.fillMaxWidth()
+                title = { Text(text = stringResource(id = R.string.item_details), maxLines = 1) },
+                colors = TopAppBarDefaults.centerAlignedTopAppBarColors(
+                    containerColor = lightBlue,
+                    titleContentColor = Color.White,
+                    navigationIconContentColor = Color.White
+                )
             )
         },
         content = { padding ->
@@ -122,7 +130,7 @@ fun ItemDetailsScreen(
                             ) {
                                 item.item?.quantity?.let { QuantitySelector(selectedQuantity, it) }
 
-                                Button(onClick = {
+                                ElevatedButton(onClick = {
                                     item.item?.let {
                                         viewModel.addItemToCart(
                                             it,

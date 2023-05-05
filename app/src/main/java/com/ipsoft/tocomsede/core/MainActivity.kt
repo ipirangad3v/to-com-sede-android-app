@@ -40,7 +40,7 @@ import com.ipsoft.tocomsede.core.ui.components.Screen
 import com.ipsoft.tocomsede.core.ui.components.Screen.Companion.ITEM_ID
 import com.ipsoft.tocomsede.core.ui.components.Screen.Companion.items
 import com.ipsoft.tocomsede.core.ui.theme.ToComSedeTheme
-import com.ipsoft.tocomsede.core.ui.theme.lightBlue
+import com.ipsoft.tocomsede.core.ui.theme.darkBlue80
 import com.ipsoft.tocomsede.core.ui.theme.white
 import com.ipsoft.tocomsede.data.datastore.PreferencesRepository
 import com.ipsoft.tocomsede.home.ui.HomeScreen
@@ -99,7 +99,7 @@ class MainActivity : ComponentActivity() {
                         bottomBar = {
                             bottomBarState.value.let {
                                 if (it) {
-                                    BottomNavigation(backgroundColor = lightBlue) {
+                                    BottomNavigation(backgroundColor = darkBlue80) {
                                         val currentDestination = navBackStackEntry?.destination
                                         items.forEach { screen ->
                                             val iconColor =

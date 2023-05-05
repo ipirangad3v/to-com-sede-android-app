@@ -32,7 +32,7 @@ fun HomeItemList(itemState: ItemsState, navController: NavHostController) {
             ) {
                 itemState.item.let { items ->
                     items(items.size) {
-                        CardItem(item = items[it], navController = navController)
+                        CardListItem(item = items[it], navController = navController)
                     }
                 }
             }

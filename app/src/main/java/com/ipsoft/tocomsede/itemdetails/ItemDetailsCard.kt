@@ -8,7 +8,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.Text
-import androidx.compose.material3.Card
+import androidx.compose.material3.ElevatedCard
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment.Companion.CenterHorizontally
@@ -32,9 +32,10 @@ fun ItemDetailsCard(itemState: ItemState) {
                 .fillMaxSize()
                 .padding(8.dp)
         ) {
-            Card(
+            ElevatedCard(
                 modifier = Modifier
-                    .fillMaxSize()
+                    .fillMaxSize(),
+                shape = MaterialTheme.shapes.extraSmall
             ) {
                 GlideImage(
                     model = it.imageUrl,
@@ -44,7 +45,7 @@ fun ItemDetailsCard(itemState: ItemState) {
                 )
             }
             Spacer(modifier = Modifier.padding(8.dp))
-            Card(
+            ElevatedCard(
                 modifier = Modifier
                     .fillMaxWidth(),
                 shape = MaterialTheme.shapes.extraSmall

@@ -5,7 +5,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.Button
+import androidx.compose.material3.ElevatedButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
@@ -27,13 +27,13 @@ fun QuantitySelector(selectedQuantity: MutableState<Int>, maxQuantity: Int) {
             horizontalArrangement = Arrangement.SpaceEvenly,
             verticalAlignment = Alignment.CenterVertically
         ) {
-            Button(onClick = { if (selectedQuantity.value > 1) selectedQuantity.value-- }) {
+            ElevatedButton(onClick = { if (selectedQuantity.value > 1) selectedQuantity.value-- }) {
                 Text(text = "-")
             }
             Spacer(modifier = Modifier.padding(8.dp))
             Text(text = selectedQuantity.value.toString())
             Spacer(modifier = Modifier.padding(8.dp))
-            Button(onClick = { if (selectedQuantity.value < maxQuantity) selectedQuantity.value++ }) {
+            ElevatedButton(onClick = { if (selectedQuantity.value < maxQuantity) selectedQuantity.value++ }) {
                 Text(text = "+")
             }
         }
