@@ -7,5 +7,5 @@ data class Order(
     val items: List<Item>,
     val date: Date,
     val price: Double,
-    val client: User,
+    val client: User
 )

@@ -10,7 +10,6 @@ import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment.Companion.Center
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
@@ -22,18 +21,15 @@ import com.ipsoft.tocomsede.R
 @Composable
 fun HomeScreen(
     homeViewModel: HomeViewModel = hiltViewModel(),
-    navController: NavHostController,
+    navController: NavHostController
 ) {
-
     val itemState = homeViewModel.items.value
 
     Surface(
         modifier = Modifier
             .fillMaxSize()
     ) {
-
         itemState.error?.let {
-
             Box(
                 modifier = Modifier.fillMaxSize(),
                 contentAlignment = Center
@@ -61,6 +57,5 @@ fun HomeScreen(
                 HomeItemList(itemState, navController)
             }
         }
-
     }
 }

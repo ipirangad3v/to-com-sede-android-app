@@ -6,12 +6,11 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.ipsoft.tocomsede.core.model.Item
-import com.ipsoft.tocomsede.data.firebaserealtimedb.RealtimeRepository
-import com.ipsoft.tocomsede.utils.UserInfo.isUserLogged
 import com.ipsoft.tocomsede.core.model.ResultState
+import com.ipsoft.tocomsede.data.firebaserealtimedb.RealtimeRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
-import javax.inject.Inject
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
 @HiltViewModel
 class HomeViewModel @Inject constructor(private val repo: RealtimeRepository) :
@@ -36,7 +35,7 @@ class HomeViewModel @Inject constructor(private val repo: RealtimeRepository) :
                         )
                     }
 
-                    ResultState.Loading    -> {
+                    ResultState.Loading -> {
                         _items.value = ItemsState(
                             isLoading = true
                         )
@@ -52,5 +51,5 @@ class HomeViewModel @Inject constructor(private val repo: RealtimeRepository) :
 data class ItemsState(
     val item: List<Item> = emptyList(),
     val error: String? = null,
-    val isLoading: Boolean = false,
+    val isLoading: Boolean = false
 )

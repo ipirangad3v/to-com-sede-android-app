@@ -8,5 +8,5 @@ data class Address(
     val street: String,
     val number: String,
     val complement: String,
-    val neighborhood: String,
+    val neighborhood: String
 )

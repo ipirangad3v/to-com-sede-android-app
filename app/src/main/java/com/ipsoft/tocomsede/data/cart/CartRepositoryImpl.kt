@@ -4,7 +4,7 @@ import com.ipsoft.tocomsede.core.model.Item
 import com.ipsoft.tocomsede.core.model.ResultState
 import com.ipsoft.tocomsede.utils.Cart
 
-class CartRepositoryImpl: CartRepository {
+class CartRepositoryImpl : CartRepository {
 
     private val cart = Cart
 

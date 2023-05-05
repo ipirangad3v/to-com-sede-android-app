@@ -2,7 +2,6 @@ package com.ipsoft.tocomsede.di
 
 import android.content.Context
 import com.ipsoft.tocomsede.data.datastore.PreferencesDataStore
-import com.ipsoft.tocomsede.data.datastore.PreferencesRepository
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -17,5 +16,4 @@ class DataStoreModule {
     @Singleton
     fun providesPreferencesDataStore(@ApplicationContext context: Context): PreferencesDataStore =
         PreferencesDataStore(context)
-
 }

@@ -38,7 +38,7 @@ import com.ipsoft.tocomsede.core.extensions.showMsg
 fun ItemDetailsScreen(
     itemId: Int?,
     viewModel: ItemDetailsViewModel = hiltViewModel(),
-    onBack: () -> Unit,
+    onBack: () -> Unit
 ) {
     itemId?.let { viewModel.getItemById(itemId = it) }
 
@@ -50,7 +50,8 @@ fun ItemDetailsScreen(
                 navigationIcon = {
                     Icon(
                         imageVector = Icons.Filled.ArrowBack,
-                        contentDescription = null, modifier = Modifier.clickable { onBack.invoke() }
+                        contentDescription = null,
+                        modifier = Modifier.clickable { onBack.invoke() }
                     )
                 },
                 title = { Text(text = stringResource(id = R.string.item_details)) },
@@ -70,7 +71,6 @@ fun ItemDetailsScreen(
             }
 
             item.error?.let {
-
                 Box(
                     modifier = Modifier.fillMaxSize(),
                     contentAlignment = Alignment.Center
@@ -99,9 +99,11 @@ fun ItemDetailsScreen(
                 }
             } else {
                 Box(modifier = Modifier.padding(padding)) {
-                    Spacer(modifier = Modifier
-                        .padding(8.dp)
-                        .background(color = Gray))
+                    Spacer(
+                        modifier = Modifier
+                            .padding(8.dp)
+                            .background(color = Gray)
+                    )
                     LazyColumn {
                         item {
                             ItemDetailsCard(item)
@@ -133,13 +135,8 @@ fun ItemDetailsScreen(
                             }
                         }
                     }
-
                 }
             }
-
-
         }
     )
 }
-
-

@@ -3,7 +3,6 @@ package com.ipsoft.tocomsede.core
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.BottomNavigation
@@ -19,8 +18,6 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavDestination.Companion.hierarchy
 import androidx.navigation.NavGraph.Companion.findStartDestination
@@ -37,6 +34,7 @@ import com.google.firebase.auth.FirebaseAuth
 import com.ipsoft.tocomsede.R
 import com.ipsoft.tocomsede.about.AboutScreen
 import com.ipsoft.tocomsede.cart.CartScreen
+import com.ipsoft.tocomsede.core.model.ResultState
 import com.ipsoft.tocomsede.core.model.User
 import com.ipsoft.tocomsede.core.ui.components.Screen
 import com.ipsoft.tocomsede.core.ui.components.Screen.Companion.ITEM_ID
@@ -49,10 +47,9 @@ import com.ipsoft.tocomsede.home.ui.HomeScreen
 import com.ipsoft.tocomsede.itemdetails.ItemDetailsScreen
 import com.ipsoft.tocomsede.orders.OrdersScreen
 import com.ipsoft.tocomsede.utils.UserInfo.loggedUser
-import com.ipsoft.tocomsede.core.model.ResultState
 import dagger.hilt.android.AndroidEntryPoint
-import javax.inject.Inject
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
@@ -69,7 +66,7 @@ class MainActivity : ComponentActivity() {
     private val providers = arrayListOf(
         AuthUI.IdpConfig.EmailBuilder().build(),
         AuthUI.IdpConfig.PhoneBuilder().build(),
-        AuthUI.IdpConfig.GoogleBuilder().build(),
+        AuthUI.IdpConfig.GoogleBuilder().build()
     )
 
     @OptIn(ExperimentalMaterial3Api::class)
@@ -83,7 +80,6 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-
                     val bottomBarState = rememberSaveable { (mutableStateOf(true)) }
 
                     val navController = rememberNavController()
@@ -94,9 +90,8 @@ class MainActivity : ComponentActivity() {
                             bottomBarState.value = false
                         }
 
-                        else                     -> {
+                        else -> {
                             bottomBarState.value = true
-
                         }
                     }
 
@@ -124,7 +119,7 @@ class MainActivity : ComponentActivity() {
                                                 label = {
                                                     Text(
                                                         stringResource(screen.resourceId),
-                                                        color = iconColor,
+                                                        color = iconColor
                                                     )
                                                 },
                                                 selected = currentDestination?.hierarchy?.any { currentDestination -> currentDestination.route == screen.route } == true,
@@ -193,9 +188,11 @@ class MainActivity : ComponentActivity() {
 
                             composable(
                                 Screen.ItemDetails.route,
-                                arguments = listOf(navArgument(ITEM_ID) {
-                                    type = NavType.IntType
-                                })
+                                arguments = listOf(
+                                    navArgument(ITEM_ID) {
+                                        type = NavType.IntType
+                                    }
+                                )
                             ) { navBackEntry ->
                                 ItemDetailsScreen(
                                     itemId = navBackEntry.arguments?.getInt(ITEM_ID)
@@ -203,11 +200,8 @@ class MainActivity : ComponentActivity() {
                                     navController.navigateUp()
                                 }
                             }
-
                         }
                     }
-
-
                 }
             }
         }
@@ -245,11 +239,9 @@ class MainActivity : ComponentActivity() {
                         if (it is ResultState.Success) {
                             loadUser()
                         }
-
                     }
                 }
             }
-
         } else {
             // Sign in failed. If response is null the user canceled the
             // sign-in flow using the back button. Otherwise check

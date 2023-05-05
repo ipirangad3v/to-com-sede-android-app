@@ -12,7 +12,6 @@ import dagger.hilt.components.SingletonComponent
 abstract class RealtimeRepositoryModule {
     @Binds
     abstract fun providesRealtimeRepository(
-        repo: RealtimeRepositoryImpl,
+        repo: RealtimeRepositoryImpl
     ): RealtimeRepository
-
 }

@@ -6,8 +6,8 @@ import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.stringPreferencesKey
 import androidx.datastore.preferences.preferencesDataStore
-import com.ipsoft.tocomsede.core.model.User
 import com.ipsoft.tocomsede.core.model.ResultState
+import com.ipsoft.tocomsede.core.model.User
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map
 
@@ -24,15 +24,16 @@ class PreferencesDataStore(private val context: Context) {
             preferences[userEmail] = user.email
             preferences[userPhone] = user.phone
             preferences[userPhotoUrl] = user.photoUrl ?: ""
-
         }
         return ResultState.Success(true)
     }
 
     suspend fun readUser(): ResultState<User?> {
-        if (context.preferencesDataStore.data.first()[userName].isNullOrEmpty()) return ResultState.Success(
-            null
-        )
+        if (context.preferencesDataStore.data.first()[userName].isNullOrEmpty()) {
+            return ResultState.Success(
+                null
+            )
+        }
         val user = context.preferencesDataStore.data.map { preferences ->
             return@map ResultState.Success(
                 User(

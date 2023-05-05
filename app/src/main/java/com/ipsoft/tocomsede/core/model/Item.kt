@@ -7,7 +7,7 @@ data class Item(
     val price: Double,
     val imageUrl: String,
     val category: String,
-    val quantity: Int,
+    val quantity: Int
 ) {
     @Suppress("unused")
     constructor() : this(0, "", "", 0.0, "", "", 0)

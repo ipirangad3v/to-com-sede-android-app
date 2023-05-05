@@ -10,16 +10,15 @@ import com.ipsoft.tocomsede.core.model.ResultState.Failure
 import com.ipsoft.tocomsede.core.model.ResultState.Loading
 import com.ipsoft.tocomsede.core.model.ResultState.Success
 import com.ipsoft.tocomsede.data.cart.CartRepository
-import com.ipsoft.tocomsede.data.cart.CartRepositoryImpl
 import com.ipsoft.tocomsede.data.firebaserealtimedb.RealtimeRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
-import javax.inject.Inject
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
 @HiltViewModel
 class ItemDetailsViewModel @Inject constructor(
     private val itemRepository: RealtimeRepository,
-    private val cartRepository: CartRepository,
+    private val cartRepository: CartRepository
 ) : ViewModel() {
 
     private val _items: MutableState<ItemState> = mutableStateOf(ItemState())
@@ -50,7 +49,7 @@ class ItemDetailsViewModel @Inject constructor(
                         )
                     }
 
-                    Loading    -> {
+                    Loading -> {
                         _items.value = ItemState(
                             isLoading = true
                         )
@@ -63,11 +62,10 @@ class ItemDetailsViewModel @Inject constructor(
     fun resetCartAddedStatus() {
         _isSuccessFullCartAdded.value = false
     }
-
 }
 
 data class ItemState(
     val item: Item? = null,
     val error: String? = null,
-    val isLoading: Boolean = false,
+    val isLoading: Boolean = false
 )

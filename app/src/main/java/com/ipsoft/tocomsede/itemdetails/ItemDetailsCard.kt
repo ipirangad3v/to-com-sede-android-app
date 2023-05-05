@@ -7,7 +7,6 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.Text
 import androidx.compose.material3.Card
 import androidx.compose.material3.MaterialTheme
@@ -71,20 +70,19 @@ fun ItemDetailsCard(itemState: ItemState) {
                         horizontalArrangement = Arrangement.SpaceBetween
                     ) {
                         Text(
-                            text = it.price.toString().toCurrency(), fontSize = 16.sp,
-                            fontWeight = Bold,
+                            text = it.price.toString().toCurrency(),
+                            fontSize = 16.sp,
+                            fontWeight = Bold
                         )
 
                         Text(
                             text = stringResource(id = R.string.quantity) + ": " + it.quantity.toString(),
                             fontSize = 16.sp,
-                            fontWeight = Bold,
+                            fontWeight = Bold
                         )
                     }
                 }
             }
         }
-
     }
-
 }

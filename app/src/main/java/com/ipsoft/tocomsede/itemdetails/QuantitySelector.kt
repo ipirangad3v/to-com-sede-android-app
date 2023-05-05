@@ -19,14 +19,13 @@ import com.ipsoft.tocomsede.R
 fun QuantitySelector(selectedQuantity: MutableState<Int>, maxQuantity: Int) {
     Column(
         verticalArrangement = Arrangement.Center,
-        horizontalAlignment = Alignment.CenterHorizontally,
+        horizontalAlignment = Alignment.CenterHorizontally
     ) {
-
         Text(text = stringResource(id = R.string.select_quantity))
         Spacer(modifier = Modifier.padding(4.dp))
         Row(
             horizontalArrangement = Arrangement.SpaceEvenly,
-            verticalAlignment = Alignment.CenterVertically,
+            verticalAlignment = Alignment.CenterVertically
         ) {
             Button(onClick = { if (selectedQuantity.value > 1) selectedQuantity.value-- }) {
                 Text(text = "-")
@@ -37,7 +36,6 @@ fun QuantitySelector(selectedQuantity: MutableState<Int>, maxQuantity: Int) {
             Button(onClick = { if (selectedQuantity.value < maxQuantity) selectedQuantity.value++ }) {
                 Text(text = "+")
             }
-
         }
     }
 }

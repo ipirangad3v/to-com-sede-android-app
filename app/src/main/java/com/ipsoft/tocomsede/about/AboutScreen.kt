@@ -10,11 +10,8 @@ import androidx.compose.ui.Modifier
 @Composable
 fun AboutScreen(onLoginClick: () -> () -> Unit) {
     Box(modifier = Modifier.fillMaxSize()) {
-
         Button(onClick = onLoginClick()) {
             Text(text = "Login")
         }
-
     }
-
 }

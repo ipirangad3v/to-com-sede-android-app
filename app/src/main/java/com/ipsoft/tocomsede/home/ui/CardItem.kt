@@ -32,20 +32,22 @@ fun CardItem(item: Item, navController: NavHostController) {
             .clickable {
                 navController.navigate(
                     "item_details" +
-                    "/${item.id}"
+                        "/${item.id}"
                 )
             },
         border = BorderStroke(
-            1.dp, MaterialTheme.colorScheme.secondary
+            1.dp,
+            MaterialTheme.colorScheme.secondary
         ),
         shape = MaterialTheme.shapes.small
     ) {
         Row(modifier = Modifier.fillMaxSize()) {
             Card(
                 border = BorderStroke(
-                    1.dp, MaterialTheme.colorScheme.secondary,
+                    1.dp,
+                    MaterialTheme.colorScheme.secondary
                 ),
-                shape = MaterialTheme.shapes.small,
+                shape = MaterialTheme.shapes.small
             ) {
                 GlideImage(
                     model = item.imageUrl,

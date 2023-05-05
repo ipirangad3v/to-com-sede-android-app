@@ -6,16 +6,15 @@ import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.ValueEventListener
 import com.ipsoft.tocomsede.core.model.Item
 import com.ipsoft.tocomsede.core.model.ResultState
-import javax.inject.Inject
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.callbackFlow
+import javax.inject.Inject
 
 class RealtimeRepositoryImpl @Inject constructor(
-    private val db: DatabaseReference,
+    private val db: DatabaseReference
 ) : RealtimeRepository {
     override suspend fun getItems(): Flow<ResultState<List<Item>>> = callbackFlow {
-
         trySend(ResultState.Loading)
 
         val valueEvent = object : ValueEventListener {
@@ -30,7 +29,6 @@ class RealtimeRepositoryImpl @Inject constructor(
             override fun onCancelled(error: DatabaseError) {
                 trySend(ResultState.Failure(error.toException()))
             }
-
         }
 
         db.addValueEventListener(valueEvent)
@@ -38,7 +36,6 @@ class RealtimeRepositoryImpl @Inject constructor(
             db.removeEventListener(valueEvent)
             close()
         }
-
     }
 
     override suspend fun getItemById(itemId: Int): Flow<ResultState<Item?>> = callbackFlow {
@@ -56,7 +53,6 @@ class RealtimeRepositoryImpl @Inject constructor(
             override fun onCancelled(error: DatabaseError) {
                 trySend(ResultState.Failure(error.toException()))
             }
-
         }
 
         db.addValueEventListener(valueEvent)

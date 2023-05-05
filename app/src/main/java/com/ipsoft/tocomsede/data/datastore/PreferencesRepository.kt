@@ -1,7 +1,7 @@
 package com.ipsoft.tocomsede.data.datastore
 
-import com.ipsoft.tocomsede.core.model.User
 import com.ipsoft.tocomsede.core.model.ResultState
+import com.ipsoft.tocomsede.core.model.User
 import javax.inject.Inject
 
 class PreferencesRepository @Inject constructor(private val preferencesDataStore: PreferencesDataStore) {
