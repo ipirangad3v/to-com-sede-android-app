@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.Text
 import androidx.compose.material3.Card
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment.Companion.CenterHorizontally
 import androidx.compose.ui.Modifier
@@ -46,7 +47,8 @@ fun ItemDetailsCard(itemState: ItemState) {
             Spacer(modifier = Modifier.padding(8.dp))
             Card(
                 modifier = Modifier
-                    .fillMaxWidth()
+                    .fillMaxWidth(),
+                shape = MaterialTheme.shapes.extraSmall
             ) {
                 Column(
                     modifier = Modifier
@@ -81,8 +83,8 @@ fun ItemDetailsCard(itemState: ItemState) {
                     }
                 }
             }
-    }
+        }
 
-}
+    }
 
 }
