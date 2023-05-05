@@ -8,9 +8,11 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.Text
+import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ElevatedCard
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Alignment.Companion.CenterHorizontally
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
@@ -22,6 +24,9 @@ import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
 import com.bumptech.glide.integration.compose.GlideImage
 import com.ipsoft.tocomsede.R
 import com.ipsoft.tocomsede.core.extensions.toCurrency
+import com.ipsoft.tocomsede.core.ui.components.PriceTag
+import com.ipsoft.tocomsede.core.ui.components.SquaredButton
+import com.ipsoft.tocomsede.core.ui.theme.softBlue
 
 @OptIn(ExperimentalGlideComposeApi::class)
 @Composable
@@ -35,7 +40,10 @@ fun ItemDetailsCard(itemState: ItemState) {
             ElevatedCard(
                 modifier = Modifier
                     .fillMaxSize(),
-                shape = MaterialTheme.shapes.extraSmall
+                shape = MaterialTheme.shapes.extraSmall,
+                colors = CardDefaults.elevatedCardColors(
+                    containerColor = softBlue,
+                )
             ) {
                 GlideImage(
                     model = it.imageUrl,
@@ -48,7 +56,10 @@ fun ItemDetailsCard(itemState: ItemState) {
             ElevatedCard(
                 modifier = Modifier
                     .fillMaxWidth(),
-                shape = MaterialTheme.shapes.extraSmall
+                shape = MaterialTheme.shapes.extraSmall,
+                colors = CardDefaults.elevatedCardColors(
+                    containerColor = softBlue,
+                )
             ) {
                 Column(
                     modifier = Modifier
@@ -68,19 +79,11 @@ fun ItemDetailsCard(itemState: ItemState) {
                     Spacer(modifier = Modifier.padding(16.dp))
                     Row(
                         modifier = Modifier.fillMaxWidth(),
-                        horizontalArrangement = Arrangement.SpaceBetween
+                        horizontalArrangement = Arrangement.SpaceBetween,
+                        verticalAlignment = Alignment.CenterVertically
                     ) {
-                        Text(
-                            text = it.price.toString().toCurrency(),
-                            fontSize = 16.sp,
-                            fontWeight = Bold
-                        )
-
-                        Text(
-                            text = stringResource(id = R.string.quantity) + ": " + it.quantity.toString(),
-                            fontSize = 16.sp,
-                            fontWeight = Bold
-                        )
+                        PriceTag(price = it.price)
+                        SquaredButton(text = stringResource(id = R.string.quantity) + ": " + it.quantity.toString())
                     }
                 }
             }

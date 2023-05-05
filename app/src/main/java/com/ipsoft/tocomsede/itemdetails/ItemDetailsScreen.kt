@@ -35,6 +35,7 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.ipsoft.tocomsede.R
 import com.ipsoft.tocomsede.core.extensions.showMsg
+import com.ipsoft.tocomsede.core.ui.components.SquaredButton
 import com.ipsoft.tocomsede.core.ui.theme.lightBlue
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -42,7 +43,7 @@ import com.ipsoft.tocomsede.core.ui.theme.lightBlue
 fun ItemDetailsScreen(
     itemId: Int?,
     viewModel: ItemDetailsViewModel = hiltViewModel(),
-    onBack: () -> Unit
+    onBack: () -> Unit,
 ) {
     itemId?.let { viewModel.getItemById(itemId = it) }
 
@@ -130,16 +131,18 @@ fun ItemDetailsScreen(
                             ) {
                                 item.item?.quantity?.let { QuantitySelector(selectedQuantity, it) }
 
-                                ElevatedButton(onClick = {
-                                    item.item?.let {
-                                        viewModel.addItemToCart(
-                                            it,
-                                            selectedQuantity.value
-                                        )
-                                    }
-                                }, modifier = Modifier.align(Alignment.CenterVertically)) {
-                                    Text(text = stringResource(id = R.string.add_to_cart))
-                                }
+                                SquaredButton(
+                                    text = stringResource(id = R.string.add_to_cart),
+                                    onClick = {
+                                        item.item?.let {
+                                            viewModel.addItemToCart(
+                                                it,
+                                                selectedQuantity.value
+                                            )
+                                        }
+                                    },
+                                    modifier = Modifier.align(Alignment.CenterVertically)
+                                )
                             }
                         }
                     }
