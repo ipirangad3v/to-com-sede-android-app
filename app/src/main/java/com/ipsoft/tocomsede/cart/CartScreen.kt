@@ -1,6 +1,7 @@
 package com.ipsoft.tocomsede.cart
 
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -53,7 +54,7 @@ fun CartScreen(cartViewModel: CartViewModel = hiltViewModel()) {
         } else {
             if (cartItemState.items.isNotEmpty()) {
                 Box(modifier = Modifier.fillMaxSize()) {
-                    Row {
+                    Column {
                         CartItemList(cartItemState)
                         CartTotal(cartTotalState)
                     }
@@ -79,6 +80,6 @@ fun CartTotal(cartTotalState: String) {
             .padding(16.dp),
         contentAlignment = Alignment.BottomEnd
     ) {
-        Text(text = stringResource(id = R.string.total, cartTotalState))
+        Text(text = stringResource(id = R.string.total) + " = $cartTotalState")
     }
 }

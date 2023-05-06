@@ -1,5 +1,6 @@
 package com.ipsoft.tocomsede.cart
 
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -59,15 +60,13 @@ fun CartCardListItem(item: Pair<Item, Int>) {
                     maxLines = 1
                 )
                 Spacer(modifier = Modifier.weight(1f))
-                SquaredButton(
-                    text = item.first.vendor,
-                    modifier = Modifier.offset((-210).dp, (65).dp)
-                )
-                Text(
-                    text = "Quantidade: ${item.second}",
-                    style = MaterialTheme.typography.bodyMedium
-                )
-                PriceTag(price = item.first.price)
+                Row(verticalAlignment = Alignment.CenterVertically) {
+                    PriceTag(price = item.first.price)
+                    Text(
+                        text = "X${item.second}",
+                        style = MaterialTheme.typography.bodyLarge
+                    )
+                }
             }
         }
     }

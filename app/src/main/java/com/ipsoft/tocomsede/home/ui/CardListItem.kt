@@ -63,7 +63,6 @@ fun CardListItem(item: Item, navController: NavHostController) {
             ) {
                 Text(text = item.name, style = MaterialTheme.typography.headlineSmall, maxLines = 1)
                 Spacer(modifier = Modifier.weight(1f))
-                SquaredButton(text = item.vendor, modifier = Modifier.offset((-210).dp, (65).dp))
                 PriceTag(price = item.price)
             }
         }
