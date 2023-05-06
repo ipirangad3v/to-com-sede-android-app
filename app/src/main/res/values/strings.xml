@@ -19,4 +19,5 @@
     <string name="cart_is_empty">Seu Carrinho está vazio!</string>
     <string name="water">Água mineral\n</string>
     <string name="selected_quantity">quantidade</string>
+    <string name="no_internet">sem conexão com a internet</string>
 </resources>
