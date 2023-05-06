@@ -33,13 +33,19 @@ class ItemDetailsViewModel @Inject constructor(
         }
     }
 
+    override fun onCleared() {
+        super.onCleared()
+        _items.value = ItemState()
+    }
+
     fun getItemById(itemId: Int) {
         viewModelScope.launch {
             itemRepository.getItemById(itemId).collect {
                 when (it) {
                     is Success -> {
                         _items.value = ItemState(
-                            item = it.data
+                            item = it.data,
+                            isLoading = false
                         )
                     }
 
@@ -67,5 +73,5 @@ class ItemDetailsViewModel @Inject constructor(
 data class ItemState(
     val item: Item? = null,
     val error: String? = null,
-    val isLoading: Boolean = false
+    val isLoading: Boolean = true
 )
