@@ -1,14 +1,10 @@
 package com.ipsoft.tocomsede.cart
 
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Delete
@@ -60,41 +56,21 @@ fun CartCardListItem(item: Pair<Item, Int>, onItemDeleteClick: () -> Unit) {
             }
         }
         Spacer(modifier = Modifier.height(8.dp))
-        Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .wrapContentHeight(),
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            Row(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .weight(1f)
-                    .wrapContentHeight(),
-                verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.SpaceBetween
-            ) {
-                Text(
-                    text = item.first.name,
-                    style = MaterialTheme.typography.bodySmall,
-                    color = androidx.compose.material.MaterialTheme.colors.onSurface
-                )
-                Text(
-                    text = "·",
-                    style = MaterialTheme.typography.bodySmall,
-                    color = androidx.compose.material.MaterialTheme.colors.onSurface
-                )
-                Text(
-                    text = item.first.price.toString().toCurrency(),
-                    style = MaterialTheme.typography.titleSmall,
-                    color = androidx.compose.material.MaterialTheme.colors.onSurface
-                )
-            }
-        }
+        Text(
+            text = item.first.name,
+            style = MaterialTheme.typography.bodySmall,
+            color = androidx.compose.material.MaterialTheme.colors.onSurface
+        )
+        Spacer(modifier = Modifier.height(4.dp))
+        Text(
+            text = item.first.price.toString().toCurrency(),
+            style = MaterialTheme.typography.titleSmall,
+            color = androidx.compose.material.MaterialTheme.colors.onSurface
+        )
         Spacer(modifier = Modifier.height(4.dp))
         Text(
             text = stringResource(id = R.string.selected_quantity) + ": ${item.second}",
-            style = MaterialTheme.typography.bodyLarge,
+            style = MaterialTheme.typography.titleSmall,
             color = androidx.compose.material.MaterialTheme.colors.onSurface
         )
         Spacer(modifier = Modifier.height(4.dp))

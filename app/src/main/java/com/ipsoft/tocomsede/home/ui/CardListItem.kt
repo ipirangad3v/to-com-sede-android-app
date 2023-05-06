@@ -30,7 +30,7 @@ import com.ipsoft.tocomsede.core.ui.theme.softBlue
 @OptIn(ExperimentalGlideComposeApi::class)
 @Composable
 fun CardListItem(item: Item, navController: NavHostController) {
-    Column(modifier = Modifier.padding(0.dp, 8.dp, 0.dp, 8.dp)) {
+    Column(modifier = Modifier.padding(0.dp, 8.dp, 0.dp, 8.dp), horizontalAlignment = Alignment.CenterHorizontally) {
         ElevatedCard(
             modifier = Modifier
                 .wrapContentSize()
@@ -59,27 +59,8 @@ fun CardListItem(item: Item, navController: NavHostController) {
             }
         }
         Spacer(modifier = Modifier.height(8.dp))
-        Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .wrapContentHeight(),
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            Row(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .weight(1f)
-                    .wrapContentHeight(),
-                verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.SpaceBetween
-            ) {
                 Text(
                     text = item.name,
-                    style = MaterialTheme.typography.bodyMedium,
-                    color = colors.onSurface
-                )
-                Text(
-                    text = "·",
                     style = MaterialTheme.typography.bodyMedium,
                     color = colors.onSurface
                 )
@@ -90,5 +71,5 @@ fun CardListItem(item: Item, navController: NavHostController) {
                 )
             }
         }
-    }
-}
+
+

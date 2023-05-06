@@ -27,7 +27,7 @@ fun CartItemList(
 
         ) {
             val height =
-                if (itemState.items.size >= 2) ((itemState.items.size * 300) / 2).dp else ((itemState.items.size * 300)).dp
+                if (itemState.items.size >= 2) ((itemState.items.size * 320) / 2).dp else ((itemState.items.size * 320)).dp
             Spacer(modifier = Modifier.padding(4.dp))
             LazyVerticalGrid(
                 modifier = Modifier.height(height),
