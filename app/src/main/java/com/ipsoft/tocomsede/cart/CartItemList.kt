@@ -25,7 +25,7 @@ fun CartItemList(itemState: CartViewModel.CartItemState) {
                 modifier = Modifier.fillMaxWidth(),
                 verticalArrangement = Arrangement.Center
             ) {
-                itemState.item.let { items ->
+                itemState.items.let { items ->
                     items(items.size) {
                         Spacer(modifier = Modifier.padding(8.dp))
                         CartCardListItem(item = items[it])

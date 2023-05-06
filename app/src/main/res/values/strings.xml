@@ -17,4 +17,5 @@
     <string name="total">total</string>
     <string name="unavailable">indisponível</string>
     <string name="item_not_available">Opa, estamos sem estoque desse item no momento\n</string>
+    <string name="cart_is_empty">Seu Carrinho está vazio!</string>
 </resources>

@@ -46,7 +46,7 @@ class CartViewModel @Inject constructor(private val cartRepository: CartReposito
             cartRepository.getCartItems().collect {
                 _cartItemState.value = when (it) {
                     is Success -> {
-                        CartItemState(item = it.data.toList())
+                        CartItemState(items = it.data.toList())
                     }
 
                     is Failure -> {
@@ -62,7 +62,7 @@ class CartViewModel @Inject constructor(private val cartRepository: CartReposito
     }
 
     data class CartItemState(
-        val item: List<Pair<Item, Int>> = emptyList(),
+        val items: List<Pair<Item, Int>> = emptyList(),
         val error: String? = null,
         val isLoading: Boolean = false
     )

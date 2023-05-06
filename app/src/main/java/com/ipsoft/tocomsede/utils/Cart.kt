@@ -51,4 +51,6 @@ object Cart {
     fun removeListener(listener: CartListener) {
         listeners.remove(listener)
     }
+
+    fun getItemsCount(): Int = items.size
 }

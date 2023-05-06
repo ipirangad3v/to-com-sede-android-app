@@ -33,6 +33,7 @@ import com.firebase.ui.auth.data.model.FirebaseAuthUIAuthenticationResult
 import com.google.firebase.auth.FirebaseAuth
 import com.ipsoft.tocomsede.R
 import com.ipsoft.tocomsede.about.AboutScreen
+import com.ipsoft.tocomsede.cart.CartBadge
 import com.ipsoft.tocomsede.cart.CartScreen
 import com.ipsoft.tocomsede.core.model.ResultState
 import com.ipsoft.tocomsede.core.model.User
@@ -42,6 +43,7 @@ import com.ipsoft.tocomsede.core.ui.components.Screen.Companion.items
 import com.ipsoft.tocomsede.core.ui.theme.ToComSedeTheme
 import com.ipsoft.tocomsede.core.ui.theme.darkBlue80
 import com.ipsoft.tocomsede.core.ui.theme.lightBlue
+import com.ipsoft.tocomsede.data.cart.CartRepository
 import com.ipsoft.tocomsede.data.datastore.PreferencesRepository
 import com.ipsoft.tocomsede.home.ui.HomeScreen
 import com.ipsoft.tocomsede.itemdetails.ItemDetailsScreen
@@ -56,6 +58,9 @@ class MainActivity : ComponentActivity() {
 
     @Inject
     lateinit var preferencesRepository: PreferencesRepository
+
+    @Inject
+    lateinit var cartRepository: CartRepository
 
     private val signInLauncher = registerForActivityResult(
         FirebaseAuthUIActivityResultContract()
@@ -90,7 +95,7 @@ class MainActivity : ComponentActivity() {
                             bottomBarState.value = false
                         }
 
-                        else -> {
+                        else                     -> {
                             bottomBarState.value = true
                         }
                     }
@@ -115,11 +120,23 @@ class MainActivity : ComponentActivity() {
                                                 }
                                             BottomNavigationItem(
                                                 icon = {
-                                                    Icon(
-                                                        screen.icon,
-                                                        contentDescription = null,
-                                                        tint = iconColor
-                                                    )
+                                                    if (screen.route == Screen.Cart.route) {
+                                                        if (cartRepository.getCartItemsCount() > 0) {
+                                                            CartBadge(cartRepository.getCartItemsCount(), iconColor)
+                                                        } else {
+                                                            Icon(
+                                                                screen.icon,
+                                                                contentDescription = null,
+                                                                tint = iconColor
+                                                            )
+                                                        }
+                                                    } else {
+                                                        Icon(
+                                                            screen.icon,
+                                                            contentDescription = null,
+                                                            tint = iconColor
+                                                        )
+                                                    }
                                                 },
                                                 selected = currentDestination?.hierarchy?.any { currentDestination -> currentDestination.route == screen.route } == true,
                                                 onClick = {

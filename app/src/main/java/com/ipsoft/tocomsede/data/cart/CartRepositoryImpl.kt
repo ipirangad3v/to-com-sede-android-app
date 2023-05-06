@@ -33,4 +33,5 @@ class CartRepositoryImpl @Inject constructor(private val cart: Cart) : CartRepos
     }
 
     override suspend fun getCartTotal(): ResultState<String> = ResultState.Success(cart.getTotal())
+    override fun getCartItemsCount(): Int = cart.getItemsCount()
 }

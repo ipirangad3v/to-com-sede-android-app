@@ -51,15 +51,25 @@ fun CartScreen(cartViewModel: CartViewModel = hiltViewModel()) {
                 CircularProgressIndicator(modifier = Modifier.wrapContentSize())
             }
         } else {
-            Box(modifier = Modifier.fillMaxSize()) {
-                Row {
-                    CartItemList(cartItemState)
-                    CartTotal(cartTotalState)
+            if (cartItemState.items.isNotEmpty()) {
+                Box(modifier = Modifier.fillMaxSize()) {
+                    Row {
+                        CartItemList(cartItemState)
+                        CartTotal(cartTotalState)
+                    }
+                }
+            } else {
+                Box(
+                    modifier = Modifier.fillMaxSize(),
+                    contentAlignment = Alignment.Center
+                ) {
+                    Text(text = stringResource(id = R.string.cart_is_empty))
                 }
             }
         }
     }
 }
+
 
 @Composable
 fun CartTotal(cartTotalState: String) {
