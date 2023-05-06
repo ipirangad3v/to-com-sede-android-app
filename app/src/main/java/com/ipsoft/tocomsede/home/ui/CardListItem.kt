@@ -1,15 +1,11 @@
 package com.ipsoft.tocomsede.home.ui
 
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.material.MaterialTheme.colors
 import androidx.compose.material3.CardDefaults
@@ -30,14 +26,17 @@ import com.ipsoft.tocomsede.core.ui.theme.softBlue
 @OptIn(ExperimentalGlideComposeApi::class)
 @Composable
 fun CardListItem(item: Item, navController: NavHostController) {
-    Column(modifier = Modifier
-        .padding(0.dp, 8.dp, 0.dp, 8.dp)
-        .clickable {
-            navController.navigate(
-                "item_details" +
-                "/${item.id}"
-            )
-        }, horizontalAlignment = Alignment.CenterHorizontally) {
+    Column(
+        modifier = Modifier
+            .padding(0.dp, 8.dp, 0.dp, 8.dp)
+            .clickable {
+                navController.navigate(
+                    "item_details" +
+                        "/${item.id}"
+                )
+            },
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
         ElevatedCard(
             modifier = Modifier
                 .wrapContentSize(),
@@ -72,5 +71,3 @@ fun CardListItem(item: Item, navController: NavHostController) {
         )
     }
 }
-
-

@@ -43,9 +43,8 @@ import com.ipsoft.tocomsede.core.ui.theme.lightBlue
 fun ItemDetailsScreen(
     itemId: Int?,
     viewModel: ItemDetailsViewModel = hiltViewModel(),
-    onBack: () -> Unit,
+    onBack: () -> Unit
 ) {
-
     val visible = remember { mutableStateOf(true) }
 
     val item = viewModel.items.value
@@ -53,7 +52,9 @@ fun ItemDetailsScreen(
     val cartAddedSuccess = viewModel.isSuccessFullCartAdded.value
 
     AnimatedVisibility(
-        visible = visible.value, modifier = Modifier.fillMaxSize(), exit = ExitTransition.None
+        visible = visible.value,
+        modifier = Modifier.fillMaxSize(),
+        exit = ExitTransition.None
     ) {
         itemId?.let { viewModel.getItemById(itemId = it) }
 
@@ -182,6 +183,5 @@ fun ItemDetailsScreen(
                 }
             }
         )
-
     }
 }
