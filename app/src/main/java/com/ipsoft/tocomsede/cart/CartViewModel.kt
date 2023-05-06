@@ -12,8 +12,8 @@ import com.ipsoft.tocomsede.core.model.ResultState.Success
 import com.ipsoft.tocomsede.data.cart.CartRepository
 import com.ipsoft.tocomsede.utils.Cart
 import dagger.hilt.android.lifecycle.HiltViewModel
-import javax.inject.Inject
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
 @HiltViewModel
 class CartViewModel @Inject constructor(private val cartRepository: CartRepository) :

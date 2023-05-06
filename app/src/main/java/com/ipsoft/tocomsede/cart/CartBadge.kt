@@ -20,5 +20,4 @@ fun CartBadge(cartItemsCount: Int, iconColor: Color) {
             tint = iconColor
         )
     }
-
 }

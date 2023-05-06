@@ -2,7 +2,6 @@ package com.ipsoft.tocomsede.cart
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
@@ -70,7 +69,6 @@ fun CartScreen(cartViewModel: CartViewModel = hiltViewModel()) {
         }
     }
 }
-
 
 @Composable
 fun CartTotal(cartTotalState: String) {

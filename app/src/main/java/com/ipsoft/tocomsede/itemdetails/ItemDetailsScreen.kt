@@ -41,7 +41,7 @@ import com.ipsoft.tocomsede.core.ui.theme.lightBlue
 fun ItemDetailsScreen(
     itemId: Int?,
     viewModel: ItemDetailsViewModel = hiltViewModel(),
-    onBack: () -> Unit,
+    onBack: () -> Unit
 ) {
     itemId?.let { viewModel.getItemById(itemId = it) }
 
@@ -121,7 +121,6 @@ fun ItemDetailsScreen(
                 }
             } else {
                 Box(modifier = Modifier.padding(padding)) {
-
                     val context = LocalContext.current
 
                     LazyColumn {

@@ -17,12 +17,13 @@ import com.ipsoft.tocomsede.core.ui.theme.darkBlue80
 
 @Composable
 fun SquaredButton(
-    modifier: Modifier = Modifier, text: String = "Button",
+    modifier: Modifier = Modifier,
+    text: String = "Button",
     colors: CardColors = CardDefaults.elevatedCardColors(
         containerColor = darkBlue80,
         contentColor = almostWhite
     ),
-    onClick: () -> Unit = {},
+    onClick: () -> Unit = {}
 ) {
     ElevatedCard(
         shape = RoundedCornerShape(8.dp),

@@ -95,7 +95,7 @@ class MainActivity : ComponentActivity() {
                             bottomBarState.value = false
                         }
 
-                        else                     -> {
+                        else -> {
                             bottomBarState.value = true
                         }
                     }
