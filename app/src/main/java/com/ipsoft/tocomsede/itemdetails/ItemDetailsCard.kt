@@ -22,6 +22,7 @@ import com.bumptech.glide.integration.compose.GlideImage
 import com.ipsoft.tocomsede.R
 import com.ipsoft.tocomsede.core.ui.components.PriceTag
 import com.ipsoft.tocomsede.core.ui.components.SquaredButton
+import com.ipsoft.tocomsede.core.ui.theme.darkBlue80
 import com.ipsoft.tocomsede.core.ui.theme.softBlue
 
 @OptIn(ExperimentalGlideComposeApi::class)
@@ -36,10 +37,11 @@ fun ItemDetailsCard(itemState: ItemState) {
             ElevatedCard(
                 modifier = Modifier
                     .fillMaxSize(),
-                shape = MaterialTheme.shapes.extraSmall,
+                shape = MaterialTheme.shapes.small,
                 colors = CardDefaults.elevatedCardColors(
                     containerColor = softBlue
-                )
+                ),
+                elevation = CardDefaults.elevatedCardElevation(6.dp)
             ) {
                 GlideImage(
                     model = it.imageUrl,
@@ -48,13 +50,15 @@ fun ItemDetailsCard(itemState: ItemState) {
                     contentScale = ContentScale.FillWidth
                 )
             }
+            Spacer(modifier = Modifier.padding(8.dp))
             ElevatedCard(
                 modifier = Modifier
                     .fillMaxWidth(),
                 shape = MaterialTheme.shapes.extraSmall,
                 colors = CardDefaults.elevatedCardColors(
                     containerColor = softBlue
-                )
+                ),
+                elevation = CardDefaults.elevatedCardElevation(6.dp)
             ) {
                 Column(
                     modifier = Modifier
@@ -78,7 +82,7 @@ fun ItemDetailsCard(itemState: ItemState) {
                                 )
                             },
                             colors = CardDefaults.elevatedCardColors(
-                                containerColor = if (it.isAvailable) softBlue else MaterialTheme.colorScheme.errorContainer
+                                containerColor = if (it.isAvailable) darkBlue80 else MaterialTheme.colorScheme.errorContainer
                             )
                         )
                     }

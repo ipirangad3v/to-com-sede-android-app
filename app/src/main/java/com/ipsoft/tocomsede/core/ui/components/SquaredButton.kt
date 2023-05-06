@@ -23,14 +23,15 @@ fun SquaredButton(
         containerColor = darkBlue80,
         contentColor = almostWhite
     ),
-    onClick: () -> Unit = {}
+    onClick: () -> Unit = {},
 ) {
     ElevatedCard(
         shape = RoundedCornerShape(8.dp),
         modifier = modifier
             .clickable { onClick() }
             .wrapContentSize(),
-        colors = colors
+        colors = colors,
+        elevation = CardDefaults.elevatedCardElevation(6.dp)
     ) {
         Text(
             text = text,
