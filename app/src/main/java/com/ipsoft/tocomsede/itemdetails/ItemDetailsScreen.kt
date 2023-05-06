@@ -1,6 +1,7 @@
 package com.ipsoft.tocomsede.itemdetails
 
 import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.ExitTransition
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -45,11 +46,15 @@ fun ItemDetailsScreen(
     onBack: () -> Unit,
 ) {
 
+    val visible = remember { mutableStateOf(true) }
+
     val item = viewModel.items.value
 
     val cartAddedSuccess = viewModel.isSuccessFullCartAdded.value
 
-    AnimatedVisibility(visible = !item.isLoading) {
+    AnimatedVisibility(
+        visible = visible.value, modifier = Modifier.fillMaxSize(), exit = ExitTransition.None
+    ) {
         itemId?.let { viewModel.getItemById(itemId = it) }
 
         val selectedQuantity = remember { mutableStateOf(1) }
@@ -66,7 +71,10 @@ fun ItemDetailsScreen(
                         Icon(
                             imageVector = Icons.Filled.ArrowBack,
                             contentDescription = null,
-                            modifier = Modifier.clickable { onBack.invoke() }
+                            modifier = Modifier.clickable {
+                                visible.value = false
+                                onBack.invoke()
+                            }
                         )
                     },
                     title = {
@@ -92,6 +100,7 @@ fun ItemDetailsScreen(
                 if (cartAddedSuccess) {
                     LocalContext.current.showMsg(stringResource(id = R.string.item_added_to_cart))
                     viewModel.resetCartAddedStatus()
+                    visible.value = false
                     onBack.invoke()
                 }
 
