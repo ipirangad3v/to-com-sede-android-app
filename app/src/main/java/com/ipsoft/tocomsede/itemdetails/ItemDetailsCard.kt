@@ -3,6 +3,7 @@ package com.ipsoft.tocomsede.itemdetails
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.offset
@@ -38,7 +39,7 @@ fun ItemDetailsCard(itemState: ItemState) {
                     .fillMaxSize(),
                 shape = MaterialTheme.shapes.extraSmall,
                 colors = CardDefaults.elevatedCardColors(
-                    containerColor = softBlue,
+                    containerColor = softBlue
                 )
             ) {
                 GlideImage(
@@ -54,7 +55,7 @@ fun ItemDetailsCard(itemState: ItemState) {
                     .fillMaxWidth(),
                 shape = MaterialTheme.shapes.extraSmall,
                 colors = CardDefaults.elevatedCardColors(
-                    containerColor = softBlue,
+                    containerColor = softBlue
                 )
             ) {
                 Column(
@@ -63,13 +64,21 @@ fun ItemDetailsCard(itemState: ItemState) {
                         .fillMaxWidth()
                 ) {
                     Text(text = it.description)
+                    Spacer(modifier = Modifier.padding(8.dp))
                     Row(
                         modifier = Modifier.fillMaxWidth(),
                         horizontalArrangement = Arrangement.SpaceBetween,
                         verticalAlignment = Alignment.CenterVertically
                     ) {
                         PriceTag(price = it.price)
-                        SquaredButton(text = stringResource(id = R.string.quantity) + ": " + it.quantity.toString())
+                        SquaredButton(
+                            text = if (it.isAvailable) stringResource(id = R.string.quantity) + ": " + it.quantity.toString() else stringResource(
+                                id = R.string.unavailable
+                            ),
+                            colors = CardDefaults.elevatedCardColors(
+                                containerColor = if (it.isAvailable) softBlue else MaterialTheme.colorScheme.errorContainer
+                            )
+                        )
                     }
                 }
             }

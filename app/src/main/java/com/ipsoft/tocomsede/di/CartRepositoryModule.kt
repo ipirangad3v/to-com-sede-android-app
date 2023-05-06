@@ -2,6 +2,7 @@ package com.ipsoft.tocomsede.di
 
 import com.ipsoft.tocomsede.data.cart.CartRepository
 import com.ipsoft.tocomsede.data.cart.CartRepositoryImpl
+import com.ipsoft.tocomsede.utils.Cart
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -14,5 +15,9 @@ class CartRepositoryModule {
 
     @Provides
     @Singleton
-    fun providesCartRepository(): CartRepository = CartRepositoryImpl()
+    fun providesCart(): Cart = Cart
+
+    @Provides
+    @Singleton
+    fun providesCartRepository(cart: Cart): CartRepository = CartRepositoryImpl(cart)
 }

@@ -5,7 +5,6 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.ElevatedButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
@@ -17,7 +16,7 @@ import com.ipsoft.tocomsede.R
 import com.ipsoft.tocomsede.core.ui.components.SquaredButton
 
 @Composable
-fun QuantitySelector(selectedQuantity: MutableState<Int>, maxQuantity: Int) {
+fun QuantitySelector(selectedQuantity: MutableState<Int>, maxQuantity: Int, available: Boolean) {
     Column(
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
@@ -30,13 +29,15 @@ fun QuantitySelector(selectedQuantity: MutableState<Int>, maxQuantity: Int) {
         ) {
             SquaredButton(
                 text = "-",
-                onClick = { if (selectedQuantity.value > 1) selectedQuantity.value-- })
+                onClick = { if (available && selectedQuantity.value > 1) selectedQuantity.value-- }
+            )
             Spacer(modifier = Modifier.padding(8.dp))
             Text(text = selectedQuantity.value.toString())
             Spacer(modifier = Modifier.padding(8.dp))
             SquaredButton(
                 text = "+",
-                onClick = { if (selectedQuantity.value < maxQuantity) selectedQuantity.value++ })
+                onClick = { if (available && selectedQuantity.value < maxQuantity) selectedQuantity.value++ }
+            )
         }
     }
 }

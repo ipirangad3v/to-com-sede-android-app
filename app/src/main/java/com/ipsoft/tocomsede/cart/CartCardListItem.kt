@@ -1,6 +1,5 @@
-package com.ipsoft.tocomsede.home.ui
+package com.ipsoft.tocomsede.cart
 
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -18,7 +17,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import androidx.navigation.NavHostController
 import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
 import com.bumptech.glide.integration.compose.GlideImage
 import com.ipsoft.tocomsede.core.model.Item
@@ -28,17 +26,11 @@ import com.ipsoft.tocomsede.core.ui.theme.softBlue
 
 @OptIn(ExperimentalGlideComposeApi::class)
 @Composable
-fun CardListItem(item: Item, navController: NavHostController) {
+fun CartCardListItem(item: Pair<Item, Int>) {
     ElevatedCard(
         modifier = Modifier
             .fillMaxWidth()
-            .height(150.dp)
-            .clickable {
-                navController.navigate(
-                    "item_details" +
-                        "/${item.id}"
-                )
-            },
+            .height(150.dp),
         shape = MaterialTheme.shapes.small,
         colors = CardDefaults.elevatedCardColors(
             containerColor = softBlue
@@ -49,7 +41,7 @@ fun CardListItem(item: Item, navController: NavHostController) {
                 shape = MaterialTheme.shapes.small
             ) {
                 GlideImage(
-                    model = item.imageUrl,
+                    model = item.first.imageUrl,
                     contentDescription = null,
                     modifier = Modifier
                         .fillMaxHeight()
@@ -61,10 +53,21 @@ fun CardListItem(item: Item, navController: NavHostController) {
                     .fillMaxSize(),
                 horizontalAlignment = Alignment.End
             ) {
-                Text(text = item.name, style = MaterialTheme.typography.headlineSmall, maxLines = 1)
+                Text(
+                    text = item.first.name,
+                    style = MaterialTheme.typography.headlineSmall,
+                    maxLines = 1
+                )
                 Spacer(modifier = Modifier.weight(1f))
-                SquaredButton(text = item.vendor, modifier = Modifier.offset((-210).dp, (65).dp))
-                PriceTag(price = item.price)
+                SquaredButton(
+                    text = item.first.vendor,
+                    modifier = Modifier.offset((-210).dp, (65).dp)
+                )
+                Text(
+                    text = "Quantidade: ${item.second}",
+                    style = MaterialTheme.typography.bodyMedium
+                )
+                PriceTag(price = item.first.price)
             }
         }
     }

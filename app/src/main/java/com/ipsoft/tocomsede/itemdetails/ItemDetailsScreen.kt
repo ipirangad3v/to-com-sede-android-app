@@ -1,6 +1,5 @@
 package com.ipsoft.tocomsede.itemdetails
 
-import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -16,7 +15,6 @@ import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material3.Button
 import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.CircularProgressIndicator
-import androidx.compose.material3.ElevatedButton
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Scaffold
@@ -29,7 +27,6 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.Color.Companion.Gray
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
@@ -85,6 +82,9 @@ fun ItemDetailsScreen(
             val cartAddedSuccess = viewModel.isSuccessFullCartAdded.value
 
             item.item?.name?.let { title.value = it }
+            if (item.item?.isAvailable == false) {
+                selectedQuantity.value = 0
+            }
 
             if (cartAddedSuccess) {
                 LocalContext.current.showMsg(stringResource(id = R.string.item_added_to_cart))
@@ -121,6 +121,9 @@ fun ItemDetailsScreen(
                 }
             } else {
                 Box(modifier = Modifier.padding(padding)) {
+
+                    val context = LocalContext.current
+
                     LazyColumn {
                         item {
                             ItemDetailsCard(item)
@@ -137,16 +140,26 @@ fun ItemDetailsScreen(
                                 horizontalArrangement = Arrangement.SpaceBetween,
                                 verticalAlignment = Alignment.CenterVertically
                             ) {
-                                item.item?.quantity?.let { QuantitySelector(selectedQuantity, it) }
+                                item.item?.quantity?.let {
+                                    QuantitySelector(
+                                        selectedQuantity,
+                                        it,
+                                        item.item.isAvailable
+                                    )
+                                }
 
                                 SquaredButton(
                                     text = stringResource(id = R.string.add_to_cart),
                                     onClick = {
-                                        item.item?.let {
-                                            viewModel.addItemToCart(
-                                                it,
-                                                selectedQuantity.value
-                                            )
+                                        if (item.item?.isAvailable == true) {
+                                            item.item.let {
+                                                viewModel.addItemToCart(
+                                                    it,
+                                                    selectedQuantity.value
+                                                )
+                                            }
+                                        } else {
+                                            context.showMsg(context.getString(R.string.item_not_available))
                                         }
                                     },
                                     modifier = Modifier.align(Alignment.CenterVertically)

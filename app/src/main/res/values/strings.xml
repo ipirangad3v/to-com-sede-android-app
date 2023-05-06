@@ -14,4 +14,7 @@
     <string name="add_to_cart">adicionar ao carrinho\n</string>
     <string name="select_quantity">Selecione a quantidade</string>
     <string name="item_added_to_cart">Item adicionado ao carrinho com sucesso</string>
+    <string name="total">total</string>
+    <string name="unavailable">indisponível</string>
+    <string name="item_not_available">Opa, estamos sem estoque desse item no momento\n</string>
 </resources>

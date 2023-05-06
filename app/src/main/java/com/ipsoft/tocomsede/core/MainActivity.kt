@@ -48,8 +48,8 @@ import com.ipsoft.tocomsede.itemdetails.ItemDetailsScreen
 import com.ipsoft.tocomsede.orders.OrdersScreen
 import com.ipsoft.tocomsede.utils.UserInfo.loggedUser
 import dagger.hilt.android.AndroidEntryPoint
-import javax.inject.Inject
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
@@ -90,7 +90,7 @@ class MainActivity : ComponentActivity() {
                             bottomBarState.value = false
                         }
 
-                        else                     -> {
+                        else -> {
                             bottomBarState.value = true
                         }
                     }
@@ -136,7 +136,7 @@ class MainActivity : ComponentActivity() {
                                                         // Restore state when reselecting a previously selected item
                                                         restoreState = true
                                                     }
-                                                },
+                                                }
                                             )
                                         }
                                     }
