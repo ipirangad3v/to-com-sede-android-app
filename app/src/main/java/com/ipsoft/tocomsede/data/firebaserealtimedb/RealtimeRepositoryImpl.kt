@@ -4,6 +4,7 @@ import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.ValueEventListener
+import com.ipsoft.tocomsede.core.model.Category
 import com.ipsoft.tocomsede.core.model.Item
 import com.ipsoft.tocomsede.core.model.ResultState
 import kotlinx.coroutines.channels.awaitClose
@@ -14,7 +15,7 @@ import javax.inject.Inject
 class RealtimeRepositoryImpl @Inject constructor(
     private val db: DatabaseReference
 ) : RealtimeRepository {
-    override suspend fun getItems(): Flow<ResultState<List<Item>>> = callbackFlow {
+    override suspend fun getItems(): Flow<ResultState<List<Category>>> = callbackFlow {
         trySend(ResultState.Loading)
 
         val valueEvent = object : ValueEventListener {
@@ -23,7 +24,12 @@ class RealtimeRepositoryImpl @Inject constructor(
                 val items = snapshot.children.map {
                     it.getValue(Item::class.java)
                 }
-                trySend(ResultState.Success(items) as ResultState<List<Item>>)
+
+                val categories = items.groupBy { it?.category }.map {
+                    Category(it.key, it.value.filterNotNull())
+                }
+
+                trySend(ResultState.Success(categories))
             }
 
             override fun onCancelled(error: DatabaseError) {

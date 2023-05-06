@@ -5,6 +5,7 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentSize
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material3.Button
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Surface
@@ -24,14 +25,14 @@ fun HomeScreen(
     homeViewModel: HomeViewModel = hiltViewModel(),
     navController: NavHostController
 ) {
-    val itemState = homeViewModel.items.value
+    val categoryState = homeViewModel.categories.value
 
     Surface(
         modifier = Modifier
             .fillMaxSize(),
         color = gray
     ) {
-        itemState.error?.let {
+        categoryState.error?.let {
             Box(
                 modifier = Modifier.fillMaxSize(),
                 contentAlignment = Center
@@ -47,7 +48,7 @@ fun HomeScreen(
             }
         }
 
-        if (itemState.isLoading) {
+        if (categoryState.isLoading) {
             Box(
                 modifier = Modifier.fillMaxSize(),
                 contentAlignment = Center
@@ -56,7 +57,14 @@ fun HomeScreen(
             }
         } else {
             Box(modifier = Modifier.fillMaxSize()) {
-                HomeItemList(itemState, navController)
+                LazyColumn {
+                    categoryState.item.forEach { category ->
+                        item {
+                            HomeCategoryList(category = category, navController = navController)
+                        }
+                        item { Spacer(modifier = Modifier.padding(8.dp)) }
+                    }
+                }
             }
         }
     }

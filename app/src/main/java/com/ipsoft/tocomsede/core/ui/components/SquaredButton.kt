@@ -23,7 +23,7 @@ fun SquaredButton(
         containerColor = darkBlue80,
         contentColor = almostWhite
     ),
-    onClick: () -> Unit = {},
+    onClick: () -> Unit = {}
 ) {
     ElevatedCard(
         shape = RoundedCornerShape(8.dp),
