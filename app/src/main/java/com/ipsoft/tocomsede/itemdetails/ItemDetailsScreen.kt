@@ -1,5 +1,6 @@
 package com.ipsoft.tocomsede.itemdetails
 
+import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -41,133 +42,137 @@ import com.ipsoft.tocomsede.core.ui.theme.lightBlue
 fun ItemDetailsScreen(
     itemId: Int?,
     viewModel: ItemDetailsViewModel = hiltViewModel(),
-    onBack: () -> Unit
+    onBack: () -> Unit,
 ) {
-    itemId?.let { viewModel.getItemById(itemId = it) }
 
-    val selectedQuantity = remember { mutableStateOf(1) }
-    val title: MutableState<String?> = remember {
-        mutableStateOf(
-            null
-        )
-    }
+    val item = viewModel.items.value
 
-    Scaffold(
-        topBar = {
-            CenterAlignedTopAppBar(
-                navigationIcon = {
-                    Icon(
-                        imageVector = Icons.Filled.ArrowBack,
-                        contentDescription = null,
-                        modifier = Modifier.clickable { onBack.invoke() }
-                    )
-                },
-                title = {
-                    Text(
-                        text = title.value ?: stringResource(id = R.string.item_details),
-                        maxLines = 1
-                    )
-                },
-                colors = TopAppBarDefaults.centerAlignedTopAppBarColors(
-                    containerColor = lightBlue,
-                    titleContentColor = Color.White,
-                    navigationIconContentColor = Color.White
-                )
+    val cartAddedSuccess = viewModel.isSuccessFullCartAdded.value
+
+    AnimatedVisibility(visible = !item.isLoading) {
+        itemId?.let { viewModel.getItemById(itemId = it) }
+
+        val selectedQuantity = remember { mutableStateOf(1) }
+        val title: MutableState<String?> = remember {
+            mutableStateOf(
+                null
             )
-        },
-        content = { padding ->
+        }
 
-            val item = viewModel.items.value
+        Scaffold(
+            topBar = {
+                CenterAlignedTopAppBar(
+                    navigationIcon = {
+                        Icon(
+                            imageVector = Icons.Filled.ArrowBack,
+                            contentDescription = null,
+                            modifier = Modifier.clickable { onBack.invoke() }
+                        )
+                    },
+                    title = {
+                        Text(
+                            text = title.value ?: stringResource(id = R.string.item_details),
+                            maxLines = 1
+                        )
+                    },
+                    colors = TopAppBarDefaults.centerAlignedTopAppBarColors(
+                        containerColor = lightBlue,
+                        titleContentColor = Color.White,
+                        navigationIconContentColor = Color.White
+                    )
+                )
+            },
+            content = { padding ->
 
-            val cartAddedSuccess = viewModel.isSuccessFullCartAdded.value
+                item.item?.name?.let { title.value = it }
+                if (item.item?.isAvailable == false) {
+                    selectedQuantity.value = 0
+                }
 
-            item.item?.name?.let { title.value = it }
-            if (item.item?.isAvailable == false) {
-                selectedQuantity.value = 0
-            }
+                if (cartAddedSuccess) {
+                    LocalContext.current.showMsg(stringResource(id = R.string.item_added_to_cart))
+                    viewModel.resetCartAddedStatus()
+                    onBack.invoke()
+                }
 
-            if (cartAddedSuccess) {
-                LocalContext.current.showMsg(stringResource(id = R.string.item_added_to_cart))
-                viewModel.resetCartAddedStatus()
-                onBack.invoke()
-            }
-
-            item.error?.let {
-                Box(
-                    modifier = Modifier.fillMaxSize(),
-                    contentAlignment = Alignment.Center
-                ) {
-                    Text(text = it)
-                    Spacer(modifier = Modifier.padding(8.dp))
-                    Button(
-                        onClick = {
-                            if (itemId != null) {
-                                viewModel.getItemById(itemId)
-                            }
-                        },
-                        modifier = Modifier.wrapContentSize()
+                item.error?.let {
+                    Box(
+                        modifier = Modifier.fillMaxSize(),
+                        contentAlignment = Alignment.Center
                     ) {
-                        Text(text = stringResource(id = R.string.try_again))
+                        Text(text = it)
+                        Spacer(modifier = Modifier.padding(8.dp))
+                        Button(
+                            onClick = {
+                                if (itemId != null) {
+                                    viewModel.getItemById(itemId)
+                                }
+                            },
+                            modifier = Modifier.wrapContentSize()
+                        ) {
+                            Text(text = stringResource(id = R.string.try_again))
+                        }
                     }
                 }
-            }
 
-            if (item.isLoading) {
-                Box(
-                    modifier = Modifier.fillMaxSize(),
-                    contentAlignment = Alignment.Center
-                ) {
-                    CircularProgressIndicator(modifier = Modifier.wrapContentSize())
-                }
-            } else {
-                Box(modifier = Modifier.padding(padding)) {
-                    val context = LocalContext.current
+                if (item.isLoading) {
+                    Box(
+                        modifier = Modifier.fillMaxSize(),
+                        contentAlignment = Alignment.Center
+                    ) {
+                        CircularProgressIndicator(modifier = Modifier.wrapContentSize())
+                    }
+                } else {
+                    Box(modifier = Modifier.padding(padding)) {
+                        val context = LocalContext.current
 
-                    LazyColumn {
-                        item {
-                            ItemDetailsCard(item)
-                        }
-                        item {
-                            Spacer(modifier = Modifier.padding(8.dp))
-                        }
+                        LazyColumn {
+                            item {
+                                ItemDetailsCard(item)
+                            }
+                            item {
+                                Spacer(modifier = Modifier.padding(8.dp))
+                            }
 
-                        item {
-                            Row(
-                                modifier = Modifier
-                                    .fillMaxWidth()
-                                    .padding(8.dp),
-                                horizontalArrangement = Arrangement.SpaceBetween,
-                                verticalAlignment = Alignment.CenterVertically
-                            ) {
-                                item.item?.quantity?.let {
-                                    QuantitySelector(
-                                        selectedQuantity,
-                                        it,
-                                        item.item.isAvailable
+                            item {
+                                Row(
+                                    modifier = Modifier
+                                        .fillMaxWidth()
+                                        .padding(8.dp),
+                                    horizontalArrangement = Arrangement.SpaceBetween,
+                                    verticalAlignment = Alignment.CenterVertically
+                                ) {
+                                    item.item?.quantity?.let {
+                                        QuantitySelector(
+                                            selectedQuantity,
+                                            it,
+                                            item.item.isAvailable
+                                        )
+                                    }
+
+                                    SquaredButton(
+                                        text = stringResource(id = R.string.add_to_cart),
+                                        onClick = {
+                                            if (item.item?.isAvailable == true) {
+                                                item.item.let {
+                                                    viewModel.addItemToCart(
+                                                        it,
+                                                        selectedQuantity.value
+                                                    )
+                                                }
+                                            } else {
+                                                context.showMsg(context.getString(R.string.item_not_available))
+                                            }
+                                        },
+                                        modifier = Modifier.align(Alignment.CenterVertically)
                                     )
                                 }
-
-                                SquaredButton(
-                                    text = stringResource(id = R.string.add_to_cart),
-                                    onClick = {
-                                        if (item.item?.isAvailable == true) {
-                                            item.item.let {
-                                                viewModel.addItemToCart(
-                                                    it,
-                                                    selectedQuantity.value
-                                                )
-                                            }
-                                        } else {
-                                            context.showMsg(context.getString(R.string.item_not_available))
-                                        }
-                                    },
-                                    modifier = Modifier.align(Alignment.CenterVertically)
-                                )
                             }
                         }
                     }
                 }
             }
-        }
-    )
+        )
+
+    }
 }
