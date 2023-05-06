@@ -1,7 +1,8 @@
 package com.ipsoft.tocomsede.itemdetails
 
 import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.animation.ExitTransition
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -45,94 +46,96 @@ fun ItemDetailsScreen(
     viewModel: ItemDetailsViewModel = hiltViewModel(),
     onBack: () -> Unit
 ) {
-    val visible = remember { mutableStateOf(true) }
-
     val item = viewModel.items.value
+
+    val visible = remember { mutableStateOf(!item.isLoading) }
 
     val cartAddedSuccess = viewModel.isSuccessFullCartAdded.value
 
-    AnimatedVisibility(
-        visible = visible.value,
-        modifier = Modifier.fillMaxSize(),
-        exit = ExitTransition.None
-    ) {
-        itemId?.let { viewModel.getItemById(itemId = it) }
+    itemId?.let { viewModel.getItemById(itemId = it) }
 
-        val selectedQuantity = remember { mutableStateOf(1) }
-        val title: MutableState<String?> = remember {
-            mutableStateOf(
-                null
-            )
-        }
+    val selectedQuantity = remember { mutableStateOf(1) }
+    val title: MutableState<String?> = remember {
+        mutableStateOf(
+            null
+        )
+    }
 
-        Scaffold(
-            topBar = {
-                CenterAlignedTopAppBar(
-                    navigationIcon = {
-                        Icon(
-                            imageVector = Icons.Filled.ArrowBack,
-                            contentDescription = null,
-                            modifier = Modifier.clickable {
-                                visible.value = false
-                                onBack.invoke()
-                            }
-                        )
-                    },
-                    title = {
-                        Text(
-                            text = title.value ?: stringResource(id = R.string.item_details),
-                            maxLines = 1
-                        )
-                    },
-                    colors = TopAppBarDefaults.centerAlignedTopAppBarColors(
-                        containerColor = lightBlue,
-                        titleContentColor = Color.White,
-                        navigationIconContentColor = Color.White
-                    )
-                )
-            },
-            content = { padding ->
-
-                item.item?.name?.let { title.value = it }
-                if (item.item?.isAvailable == false) {
-                    selectedQuantity.value = 0
-                }
-
-                if (cartAddedSuccess) {
-                    LocalContext.current.showMsg(stringResource(id = R.string.item_added_to_cart))
-                    viewModel.resetCartAddedStatus()
-                    visible.value = false
-                    onBack.invoke()
-                }
-
-                item.error?.let {
-                    Box(
-                        modifier = Modifier.fillMaxSize(),
-                        contentAlignment = Alignment.Center
-                    ) {
-                        Text(text = it)
-                        Spacer(modifier = Modifier.padding(8.dp))
-                        Button(
-                            onClick = {
-                                if (itemId != null) {
-                                    viewModel.getItemById(itemId)
-                                }
-                            },
-                            modifier = Modifier.wrapContentSize()
-                        ) {
-                            Text(text = stringResource(id = R.string.try_again))
+    Scaffold(
+        topBar = {
+            CenterAlignedTopAppBar(
+                navigationIcon = {
+                    Icon(
+                        imageVector = Icons.Filled.ArrowBack,
+                        contentDescription = null,
+                        modifier = Modifier.clickable {
+                            visible.value = false
+                            onBack.invoke()
                         }
+                    )
+                },
+                title = {
+                    Text(
+                        text = title.value ?: stringResource(id = R.string.item_details),
+                        maxLines = 1
+                    )
+                },
+                colors = TopAppBarDefaults.centerAlignedTopAppBarColors(
+                    containerColor = lightBlue,
+                    titleContentColor = Color.White,
+                    navigationIconContentColor = Color.White
+                )
+            )
+        },
+        content = { padding ->
+
+            item.item?.name?.let { title.value = it }
+            if (item.item?.isAvailable == false) {
+                selectedQuantity.value = 0
+            }
+
+            if (cartAddedSuccess) {
+                LocalContext.current.showMsg(stringResource(id = R.string.item_added_to_cart))
+                viewModel.resetCartAddedStatus()
+                visible.value = false
+                onBack.invoke()
+            }
+
+            item.error?.let {
+                Box(
+                    modifier = Modifier.fillMaxSize(),
+                    contentAlignment = Alignment.Center
+                ) {
+                    Text(text = it)
+                    Spacer(modifier = Modifier.padding(8.dp))
+                    Button(
+                        onClick = {
+                            if (itemId != null) {
+                                viewModel.getItemById(itemId)
+                            }
+                        },
+                        modifier = Modifier.wrapContentSize()
+                    ) {
+                        Text(text = stringResource(id = R.string.try_again))
                     }
                 }
+            }
 
-                if (item.isLoading) {
-                    Box(
-                        modifier = Modifier.fillMaxSize(),
-                        contentAlignment = Alignment.Center
-                    ) {
-                        CircularProgressIndicator(modifier = Modifier.wrapContentSize())
-                    }
-                } else {
+            if (item.isLoading) {
+                Box(
+                    modifier = Modifier.fillMaxSize(),
+                    contentAlignment = Alignment.Center
+                ) {
+                    CircularProgressIndicator(modifier = Modifier.wrapContentSize())
+                }
+            } else {
+                visible.value = true
+                AnimatedVisibility(
+                    visible = visible.value,
+                    modifier = Modifier.fillMaxSize(),
+                    exit = fadeOut(),
+                    enter = fadeIn()
+                ) {
                     Box(modifier = Modifier.padding(padding)) {
                         val context = LocalContext.current
 
@@ -182,6 +185,6 @@ fun ItemDetailsScreen(
                     }
                 }
             }
-        )
-    }
+        }
+    )
 }
