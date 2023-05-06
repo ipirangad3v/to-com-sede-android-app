@@ -17,6 +17,7 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import com.ipsoft.tocomsede.R
+import com.ipsoft.tocomsede.core.ui.theme.gray
 
 @Composable
 fun HomeScreen(
@@ -27,7 +28,8 @@ fun HomeScreen(
 
     Surface(
         modifier = Modifier
-            .fillMaxSize()
+            .fillMaxSize(),
+        color = gray
     ) {
         itemState.error?.let {
             Box(
