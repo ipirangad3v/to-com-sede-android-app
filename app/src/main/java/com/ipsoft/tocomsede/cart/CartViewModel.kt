@@ -61,6 +61,12 @@ class CartViewModel @Inject constructor(private val cartRepository: CartReposito
         }
     }
 
+    fun removeItem(item: Pair<Item, Int>) {
+        viewModelScope.launch {
+            cartRepository.removeItemFromCart(item.first)
+        }
+    }
+
     data class CartItemState(
         val items: List<Pair<Item, Int>> = emptyList(),
         val error: String? = null,

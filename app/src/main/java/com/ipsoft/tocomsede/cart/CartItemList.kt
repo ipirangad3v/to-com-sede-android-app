@@ -12,9 +12,13 @@ import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 
 @Composable
-fun CartItemList(itemState: CartViewModel.CartItemState) {
+fun CartItemList(
+    itemState: CartViewModel.CartItemState,
+    cartViewModel: CartViewModel = hiltViewModel()
+) {
     Surface {
         Column(
             modifier = Modifier
@@ -22,9 +26,8 @@ fun CartItemList(itemState: CartViewModel.CartItemState) {
                 .padding(8.dp)
 
         ) {
-
             val height =
-                if (itemState.items.size >= 2) ((itemState.items.size * 250) / 2).dp else ((itemState.items.size * 250)).dp
+                if (itemState.items.size >= 2) ((itemState.items.size * 300) / 2).dp else ((itemState.items.size * 300)).dp
             Spacer(modifier = Modifier.padding(4.dp))
             LazyVerticalGrid(
                 modifier = Modifier.height(height),
@@ -35,7 +38,9 @@ fun CartItemList(itemState: CartViewModel.CartItemState) {
                 itemState.items.let { items ->
                     items(items.size) {
                         Spacer(modifier = Modifier.padding(8.dp))
-                        CartCardListItem(item = items[it])
+                        CartCardListItem(item = items[it]) {
+                            cartViewModel.removeItem(items[it])
+                        }
                     }
                 }
             }

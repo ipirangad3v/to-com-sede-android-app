@@ -102,7 +102,6 @@ fun CartHeader() {
             color = MaterialTheme.colorScheme.onSurface,
             textAlign = Center
         )
-
     }
 }
 
@@ -115,7 +114,11 @@ fun CartTotal(cartTotalState: String) {
                 .padding(16.dp),
             contentAlignment = Alignment.BottomEnd
         ) {
-            Text(text = stringResource(id = R.string.total) + " = $cartTotalState")
+            Text(
+                text = stringResource(id = R.string.total) + " = $cartTotalState",
+                style = MaterialTheme.typography.titleLarge,
+                color = MaterialTheme.colorScheme.onSurface
+            )
         }
     }
 }
