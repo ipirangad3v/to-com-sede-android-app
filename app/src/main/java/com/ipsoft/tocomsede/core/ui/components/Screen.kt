@@ -13,7 +13,7 @@ import com.ipsoft.tocomsede.R
 sealed class Screen(
     val route: String,
     @StringRes val resourceId: Int,
-    val icon: ImageVector,
+    val icon: ImageVector
 ) {
     object Home : Screen("home", R.string.home, Icons.Filled.Home)
     object Cart : Screen("cart", R.string.cart, Icons.Filled.ShoppingCart)

@@ -17,6 +17,7 @@ class PreferencesDataStore(private val context: Context) {
     private val userEmail = stringPreferencesKey("user_email")
     private val userPhone = stringPreferencesKey("user_phone")
     private val userPhotoUrl = stringPreferencesKey("user_photo_url")
+    private val userUid = stringPreferencesKey("user_uid")
 
     suspend fun storeUser(user: User): ResultState<Boolean> {
         context.preferencesDataStore.edit { preferences ->
@@ -24,6 +25,7 @@ class PreferencesDataStore(private val context: Context) {
             preferences[userEmail] = user.email
             preferences[userPhone] = user.phone
             preferences[userPhotoUrl] = user.photoUrl ?: ""
+            preferences[userUid] = user.uid
         }
         return ResultState.Success(true)
     }
@@ -37,10 +39,11 @@ class PreferencesDataStore(private val context: Context) {
         val user = context.preferencesDataStore.data.map { preferences ->
             return@map ResultState.Success(
                 User(
-                    preferences[userName] ?: "",
-                    preferences[userEmail] ?: "",
-                    preferences[userPhone] ?: "",
-                    preferences[userPhotoUrl] ?: ""
+                    preferences[userName].toString(),
+                    preferences[userEmail].toString(),
+                    preferences[userPhone].toString(),
+                    preferences[userPhotoUrl].toString(),
+                    preferences[userUid].toString()
                 )
             )
         }

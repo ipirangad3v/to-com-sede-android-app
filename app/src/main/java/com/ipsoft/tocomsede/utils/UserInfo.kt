@@ -10,5 +10,5 @@ object UserInfo {
             return field
         }
 
-    fun isUserLogged() = loggedUser != null
+    fun isUserLogged() = loggedUser != null && loggedUser?.uid != null
 }

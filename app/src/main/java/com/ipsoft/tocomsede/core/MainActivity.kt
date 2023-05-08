@@ -259,7 +259,8 @@ class MainActivity : ComponentActivity() {
                             name = user.displayName ?: "",
                             email = user.email ?: "",
                             phone = user.phoneNumber ?: "",
-                            photoUrl = user.photoUrl?.toString() ?: ""
+                            photoUrl = user.photoUrl?.toString() ?: "",
+                            uid = user.uid
                         )
                     ).let {
                         if (it is ResultState.Success) {
