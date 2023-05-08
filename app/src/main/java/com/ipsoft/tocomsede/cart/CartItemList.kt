@@ -13,10 +13,11 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.ipsoft.tocomsede.core.ui.state.CartItemState
 
 @Composable
 fun CartItemList(
-    itemState: CartViewModel.CartItemState,
+    itemState: CartItemState,
     cartViewModel: CartViewModel = hiltViewModel()
 ) {
     Surface {

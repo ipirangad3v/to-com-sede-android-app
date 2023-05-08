@@ -35,6 +35,7 @@ import com.ipsoft.tocomsede.R
 import com.ipsoft.tocomsede.about.AboutScreen
 import com.ipsoft.tocomsede.cart.CartBadge
 import com.ipsoft.tocomsede.cart.CartScreen
+import com.ipsoft.tocomsede.checkout.ui.CheckoutScreen
 import com.ipsoft.tocomsede.core.model.ResultState
 import com.ipsoft.tocomsede.core.model.User
 import com.ipsoft.tocomsede.core.ui.components.Screen
@@ -91,7 +92,7 @@ class MainActivity : ComponentActivity() {
                     val navBackStackEntry by navController.currentBackStackEntryAsState()
 
                     when (navBackStackEntry?.destination?.route) {
-                        Screen.ItemDetails.route -> {
+                        Screen.ItemDetails.route, Screen.Checkout.route -> {
                             bottomBarState.value = false
                         }
 
@@ -122,7 +123,10 @@ class MainActivity : ComponentActivity() {
                                                 icon = {
                                                     if (screen.route == Screen.Cart.route) {
                                                         if (cartRepository.getCartItemsCount() > 0) {
-                                                            CartBadge(cartRepository.getCartItemsCount(), iconColor)
+                                                            CartBadge(
+                                                                cartRepository.getCartItemsCount(),
+                                                                iconColor
+                                                            )
                                                         } else {
                                                             Icon(
                                                                 screen.icon,
@@ -170,7 +174,13 @@ class MainActivity : ComponentActivity() {
                                 HomeScreen(navController = navController)
                             }
                             composable(Screen.Cart.route) {
-                                CartScreen()
+                                CartScreen {
+                                    navController.navigate(Screen.Checkout.route)
+                                }
+                            }
+                            composable(Screen.Checkout.route) {
+                                CheckoutScreen {
+                                }
                             }
                             composable(Screen.Orders.route) {
                                 OrdersScreen()

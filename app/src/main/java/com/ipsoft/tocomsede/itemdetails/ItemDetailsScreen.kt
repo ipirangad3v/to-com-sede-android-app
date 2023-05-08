@@ -1,5 +1,6 @@
 package com.ipsoft.tocomsede.itemdetails
 
+import android.content.Context
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
@@ -15,11 +16,15 @@ import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material.icons.filled.ShoppingCart
 import androidx.compose.material3.Button
+import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.ElevatedCard
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBarDefaults
@@ -38,7 +43,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import com.ipsoft.tocomsede.R
 import com.ipsoft.tocomsede.core.extensions.showMsg
 import com.ipsoft.tocomsede.core.ui.components.SquaredButton
-import com.ipsoft.tocomsede.core.ui.theme.lightBlue
+import com.ipsoft.tocomsede.core.ui.theme.darkBlue80
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -84,9 +89,9 @@ fun ItemDetailsScreen(
                     )
                 },
                 colors = TopAppBarDefaults.centerAlignedTopAppBarColors(
-                    containerColor = lightBlue,
-                    titleContentColor = Color.White,
-                    navigationIconContentColor = Color.White
+                    containerColor = Color.White,
+                    titleContentColor = darkBlue80,
+                    navigationIconContentColor = darkBlue80
                 )
             )
         },
@@ -142,47 +147,12 @@ fun ItemDetailsScreen(
                     Box(modifier = Modifier.padding(padding)) {
                         val context = LocalContext.current
 
-                        LazyColumn {
+                        LazyColumn(modifier = Modifier.fillMaxSize()) {
                             item {
                                 ItemDetailsCard(item)
                             }
                             item {
-                                Spacer(modifier = Modifier.padding(8.dp))
-                            }
-
-                            item {
-                                Row(
-                                    modifier = Modifier
-                                        .fillMaxWidth()
-                                        .padding(8.dp),
-                                    horizontalArrangement = Arrangement.SpaceBetween,
-                                    verticalAlignment = Alignment.CenterVertically
-                                ) {
-                                    item.item?.quantity?.let {
-                                        QuantitySelector(
-                                            selectedQuantity,
-                                            it,
-                                            item.item.isAvailable
-                                        )
-                                    }
-
-                                    SquaredButton(
-                                        text = stringResource(id = R.string.add_to_cart),
-                                        onClick = {
-                                            if (item.item?.isAvailable == true) {
-                                                item.item.let {
-                                                    viewModel.addItemToCart(
-                                                        it,
-                                                        selectedQuantity.value
-                                                    )
-                                                }
-                                            } else {
-                                                context.showMsg(context.getString(R.string.item_not_available))
-                                            }
-                                        },
-                                        modifier = Modifier.align(Alignment.CenterVertically)
-                                    )
-                                }
+                                ItemAddContainer(item, selectedQuantity, viewModel, context)
                             }
                         }
                     }
@@ -190,4 +160,63 @@ fun ItemDetailsScreen(
             }
         }
     )
+}
+
+@Composable
+fun ItemAddContainer(
+    item: ItemState,
+    selectedQuantity: MutableState<Int>,
+    viewModel: ItemDetailsViewModel,
+    context: Context
+) {
+    ElevatedCard(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(8.dp),
+        shape = MaterialTheme.shapes.small,
+        colors = CardDefaults.elevatedCardColors(
+            containerColor = Color.White
+        ),
+        elevation = CardDefaults.elevatedCardElevation(6.dp)
+    ) {
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(8.dp),
+            horizontalArrangement = Arrangement.SpaceBetween,
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            item.item?.quantity?.let {
+                QuantitySelector(
+                    selectedQuantity,
+                    it,
+                    item.item.isAvailable
+                )
+            }
+            Spacer(modifier = Modifier.weight(1f))
+
+            SquaredButton(
+                onClick = {
+                    if (item.item?.isAvailable == true) {
+                        item.item.let {
+                            viewModel.addItemToCart(
+                                it,
+                                selectedQuantity.value
+                            )
+                        }
+                    } else {
+                        context.showMsg(context.getString(R.string.item_not_available))
+                    }
+                },
+                modifier = Modifier.align(Alignment.CenterVertically)
+            ) {
+                Icon(
+                    imageVector = Icons.Filled.ShoppingCart,
+                    contentDescription = null,
+                    tint = Color.White,
+                    modifier = Modifier.padding(8.dp)
+                )
+            }
+        }
+    }
 }

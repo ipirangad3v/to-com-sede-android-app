@@ -1,14 +1,11 @@
-package com.ipsoft.tocomsede.cart
+package com.ipsoft.tocomsede.checkout.ui
 
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.ipsoft.tocomsede.core.model.Item
-import com.ipsoft.tocomsede.core.model.ResultState.Failure
-import com.ipsoft.tocomsede.core.model.ResultState.Loading
-import com.ipsoft.tocomsede.core.model.ResultState.Success
+import com.ipsoft.tocomsede.core.model.ResultState
 import com.ipsoft.tocomsede.core.ui.state.CartItemState
 import com.ipsoft.tocomsede.data.cart.CartRepository
 import com.ipsoft.tocomsede.utils.Cart
@@ -17,9 +14,8 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class CartViewModel @Inject constructor(private val cartRepository: CartRepository) :
-    ViewModel(),
-    Cart.CartListener {
+class CheckoutViewModel @Inject constructor(private val cartRepository: CartRepository) :
+    ViewModel(), Cart.CartListener {
 
     private val _cartItemState: MutableState<CartItemState> = mutableStateOf(CartItemState())
     val cartItemState: State<CartItemState> = _cartItemState
@@ -32,29 +28,24 @@ class CartViewModel @Inject constructor(private val cartRepository: CartReposito
         loadCart()
     }
 
-    override fun onCleared() {
-        super.onCleared()
-        Cart.removeListener(this)
-    }
-
     fun loadCart() {
         viewModelScope.launch {
             cartRepository.getCartTotal().let { result ->
-                if (result is Success) {
+                if (result is ResultState.Success) {
                     _cartTotalState.value = result.data
                 }
             }
             cartRepository.getCartItems().collect {
                 _cartItemState.value = when (it) {
-                    is Success -> {
+                    is ResultState.Success -> {
                         CartItemState(items = it.data.toList())
                     }
 
-                    is Failure -> {
+                    is ResultState.Failure -> {
                         CartItemState(error = it.msg.toString())
                     }
 
-                    Loading -> {
+                    ResultState.Loading -> {
                         CartItemState(isLoading = true)
                     }
                 }
@@ -62,10 +53,9 @@ class CartViewModel @Inject constructor(private val cartRepository: CartReposito
         }
     }
 
-    fun removeItem(item: Pair<Item, Int>) {
-        viewModelScope.launch {
-            cartRepository.removeItemFromCart(item.first)
-        }
+    override fun onCleared() {
+        super.onCleared()
+        Cart.removeListener(this)
     }
 
     override fun onCartChanged() {

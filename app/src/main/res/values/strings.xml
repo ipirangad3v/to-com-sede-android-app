@@ -20,4 +20,5 @@
     <string name="water">Água mineral\n</string>
     <string name="selected_quantity">quantidade</string>
     <string name="no_internet">sem conexão com a internet</string>
+    <string name="checkout">finalizar pedido</string>
 </resources>

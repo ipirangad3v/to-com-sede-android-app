@@ -1,4 +1,4 @@
-package com.ipsoft.tocomsede.cart
+package com.ipsoft.tocomsede.checkout.ui
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Spacer
@@ -21,17 +21,21 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.TextAlign.Companion.Center
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.ipsoft.tocomsede.R
+import com.ipsoft.tocomsede.cart.CartItemList
 import com.ipsoft.tocomsede.core.ui.components.SquaredButton
 import com.ipsoft.tocomsede.core.ui.theme.gray
 
 @Composable
-fun CartScreen(cartViewModel: CartViewModel = hiltViewModel(), onCheckoutClick: () -> Unit) {
-    val cartItemState = cartViewModel.cartItemState.value
-    val cartTotalState = cartViewModel.cartTotalState.value
+fun CheckoutScreen(
+    checkoutViewModel: CheckoutViewModel = hiltViewModel(),
+    onCheckoutClick: () -> Unit
+) {
+    val cartItemState = checkoutViewModel.cartItemState.value
+    val cartTotalState = checkoutViewModel.cartTotalState.value
 
     Surface(
         modifier = Modifier
@@ -46,7 +50,7 @@ fun CartScreen(cartViewModel: CartViewModel = hiltViewModel(), onCheckoutClick: 
                 Text(text = it)
                 Spacer(modifier = Modifier.padding(8.dp))
                 Button(
-                    onClick = { cartViewModel.loadCart() },
+                    onClick = { checkoutViewModel.loadCart() },
                     modifier = Modifier.wrapContentSize()
                 ) {
                     Text(text = stringResource(id = R.string.try_again))
@@ -65,11 +69,11 @@ fun CartScreen(cartViewModel: CartViewModel = hiltViewModel(), onCheckoutClick: 
             if (cartItemState.items.isNotEmpty()) {
                 Box(modifier = Modifier.fillMaxSize()) {
                     LazyColumn {
-                        item { CartHeader() }
+                        item { CheckoutHeader() }
                         item { CartItemList(cartItemState) }
-                        item { CartTotal(cartTotalState) }
+                        item { CheckoutCartTotal(cartTotalState) }
                         item { Spacer(modifier = Modifier.padding(8.dp)) }
-                        item { CartCheckoutButtonContainer(onCheckoutClick) }
+                        item { CheckoutButtonContainer(onCheckoutClick) }
                     }
                 }
             } else {
@@ -85,7 +89,7 @@ fun CartScreen(cartViewModel: CartViewModel = hiltViewModel(), onCheckoutClick: 
 }
 
 @Composable
-fun CartCheckoutButtonContainer(onCheckoutClick: () -> Unit) {
+fun CheckoutButtonContainer(onCheckoutClick: () -> Unit) {
     Surface {
         Box(
             modifier = Modifier
@@ -106,7 +110,7 @@ fun CartCheckoutButtonContainer(onCheckoutClick: () -> Unit) {
                         .padding(8.dp)
                         .fillMaxWidth(),
                     maxLines = 1,
-                    textAlign = Center
+                    textAlign = TextAlign.Center
                 )
             }
         }
@@ -114,7 +118,7 @@ fun CartCheckoutButtonContainer(onCheckoutClick: () -> Unit) {
 }
 
 @Composable
-fun CartHeader() {
+fun CheckoutHeader() {
     ElevatedCard(
         modifier = Modifier
             .fillMaxWidth()
@@ -127,19 +131,19 @@ fun CartHeader() {
         )
     ) {
         Text(
-            text = stringResource(id = R.string.cart),
+            text = stringResource(id = R.string.checkout),
             modifier = Modifier
                 .padding(16.dp)
                 .fillMaxWidth(),
             style = MaterialTheme.typography.headlineMedium,
             color = MaterialTheme.colorScheme.onSurface,
-            textAlign = Center
+            textAlign = TextAlign.Center
         )
     }
 }
 
 @Composable
-fun CartTotal(cartTotalState: String) {
+fun CheckoutCartTotal(cartTotalState: String) {
     Surface {
         Box(
             modifier = Modifier

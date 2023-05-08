@@ -11,6 +11,7 @@ import androidx.compose.runtime.MutableState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.ipsoft.tocomsede.R
 import com.ipsoft.tocomsede.core.ui.components.SquaredButton
@@ -28,16 +29,28 @@ fun QuantitySelector(selectedQuantity: MutableState<Int>, maxQuantity: Int, avai
             verticalAlignment = Alignment.CenterVertically
         ) {
             SquaredButton(
-                text = "-",
                 onClick = { if (available && selectedQuantity.value > 1) selectedQuantity.value-- }
-            )
+            ) {
+                Text(
+                    text = "-",
+                    fontWeight = FontWeight.Bold,
+                    modifier = Modifier.padding(8.dp),
+                    maxLines = 1
+                )
+            }
             Spacer(modifier = Modifier.padding(8.dp))
             Text(text = selectedQuantity.value.toString())
             Spacer(modifier = Modifier.padding(8.dp))
             SquaredButton(
-                text = "+",
                 onClick = { if (available && selectedQuantity.value < maxQuantity) selectedQuantity.value++ }
-            )
+            ) {
+                Text(
+                    text = "+",
+                    fontWeight = FontWeight.Bold,
+                    modifier = Modifier.padding(8.dp),
+                    maxLines = 1
+                )
+            }
         }
     }
 }
