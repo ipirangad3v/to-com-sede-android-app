@@ -18,20 +18,15 @@ import javax.inject.Inject
 @HiltViewModel
 class ItemDetailsViewModel @Inject constructor(
     private val itemRepository: RealtimeRepository,
-    private val cartRepository: CartRepository
+    private val cartRepository: CartRepository,
 ) : ViewModel() {
 
-    private val _items: MutableState<ItemState> = mutableStateOf(ItemState())
-    val items: State<ItemState> = _items
+    private val _items: MutableState<ItemDetailScreenState> =
+        mutableStateOf(ItemDetailScreenState())
+    val items: State<ItemDetailScreenState> = _items
 
     private val _isSuccessFullCartAdded = mutableStateOf(false)
     val isSuccessFullCartAdded: State<Boolean> = _isSuccessFullCartAdded
-
-    private val _quantityInCart = mutableStateOf(0)
-    val quantityInCart: State<Int> = _quantityInCart
-
-    private val _canAddToCart = mutableStateOf(false)
-    val canAddToCart: State<Boolean> = _canAddToCart
 
     fun addItemToCart(item: Item, quantity: Int) {
         viewModelScope.launch {
@@ -41,20 +36,15 @@ class ItemDetailsViewModel @Inject constructor(
 
     private fun checkIfItemIsInCartAndReturnQuantity(item: Item) {
         viewModelScope.launch {
-            _quantityInCart.value =
-                cartRepository.checkIfItemIsInCartAndReturnQuantity(item)
-        }
-    }
-
-    fun updateCanAddToCart(item: Item) {
-        viewModelScope.launch {
-            _canAddToCart.value = item.isAvailable && _quantityInCart.value < item.quantity
+            _items.value = _items.value.copy(
+                quantityInCart = cartRepository.checkIfItemIsInCartAndReturnQuantity(item)
+            )
         }
     }
 
     override fun onCleared() {
         super.onCleared()
-        _items.value = ItemState()
+        _items.value = ItemDetailScreenState()
     }
 
     fun getItemById(itemId: Int) {
@@ -64,22 +54,21 @@ class ItemDetailsViewModel @Inject constructor(
                     is Success -> {
                         it.data?.let { item ->
                             checkIfItemIsInCartAndReturnQuantity(item)
-                            updateCanAddToCart(item)
                         }
-                        _items.value = ItemState(
+                        _items.value = ItemDetailScreenState(
                             item = it.data,
                             isLoading = false
                         )
                     }
 
                     is Failure -> {
-                        _items.value = ItemState(
+                        _items.value = ItemDetailScreenState(
                             error = it.msg.toString()
                         )
                     }
 
-                    Loading -> {
-                        _items.value = ItemState(
+                    Loading    -> {
+                        _items.value = ItemDetailScreenState(
                             isLoading = true
                         )
                     }
@@ -93,8 +82,12 @@ class ItemDetailsViewModel @Inject constructor(
     }
 }
 
-data class ItemState(
+data class ItemDetailScreenState(
     val item: Item? = null,
     val error: String? = null,
-    val isLoading: Boolean = true
-)
+    val isLoading: Boolean = true,
+    val quantityInCart: Int = 0,
+) {
+    val canAddToCart: Boolean
+        get() = item?.isAvailable == true && quantityInCart < item.quantity
+}

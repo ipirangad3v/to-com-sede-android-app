@@ -27,8 +27,8 @@ import com.ipsoft.tocomsede.core.ui.theme.darkBlue80
 
 @OptIn(ExperimentalGlideComposeApi::class)
 @Composable
-fun ItemDetailsCard(itemState: ItemState, quantityInCart: Int) {
-    itemState.item?.let {
+fun ItemDetailsCard(itemDetailScreenState: ItemDetailScreenState) {
+    itemDetailScreenState.item?.let {
         Column(
             modifier = Modifier
                 .fillMaxSize()
@@ -92,10 +92,10 @@ fun ItemDetailsCard(itemState: ItemState, quantityInCart: Int) {
                                 color = Color.White
                             )
                         }
-                        if (quantityInCart > 0) {
+                        if (itemDetailScreenState.quantityInCart > 0) {
                             SquaredButton {
                                 Text(
-                                    text = stringResource(id = R.string.in_cart) + ": " + quantityInCart.toString(),
+                                    text = stringResource(id = R.string.in_cart) + ": " + itemDetailScreenState.quantityInCart.toString(),
                                     style = MaterialTheme.typography.bodySmall,
                                     modifier = Modifier.padding(8.dp),
                                     maxLines = 1,

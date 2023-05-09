@@ -50,17 +50,13 @@ import com.ipsoft.tocomsede.core.ui.theme.darkBlue80
 fun ItemDetailsScreen(
     itemId: Int?,
     viewModel: ItemDetailsViewModel = hiltViewModel(),
-    onBack: () -> Unit
+    onBack: () -> Unit,
 ) {
     val itemState = viewModel.items.value
 
     val visible = remember { mutableStateOf(!itemState.isLoading) }
 
     val cartAddedSuccess = viewModel.isSuccessFullCartAdded.value
-
-    val quantityInCart = viewModel.quantityInCart.value
-
-    val canAddToCart = viewModel.canAddToCart.value
 
     LaunchedEffect(true) {
         itemId?.let { viewModel.getItemById(itemId = it) }
@@ -147,15 +143,13 @@ fun ItemDetailsScreen(
                         val context = LocalContext.current
                         LazyColumn(modifier = Modifier.fillMaxSize()) {
                             item {
-                                ItemDetailsCard(itemState, quantityInCart)
+                                ItemDetailsCard(itemState)
                             }
                             item {
                                 ItemAddContainer(
                                     itemState,
                                     viewModel,
                                     context,
-                                    quantityInCart,
-                                    canAddToCart
                                 )
                             }
                         }
@@ -168,13 +162,14 @@ fun ItemDetailsScreen(
 
 @Composable
 fun ItemAddContainer(
-    item: ItemState,
+    itemDetailScreenState: ItemDetailScreenState,
     viewModel: ItemDetailsViewModel,
     context: Context,
-    quantityInCart: Int,
-    canAddToCart: Boolean
 ) {
-    val selectedQuantity = remember { mutableStateOf(if (canAddToCart) 1 else 0) }
+    val selectedQuantity =
+        remember { mutableStateOf(if (itemDetailScreenState.canAddToCart) 1 else 0) }
+
+    val canAddToCart = itemDetailScreenState.canAddToCart
 
     ElevatedCard(
         modifier = Modifier
@@ -193,18 +188,18 @@ fun ItemAddContainer(
             horizontalArrangement = Arrangement.SpaceBetween,
             verticalAlignment = Alignment.CenterVertically
         ) {
-            item.item?.quantity?.let { quantity ->
+            itemDetailScreenState.item?.quantity?.let { quantity ->
                 QuantitySelector(
                     selectedQuantity,
-                    quantity - quantityInCart,
-                    item.item.isAvailable
+                    quantity - itemDetailScreenState.quantityInCart,
+                    itemDetailScreenState.item.isAvailable
                 )
             }
             Spacer(modifier = Modifier.weight(1f))
 
             SquaredButton(
                 onClick = {
-                    item.item?.let { item ->
+                    itemDetailScreenState.item?.let { item ->
                         if (canAddToCart) {
                             viewModel.addItemToCart(
                                 item,
