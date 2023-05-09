@@ -44,6 +44,11 @@ android {
     composeOptions {
         kotlinCompilerExtensionVersion '1.4.3'
     }
+    testOptions {
+        unitTests {
+            includeAndroidResources = true
+        }
+    }
     packagingOptions {
         resources {
             excludes += '/META-INF/{AL2.0,LGPL2.1}'
@@ -73,6 +78,12 @@ dependencies {
     androidTestImplementation 'androidx.compose.ui:ui-test-junit4'
     debugImplementation 'androidx.compose.ui:ui-tooling'
     debugImplementation 'androidx.compose.ui:ui-test-manifest'
+
+    // mockito
+    testImplementation "org.mockito:mockito-core:5.2.0"
+
+    // robolectric
+    testImplementation 'org.robolectric:robolectric:4.9.2'
 
     //Navigation
     def nav_version = "2.5.3"
