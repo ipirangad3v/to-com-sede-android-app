@@ -24,6 +24,7 @@ import com.ipsoft.tocomsede.core.model.Item
 import com.ipsoft.tocomsede.core.ui.theme.defaultCartElevation
 import com.ipsoft.tocomsede.core.ui.theme.defaultImageSize
 import com.ipsoft.tocomsede.core.ui.theme.mediumPadding
+import com.ipsoft.tocomsede.core.ui.theme.smallPadding
 import com.ipsoft.tocomsede.core.ui.theme.softBlue
 
 @OptIn(ExperimentalGlideComposeApi::class)
@@ -31,7 +32,7 @@ import com.ipsoft.tocomsede.core.ui.theme.softBlue
 fun CardListItem(item: Item, navController: NavHostController) {
     Column(
         modifier = Modifier
-            .padding(0.dp, mediumPadding, 0.dp, mediumPadding)
+            .padding(0.dp, smallPadding, 0.dp, 0.dp)
             .clickable {
                 navController.navigate(
                     "item_details" +

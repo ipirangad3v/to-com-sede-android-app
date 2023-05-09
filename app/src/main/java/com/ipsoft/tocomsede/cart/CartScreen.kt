@@ -30,6 +30,7 @@ import com.ipsoft.tocomsede.R
 import com.ipsoft.tocomsede.core.ui.components.SquaredButton
 import com.ipsoft.tocomsede.core.ui.theme.darkBlue80
 import com.ipsoft.tocomsede.core.ui.theme.gray
+import com.ipsoft.tocomsede.core.ui.theme.smallPadding
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -66,7 +67,7 @@ fun CartScreen(cartViewModel: CartViewModel = hiltViewModel(), onCheckoutClick: 
                     contentAlignment = Alignment.Center
                 ) {
                     Text(text = it)
-                    Spacer(modifier = Modifier.padding(8.dp))
+                    Spacer(modifier = Modifier.padding(smallPadding))
                     Button(
                         onClick = { cartViewModel.loadCart() },
                         modifier = Modifier.wrapContentSize()
@@ -85,11 +86,15 @@ fun CartScreen(cartViewModel: CartViewModel = hiltViewModel(), onCheckoutClick: 
                 }
             } else {
                 if (cartItemState.items.isNotEmpty()) {
-                    Box(modifier = Modifier.fillMaxSize().padding(0.dp, 8.dp, 0.dp, 0.dp)) {
+                    Box(
+                        modifier = Modifier
+                            .fillMaxSize()
+                            .padding(0.dp, smallPadding, 0.dp, 0.dp)
+                    ) {
                         LazyColumn {
                             item { CartItemList(cartItemState) }
                             item { CartTotal(cartTotalState) }
-                            item { Spacer(modifier = Modifier.padding(4.dp)) }
+                            item { Spacer(modifier = Modifier.padding(smallPadding)) }
                             item { CartCheckoutButtonContainer(onCheckoutClick) }
                         }
                     }

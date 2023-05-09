@@ -87,7 +87,7 @@ fun CheckoutScreen(
                         contentAlignment = Alignment.Center
                     ) {
                         Text(text = it)
-                        Spacer(modifier = Modifier.padding(mediumPadding))
+                        Spacer(modifier = Modifier.padding(smallPadding))
                         Button(
                             onClick = { checkoutViewModel.loadCart() },
                             modifier = Modifier.wrapContentSize()

@@ -18,14 +18,13 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.ShoppingCart
 import androidx.compose.material3.Button
-import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.CircularProgressIndicator
-import androidx.compose.material3.ElevatedCard
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
@@ -43,8 +42,9 @@ import com.ipsoft.tocomsede.R
 import com.ipsoft.tocomsede.core.extensions.showMsg
 import com.ipsoft.tocomsede.core.ui.components.SquaredButton
 import com.ipsoft.tocomsede.core.ui.theme.darkBlue80
-import com.ipsoft.tocomsede.core.ui.theme.defaultCartElevation
+import com.ipsoft.tocomsede.core.ui.theme.largePadding
 import com.ipsoft.tocomsede.core.ui.theme.mediumPadding
+import com.ipsoft.tocomsede.core.ui.theme.smallPadding
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -111,7 +111,7 @@ fun ItemDetailsScreen(
                     contentAlignment = Alignment.Center
                 ) {
                     Text(text = it)
-                    Spacer(modifier = Modifier.padding(mediumPadding))
+                    Spacer(modifier = Modifier.padding(smallPadding))
                     Button(
                         onClick = {
                             if (itemId != null) {
@@ -172,20 +172,15 @@ fun ItemAddContainer(
 
     val canAddToCart = itemDetailScreenState.canAddToCart
 
-    ElevatedCard(
+    Surface(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(mediumPadding),
-        shape = MaterialTheme.shapes.small,
-        colors = CardDefaults.elevatedCardColors(
-            containerColor = Color.White
-        ),
-        elevation = CardDefaults.elevatedCardElevation(defaultCartElevation)
+            .padding(top = smallPadding)
     ) {
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(mediumPadding),
+                .padding(largePadding),
             horizontalArrangement = Arrangement.SpaceBetween,
             verticalAlignment = Alignment.CenterVertically
         ) {
@@ -210,15 +205,24 @@ fun ItemAddContainer(
                             context.showMsg(context.getString(R.string.item_not_available))
                         }
                     }
-                },
-                modifier = Modifier.align(Alignment.CenterVertically)
+                }
             ) {
-                Icon(
-                    imageVector = Icons.Filled.ShoppingCart,
-                    contentDescription = null,
-                    tint = Color.White,
-                    modifier = Modifier.padding(mediumPadding)
-                )
+                Row(
+                    Modifier
+                        .padding(mediumPadding)
+                        .wrapContentSize(Alignment.Center),
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Text(text = stringResource(id = R.string.add_to), style = MaterialTheme.typography.bodySmall)
+                    Icon(
+                        imageVector = Icons.Filled.ShoppingCart,
+                        contentDescription = null,
+                        tint = Color.White,
+                        modifier = Modifier
+                            .wrapContentSize()
+                            .padding(smallPadding)
+                    )
+                }
             }
         }
     }

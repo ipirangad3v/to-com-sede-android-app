@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">To com sede</string>
+    <string name="app_name">tô com sede</string>
     <string name="error_loading_itens">Ocorreu um erro ao carregar os produtos</string>
     <string name="home">início</string>
     <string name="profile">Perfil</string>
@@ -11,6 +11,7 @@
     <string name="item_details">Detalhes</string>
     <string name="quantity">Quantidade disponível</string>
     <string name="add_to_cart">adicionar ao carrinho</string>
+    <string name="add_to">adicionar ao </string>
     <string name="select_quantity">Selecione a quantidade</string>
     <string name="item_added_to_cart">Item adicionado ao carrinho com sucesso</string>
     <string name="total">TOTAL</string>

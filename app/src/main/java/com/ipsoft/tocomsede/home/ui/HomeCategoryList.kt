@@ -24,7 +24,7 @@ fun HomeCategoryList(category: Category, navController: NavHostController) {
         Column(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(mediumPadding)
+                .padding(smallPadding)
 
         ) {
             val height =

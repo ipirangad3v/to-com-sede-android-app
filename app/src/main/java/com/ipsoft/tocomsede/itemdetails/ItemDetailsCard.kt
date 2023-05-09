@@ -7,9 +7,14 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.wrapContentSize
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ShoppingCart
 import androidx.compose.material3.CardDefaults
-import androidx.compose.material3.ElevatedCard
+import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -17,14 +22,16 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.unit.dp
 import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
 import com.bumptech.glide.integration.compose.GlideImage
 import com.ipsoft.tocomsede.R
 import com.ipsoft.tocomsede.core.ui.components.PriceTag
 import com.ipsoft.tocomsede.core.ui.components.SquaredButton
 import com.ipsoft.tocomsede.core.ui.theme.darkBlue80
-import com.ipsoft.tocomsede.core.ui.theme.defaultCartElevation
+import com.ipsoft.tocomsede.core.ui.theme.largePadding
 import com.ipsoft.tocomsede.core.ui.theme.mediumPadding
+import com.ipsoft.tocomsede.core.ui.theme.smallPadding
 
 @OptIn(ExperimentalGlideComposeApi::class)
 @Composable
@@ -33,41 +40,25 @@ fun ItemDetailsCard(itemDetailScreenState: ItemDetailScreenState) {
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(mediumPadding)
+                .padding(0.dp, smallPadding, 0.dp, 0.dp)
         ) {
-            ElevatedCard(
+            GlideImage(
+                model = it.imageUrl,
+                contentDescription = it.description,
+                Modifier.fillMaxSize(),
+                contentScale = ContentScale.FillWidth
+            )
+            Surface(
                 modifier = Modifier
-                    .fillMaxSize(),
-                shape = MaterialTheme.shapes.small,
-                colors = CardDefaults.elevatedCardColors(
-                    containerColor = Color.White
-                ),
-                elevation = CardDefaults.elevatedCardElevation(defaultCartElevation)
-            ) {
-                GlideImage(
-                    model = it.imageUrl,
-                    contentDescription = it.description,
-                    Modifier.fillMaxSize(),
-                    contentScale = ContentScale.FillWidth
-                )
-            }
-            Spacer(modifier = Modifier.padding(mediumPadding))
-            ElevatedCard(
-                modifier = Modifier
-                    .fillMaxWidth(),
-                shape = MaterialTheme.shapes.small,
-                colors = CardDefaults.elevatedCardColors(
-                    containerColor = Color.White
-                ),
-                elevation = CardDefaults.elevatedCardElevation(defaultCartElevation)
+                    .fillMaxWidth()
             ) {
                 Column(
                     modifier = Modifier
-                        .padding(mediumPadding)
+                        .padding(largePadding)
                         .fillMaxWidth()
                 ) {
                     Text(text = it.description)
-                    Spacer(modifier = Modifier.padding(mediumPadding))
+                    Spacer(modifier = Modifier.padding(smallPadding))
                     Row(
                         modifier = Modifier.fillMaxWidth(),
                         horizontalArrangement = Arrangement.SpaceBetween,
@@ -88,20 +79,34 @@ fun ItemDetailsCard(itemDetailScreenState: ItemDetailScreenState) {
                                     )
                                 },
                                 style = MaterialTheme.typography.bodySmall,
-                                modifier = Modifier.padding(mediumPadding),
+                                modifier = Modifier
+                                    .padding(mediumPadding)
+                                    .wrapContentSize(Alignment.Center),
                                 maxLines = 1,
                                 color = Color.White
                             )
                         }
                         if (itemDetailScreenState.quantityInCart > 0) {
                             SquaredButton {
-                                Text(
-                                    text = stringResource(id = R.string.in_cart) + ": " + itemDetailScreenState.quantityInCart.toString(),
-                                    style = MaterialTheme.typography.bodySmall,
-                                    modifier = Modifier.padding(mediumPadding),
-                                    maxLines = 1,
-                                    color = Color.White
-                                )
+                                Row(
+                                    modifier = Modifier
+                                        .padding(smallPadding)
+                                        .wrapContentSize(Alignment.Center),
+                                    verticalAlignment = Alignment.CenterVertically
+                                ) {
+                                    Text(
+                                        text = itemDetailScreenState.quantityInCart.toString() + " no ",
+                                        style = MaterialTheme.typography.bodySmall,
+                                        modifier = Modifier.padding(smallPadding),
+                                        maxLines = 1,
+                                        color = Color.White
+                                    )
+                                    Icon(
+                                        imageVector = Icons.Filled.ShoppingCart,
+                                        contentDescription = null,
+                                        modifier = Modifier.size(largePadding)
+                                    )
+                                }
                             }
                         }
                     }
