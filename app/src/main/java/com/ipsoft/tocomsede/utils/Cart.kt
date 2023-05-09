@@ -53,4 +53,7 @@ object Cart {
     }
 
     fun getItemsCount(): Int = items.size
+    fun checkIfItemIsInCartAndReturnQuantity(item: Item): Int {
+        return items.find { it.first.id == item.id }?.second ?: 0
+    }
 }

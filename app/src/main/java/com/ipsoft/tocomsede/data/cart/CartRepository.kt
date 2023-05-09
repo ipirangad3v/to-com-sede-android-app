@@ -11,4 +11,5 @@ interface CartRepository {
     suspend fun clearCart(): ResultState<Boolean>
     suspend fun getCartTotal(): ResultState<String>
     fun getCartItemsCount(): Int
+    suspend fun checkIfItemIsInCartAndReturnQuantity(item: Item): Int
 }

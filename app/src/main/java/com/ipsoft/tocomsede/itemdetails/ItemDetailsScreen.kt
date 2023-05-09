@@ -52,17 +52,19 @@ fun ItemDetailsScreen(
     viewModel: ItemDetailsViewModel = hiltViewModel(),
     onBack: () -> Unit
 ) {
-    val item = viewModel.items.value
+    val itemState = viewModel.items.value
 
-    val visible = remember { mutableStateOf(!item.isLoading) }
+    val visible = remember { mutableStateOf(!itemState.isLoading) }
 
     val cartAddedSuccess = viewModel.isSuccessFullCartAdded.value
+
+    val quantityInCart = viewModel.quantityInCart.value
+
+    val canAddToCart = viewModel.canAddToCart.value
 
     LaunchedEffect(true) {
         itemId?.let { viewModel.getItemById(itemId = it) }
     }
-
-    val selectedQuantity = remember { mutableStateOf(1) }
     val title: MutableState<String?> = remember {
         mutableStateOf(
             null
@@ -97,10 +99,7 @@ fun ItemDetailsScreen(
         },
         content = { padding ->
 
-            item.item?.name?.let { title.value = it }
-            if (item.item?.isAvailable == false) {
-                selectedQuantity.value = 0
-            }
+            itemState.item?.name?.let { title.value = it }
 
             if (cartAddedSuccess) {
                 LocalContext.current.showMsg(stringResource(id = R.string.item_added_to_cart))
@@ -109,7 +108,7 @@ fun ItemDetailsScreen(
                 onBack.invoke()
             }
 
-            item.error?.let {
+            itemState.error?.let {
                 Box(
                     modifier = Modifier.fillMaxSize(),
                     contentAlignment = Alignment.Center
@@ -129,7 +128,7 @@ fun ItemDetailsScreen(
                 }
             }
 
-            if (item.isLoading) {
+            if (itemState.isLoading) {
                 Box(
                     modifier = Modifier.fillMaxSize(),
                     contentAlignment = Alignment.Center
@@ -146,13 +145,18 @@ fun ItemDetailsScreen(
                 ) {
                     Box(modifier = Modifier.padding(padding)) {
                         val context = LocalContext.current
-
                         LazyColumn(modifier = Modifier.fillMaxSize()) {
                             item {
-                                ItemDetailsCard(item)
+                                ItemDetailsCard(itemState, quantityInCart)
                             }
                             item {
-                                ItemAddContainer(item, selectedQuantity, viewModel, context)
+                                ItemAddContainer(
+                                    itemState,
+                                    viewModel,
+                                    context,
+                                    quantityInCart,
+                                    canAddToCart
+                                )
                             }
                         }
                     }
@@ -165,10 +169,13 @@ fun ItemDetailsScreen(
 @Composable
 fun ItemAddContainer(
     item: ItemState,
-    selectedQuantity: MutableState<Int>,
     viewModel: ItemDetailsViewModel,
-    context: Context
+    context: Context,
+    quantityInCart: Int,
+    canAddToCart: Boolean
 ) {
+    val selectedQuantity = remember { mutableStateOf(if (canAddToCart) 1 else 0) }
+
     ElevatedCard(
         modifier = Modifier
             .fillMaxWidth()
@@ -186,10 +193,10 @@ fun ItemAddContainer(
             horizontalArrangement = Arrangement.SpaceBetween,
             verticalAlignment = Alignment.CenterVertically
         ) {
-            item.item?.quantity?.let {
+            item.item?.quantity?.let { quantity ->
                 QuantitySelector(
                     selectedQuantity,
-                    it,
+                    quantity - quantityInCart,
                     item.item.isAvailable
                 )
             }
@@ -197,15 +204,15 @@ fun ItemAddContainer(
 
             SquaredButton(
                 onClick = {
-                    if (item.item?.isAvailable == true) {
-                        item.item.let {
+                    item.item?.let { item ->
+                        if (canAddToCart) {
                             viewModel.addItemToCart(
-                                it,
+                                item,
                                 selectedQuantity.value
                             )
+                        } else {
+                            context.showMsg(context.getString(R.string.item_not_available))
                         }
-                    } else {
-                        context.showMsg(context.getString(R.string.item_not_available))
                     }
                 },
                 modifier = Modifier.align(Alignment.CenterVertically)

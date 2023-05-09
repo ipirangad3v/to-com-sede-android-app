@@ -27,9 +27,28 @@ class ItemDetailsViewModel @Inject constructor(
     private val _isSuccessFullCartAdded = mutableStateOf(false)
     val isSuccessFullCartAdded: State<Boolean> = _isSuccessFullCartAdded
 
+    private val _quantityInCart = mutableStateOf(0)
+    val quantityInCart: State<Int> = _quantityInCart
+
+    private val _canAddToCart = mutableStateOf(false)
+    val canAddToCart: State<Boolean> = _canAddToCart
+
     fun addItemToCart(item: Item, quantity: Int) {
         viewModelScope.launch {
             _isSuccessFullCartAdded.value = cartRepository.addItemToCart(item, quantity) is Success
+        }
+    }
+
+    private fun checkIfItemIsInCartAndReturnQuantity(item: Item) {
+        viewModelScope.launch {
+            _quantityInCart.value =
+                cartRepository.checkIfItemIsInCartAndReturnQuantity(item)
+        }
+    }
+
+    fun updateCanAddToCart(item: Item) {
+        viewModelScope.launch {
+            _canAddToCart.value = item.isAvailable && _quantityInCart.value < item.quantity
         }
     }
 
@@ -43,6 +62,10 @@ class ItemDetailsViewModel @Inject constructor(
             itemRepository.getItemById(itemId).collect {
                 when (it) {
                     is Success -> {
+                        it.data?.let { item ->
+                            checkIfItemIsInCartAndReturnQuantity(item)
+                            updateCanAddToCart(item)
+                        }
                         _items.value = ItemState(
                             item = it.data,
                             isLoading = false
