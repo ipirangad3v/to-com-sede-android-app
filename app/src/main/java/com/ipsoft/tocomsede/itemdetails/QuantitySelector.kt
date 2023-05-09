@@ -12,9 +12,10 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.unit.dp
 import com.ipsoft.tocomsede.R
 import com.ipsoft.tocomsede.core.ui.components.SquaredButton
+import com.ipsoft.tocomsede.core.ui.theme.mediumPadding
+import com.ipsoft.tocomsede.core.ui.theme.smallPadding
 
 @Composable
 fun QuantitySelector(selectedQuantity: MutableState<Int>, maxQuantity: Int, available: Boolean) {
@@ -23,7 +24,7 @@ fun QuantitySelector(selectedQuantity: MutableState<Int>, maxQuantity: Int, avai
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Text(text = stringResource(id = R.string.select_quantity))
-        Spacer(modifier = Modifier.padding(4.dp))
+        Spacer(modifier = Modifier.padding(smallPadding))
         Row(
             horizontalArrangement = Arrangement.SpaceEvenly,
             verticalAlignment = Alignment.CenterVertically
@@ -34,20 +35,20 @@ fun QuantitySelector(selectedQuantity: MutableState<Int>, maxQuantity: Int, avai
                 Text(
                     text = "-",
                     fontWeight = FontWeight.Bold,
-                    modifier = Modifier.padding(8.dp),
+                    modifier = Modifier.padding(mediumPadding),
                     maxLines = 1
                 )
             }
-            Spacer(modifier = Modifier.padding(8.dp))
+            Spacer(modifier = Modifier.padding(mediumPadding))
             Text(text = selectedQuantity.value.toString())
-            Spacer(modifier = Modifier.padding(8.dp))
+            Spacer(modifier = Modifier.padding(mediumPadding))
             SquaredButton(
                 onClick = { if (available && selectedQuantity.value < maxQuantity) selectedQuantity.value++ }
             ) {
                 Text(
                     text = "+",
                     fontWeight = FontWeight.Bold,
-                    modifier = Modifier.padding(8.dp),
+                    modifier = Modifier.padding(mediumPadding),
                     maxLines = 1
                 )
             }

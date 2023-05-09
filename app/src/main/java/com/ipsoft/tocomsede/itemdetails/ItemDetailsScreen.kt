@@ -38,19 +38,20 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.ipsoft.tocomsede.R
 import com.ipsoft.tocomsede.core.extensions.showMsg
 import com.ipsoft.tocomsede.core.ui.components.SquaredButton
 import com.ipsoft.tocomsede.core.ui.theme.darkBlue80
+import com.ipsoft.tocomsede.core.ui.theme.defaultCartElevation
+import com.ipsoft.tocomsede.core.ui.theme.mediumPadding
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ItemDetailsScreen(
     itemId: Int?,
     viewModel: ItemDetailsViewModel = hiltViewModel(),
-    onBack: () -> Unit,
+    onBack: () -> Unit
 ) {
     val itemState = viewModel.items.value
 
@@ -110,7 +111,7 @@ fun ItemDetailsScreen(
                     contentAlignment = Alignment.Center
                 ) {
                     Text(text = it)
-                    Spacer(modifier = Modifier.padding(8.dp))
+                    Spacer(modifier = Modifier.padding(mediumPadding))
                     Button(
                         onClick = {
                             if (itemId != null) {
@@ -149,7 +150,7 @@ fun ItemDetailsScreen(
                                 ItemAddContainer(
                                     itemState,
                                     viewModel,
-                                    context,
+                                    context
                                 )
                             }
                         }
@@ -164,7 +165,7 @@ fun ItemDetailsScreen(
 fun ItemAddContainer(
     itemDetailScreenState: ItemDetailScreenState,
     viewModel: ItemDetailsViewModel,
-    context: Context,
+    context: Context
 ) {
     val selectedQuantity =
         remember { mutableStateOf(if (itemDetailScreenState.canAddToCart) 1 else 0) }
@@ -174,17 +175,17 @@ fun ItemAddContainer(
     ElevatedCard(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(8.dp),
+            .padding(mediumPadding),
         shape = MaterialTheme.shapes.small,
         colors = CardDefaults.elevatedCardColors(
             containerColor = Color.White
         ),
-        elevation = CardDefaults.elevatedCardElevation(6.dp)
+        elevation = CardDefaults.elevatedCardElevation(defaultCartElevation)
     ) {
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(8.dp),
+                .padding(mediumPadding),
             horizontalArrangement = Arrangement.SpaceBetween,
             verticalAlignment = Alignment.CenterVertically
         ) {
@@ -216,7 +217,7 @@ fun ItemAddContainer(
                     imageVector = Icons.Filled.ShoppingCart,
                     contentDescription = null,
                     tint = Color.White,
-                    modifier = Modifier.padding(8.dp)
+                    modifier = Modifier.padding(mediumPadding)
                 )
             }
         }

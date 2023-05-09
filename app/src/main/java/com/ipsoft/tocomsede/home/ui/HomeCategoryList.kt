@@ -15,6 +15,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import com.ipsoft.tocomsede.core.model.Category
+import com.ipsoft.tocomsede.core.ui.theme.mediumPadding
+import com.ipsoft.tocomsede.core.ui.theme.smallPadding
 
 @Composable
 fun HomeCategoryList(category: Category, navController: NavHostController) {
@@ -22,19 +24,19 @@ fun HomeCategoryList(category: Category, navController: NavHostController) {
         Column(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(8.dp)
+                .padding(mediumPadding)
 
         ) {
             val height =
                 if (category.items.size >= 2) ((category.items.size * 250) / 2).dp else ((category.items.size * 250)).dp
 
             category.name?.let { Text(text = it) }
-            Spacer(modifier = Modifier.padding(4.dp))
+            Spacer(modifier = Modifier.padding(smallPadding))
             LazyVerticalGrid(
                 modifier = Modifier.height(height),
                 columns = GridCells.Fixed(2),
-                horizontalArrangement = Arrangement.spacedBy(8.dp),
-                verticalArrangement = Arrangement.spacedBy(8.dp)
+                horizontalArrangement = Arrangement.spacedBy(mediumPadding),
+                verticalArrangement = Arrangement.spacedBy(mediumPadding)
             ) {
                 category.items.let { items ->
                     items(items.size) {

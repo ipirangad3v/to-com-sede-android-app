@@ -179,7 +179,8 @@ class MainActivity : ComponentActivity() {
                                 }
                             }
                             composable(Screen.Checkout.route) {
-                                CheckoutScreen {
+                                CheckoutScreen(onCheckoutClick = {}) {
+                                    navController.navigateUp()
                                 }
                             }
                             composable(Screen.Orders.route) {

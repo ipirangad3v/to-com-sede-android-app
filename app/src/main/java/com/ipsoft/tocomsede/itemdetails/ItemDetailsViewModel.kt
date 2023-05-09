@@ -18,7 +18,7 @@ import javax.inject.Inject
 @HiltViewModel
 class ItemDetailsViewModel @Inject constructor(
     private val itemRepository: RealtimeRepository,
-    private val cartRepository: CartRepository,
+    private val cartRepository: CartRepository
 ) : ViewModel() {
 
     private val _items: MutableState<ItemDetailScreenState> =
@@ -67,7 +67,7 @@ class ItemDetailsViewModel @Inject constructor(
                         )
                     }
 
-                    Loading    -> {
+                    Loading -> {
                         _items.value = ItemDetailScreenState(
                             isLoading = true
                         )
@@ -86,7 +86,7 @@ data class ItemDetailScreenState(
     val item: Item? = null,
     val error: String? = null,
     val isLoading: Boolean = true,
-    val quantityInCart: Int = 0,
+    val quantityInCart: Int = 0
 ) {
     val canAddToCart: Boolean
         get() = item?.isAvailable == true && quantityInCart < item.quantity

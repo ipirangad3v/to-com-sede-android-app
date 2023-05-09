@@ -7,9 +7,10 @@ import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ElevatedCard
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.unit.dp
 import com.ipsoft.tocomsede.core.ui.theme.almostWhite
 import com.ipsoft.tocomsede.core.ui.theme.darkBlue80
+import com.ipsoft.tocomsede.core.ui.theme.defaultCartElevation
+import com.ipsoft.tocomsede.core.ui.theme.mediumPadding
 
 @Composable
 fun SquaredButton(
@@ -22,11 +23,11 @@ fun SquaredButton(
     content: @Composable () -> Unit = {}
 ) {
     ElevatedCard(
-        shape = RoundedCornerShape(8.dp),
+        shape = RoundedCornerShape(mediumPadding),
         modifier = modifier
             .clickable { onClick() },
         colors = colors,
-        elevation = CardDefaults.elevatedCardElevation(6.dp)
+        elevation = CardDefaults.elevatedCardElevation(defaultCartElevation)
     ) {
         content()
     }

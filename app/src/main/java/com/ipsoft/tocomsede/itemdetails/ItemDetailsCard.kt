@@ -17,13 +17,14 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.unit.dp
 import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
 import com.bumptech.glide.integration.compose.GlideImage
 import com.ipsoft.tocomsede.R
 import com.ipsoft.tocomsede.core.ui.components.PriceTag
 import com.ipsoft.tocomsede.core.ui.components.SquaredButton
 import com.ipsoft.tocomsede.core.ui.theme.darkBlue80
+import com.ipsoft.tocomsede.core.ui.theme.defaultCartElevation
+import com.ipsoft.tocomsede.core.ui.theme.mediumPadding
 
 @OptIn(ExperimentalGlideComposeApi::class)
 @Composable
@@ -32,7 +33,7 @@ fun ItemDetailsCard(itemDetailScreenState: ItemDetailScreenState) {
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(8.dp)
+                .padding(mediumPadding)
         ) {
             ElevatedCard(
                 modifier = Modifier
@@ -41,7 +42,7 @@ fun ItemDetailsCard(itemDetailScreenState: ItemDetailScreenState) {
                 colors = CardDefaults.elevatedCardColors(
                     containerColor = Color.White
                 ),
-                elevation = CardDefaults.elevatedCardElevation(6.dp)
+                elevation = CardDefaults.elevatedCardElevation(defaultCartElevation)
             ) {
                 GlideImage(
                     model = it.imageUrl,
@@ -50,7 +51,7 @@ fun ItemDetailsCard(itemDetailScreenState: ItemDetailScreenState) {
                     contentScale = ContentScale.FillWidth
                 )
             }
-            Spacer(modifier = Modifier.padding(8.dp))
+            Spacer(modifier = Modifier.padding(mediumPadding))
             ElevatedCard(
                 modifier = Modifier
                     .fillMaxWidth(),
@@ -58,15 +59,15 @@ fun ItemDetailsCard(itemDetailScreenState: ItemDetailScreenState) {
                 colors = CardDefaults.elevatedCardColors(
                     containerColor = Color.White
                 ),
-                elevation = CardDefaults.elevatedCardElevation(6.dp)
+                elevation = CardDefaults.elevatedCardElevation(defaultCartElevation)
             ) {
                 Column(
                     modifier = Modifier
-                        .padding(8.dp)
+                        .padding(mediumPadding)
                         .fillMaxWidth()
                 ) {
                     Text(text = it.description)
-                    Spacer(modifier = Modifier.padding(8.dp))
+                    Spacer(modifier = Modifier.padding(mediumPadding))
                     Row(
                         modifier = Modifier.fillMaxWidth(),
                         horizontalArrangement = Arrangement.SpaceBetween,
@@ -87,7 +88,7 @@ fun ItemDetailsCard(itemDetailScreenState: ItemDetailScreenState) {
                                     )
                                 },
                                 style = MaterialTheme.typography.bodySmall,
-                                modifier = Modifier.padding(8.dp),
+                                modifier = Modifier.padding(mediumPadding),
                                 maxLines = 1,
                                 color = Color.White
                             )
@@ -97,7 +98,7 @@ fun ItemDetailsCard(itemDetailScreenState: ItemDetailScreenState) {
                                 Text(
                                     text = stringResource(id = R.string.in_cart) + ": " + itemDetailScreenState.quantityInCart.toString(),
                                     style = MaterialTheme.typography.bodySmall,
-                                    modifier = Modifier.padding(8.dp),
+                                    modifier = Modifier.padding(mediumPadding),
                                     maxLines = 1,
                                     color = Color.White
                                 )

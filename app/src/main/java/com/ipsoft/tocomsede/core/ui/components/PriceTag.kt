@@ -8,17 +8,17 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.ipsoft.tocomsede.core.extensions.toCurrency
 import com.ipsoft.tocomsede.core.ui.theme.almostWhite
 import com.ipsoft.tocomsede.core.ui.theme.darkBlue80
+import com.ipsoft.tocomsede.core.ui.theme.mediumPadding
 
 @Composable
 fun PriceTag(price: Double) {
     ElevatedCard(
-        shape = RoundedCornerShape(8.dp),
-        modifier = Modifier.padding(8.dp),
+        shape = RoundedCornerShape(mediumPadding),
+        modifier = Modifier.padding(mediumPadding),
         colors = CardDefaults.elevatedCardColors(
             containerColor = darkBlue80,
             contentColor = almostWhite
@@ -28,7 +28,7 @@ fun PriceTag(price: Double) {
             text = price.toString().toCurrency(),
             fontSize = 16.sp,
             fontWeight = FontWeight.Bold,
-            modifier = Modifier.padding(8.dp)
+            modifier = Modifier.padding(mediumPadding)
         )
     }
 }

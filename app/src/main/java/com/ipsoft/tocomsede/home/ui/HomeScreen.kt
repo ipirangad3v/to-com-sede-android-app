@@ -24,11 +24,12 @@ import androidx.compose.ui.Alignment.Companion.Center
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import com.ipsoft.tocomsede.R
 import com.ipsoft.tocomsede.core.ui.theme.gray
+import com.ipsoft.tocomsede.core.ui.theme.mediumPadding
+import com.ipsoft.tocomsede.core.ui.theme.smallPadding
 import com.ipsoft.tocomsede.data.network.NetworkHandler
 
 @Composable
@@ -57,7 +58,7 @@ fun HomeScreen(
                     contentAlignment = Center
                 ) {
                     Text(text = it)
-                    Spacer(modifier = Modifier.padding(8.dp))
+                    Spacer(modifier = Modifier.padding(mediumPadding))
                     Button(
                         onClick = { homeViewModel.loadItems() },
                         modifier = Modifier.wrapContentSize()
@@ -91,7 +92,7 @@ fun HomeScreen(
                                         navController = navController
                                     )
                                 }
-                                item { Spacer(modifier = Modifier.padding(8.dp)) }
+                                item { Spacer(modifier = Modifier.padding(smallPadding)) }
                             }
                         }
                     }
@@ -104,7 +105,7 @@ fun HomeScreen(
             ) {
                 Column(horizontalAlignment = Alignment.CenterHorizontally) {
                     Text(text = stringResource(id = R.string.no_internet))
-                    Spacer(modifier = Modifier.padding(8.dp))
+                    Spacer(modifier = Modifier.padding(mediumPadding))
                     Button(
                         onClick = {
                             hasInternet.value = NetworkHandler(context).isNetworkAvailable()

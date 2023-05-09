@@ -21,6 +21,9 @@ import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
 import com.bumptech.glide.integration.compose.GlideImage
 import com.ipsoft.tocomsede.core.extensions.toCurrency
 import com.ipsoft.tocomsede.core.model.Item
+import com.ipsoft.tocomsede.core.ui.theme.defaultCartElevation
+import com.ipsoft.tocomsede.core.ui.theme.defaultImageSize
+import com.ipsoft.tocomsede.core.ui.theme.mediumPadding
 import com.ipsoft.tocomsede.core.ui.theme.softBlue
 
 @OptIn(ExperimentalGlideComposeApi::class)
@@ -28,7 +31,7 @@ import com.ipsoft.tocomsede.core.ui.theme.softBlue
 fun CardListItem(item: Item, navController: NavHostController) {
     Column(
         modifier = Modifier
-            .padding(0.dp, 8.dp, 0.dp, 8.dp)
+            .padding(0.dp, mediumPadding, 0.dp, mediumPadding)
             .clickable {
                 navController.navigate(
                     "item_details" +
@@ -44,7 +47,7 @@ fun CardListItem(item: Item, navController: NavHostController) {
             colors = CardDefaults.elevatedCardColors(
                 containerColor = softBlue
             ),
-            elevation = CardDefaults.elevatedCardElevation(6.dp)
+            elevation = CardDefaults.elevatedCardElevation(defaultCartElevation)
         ) {
             Column(modifier = Modifier.wrapContentSize()) {
                 ElevatedCard(
@@ -53,12 +56,12 @@ fun CardListItem(item: Item, navController: NavHostController) {
                     GlideImage(
                         model = item.imageUrl,
                         contentDescription = null,
-                        modifier = Modifier.size(180.dp)
+                        modifier = Modifier.size(defaultImageSize)
                     )
                 }
             }
         }
-        Spacer(modifier = Modifier.height(8.dp))
+        Spacer(modifier = Modifier.height(mediumPadding))
         Text(
             text = item.name,
             style = MaterialTheme.typography.bodyMedium,

@@ -1,5 +1,6 @@
 package com.ipsoft.tocomsede.checkout.ui
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -8,13 +9,18 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material3.Button
-import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.CircularProgressIndicator
-import androidx.compose.material3.ElevatedCard
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
+import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -27,65 +33,103 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import com.ipsoft.tocomsede.R
 import com.ipsoft.tocomsede.cart.CartItemList
 import com.ipsoft.tocomsede.core.ui.components.SquaredButton
+import com.ipsoft.tocomsede.core.ui.theme.darkBlue80
 import com.ipsoft.tocomsede.core.ui.theme.gray
+import com.ipsoft.tocomsede.core.ui.theme.largePadding
+import com.ipsoft.tocomsede.core.ui.theme.mediumPadding
+import com.ipsoft.tocomsede.core.ui.theme.smallPadding
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun CheckoutScreen(
     checkoutViewModel: CheckoutViewModel = hiltViewModel(),
-    onCheckoutClick: () -> Unit
+    onCheckoutClick: () -> Unit,
+    onBack: () -> Unit
 ) {
     val cartItemState = checkoutViewModel.cartItemState.value
     val cartTotalState = checkoutViewModel.cartTotalState.value
 
-    Surface(
-        modifier = Modifier
-            .fillMaxSize(),
-        color = gray
-    ) {
-        cartItemState.error?.let {
-            Box(
-                modifier = Modifier.fillMaxSize(),
-                contentAlignment = Alignment.Center
+    Scaffold(
+        topBar = {
+            CenterAlignedTopAppBar(
+                navigationIcon = {
+                    Icon(
+                        imageVector = Icons.Filled.ArrowBack,
+                        contentDescription = null,
+                        modifier = Modifier.clickable {
+                            onBack()
+                        }
+                    )
+                },
+                title = {
+                    Text(
+                        text = stringResource(id = R.string.checkout),
+                        maxLines = 1
+                    )
+                },
+                colors = TopAppBarDefaults.centerAlignedTopAppBarColors(
+                    containerColor = Color.White,
+                    titleContentColor = darkBlue80,
+                    navigationIconContentColor = darkBlue80
+                )
+            )
+        },
+        content = { paddingValues ->
+            Surface(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(paddingValues),
+                color = gray
             ) {
-                Text(text = it)
-                Spacer(modifier = Modifier.padding(8.dp))
-                Button(
-                    onClick = { checkoutViewModel.loadCart() },
-                    modifier = Modifier.wrapContentSize()
-                ) {
-                    Text(text = stringResource(id = R.string.try_again))
-                }
-            }
-        }
-
-        if (cartItemState.isLoading) {
-            Box(
-                modifier = Modifier.fillMaxSize(),
-                contentAlignment = Alignment.Center
-            ) {
-                CircularProgressIndicator(modifier = Modifier.wrapContentSize())
-            }
-        } else {
-            if (cartItemState.items.isNotEmpty()) {
-                Box(modifier = Modifier.fillMaxSize()) {
-                    LazyColumn {
-                        item { CheckoutHeader() }
-                        item { CartItemList(cartItemState) }
-                        item { CheckoutCartTotal(cartTotalState) }
-                        item { Spacer(modifier = Modifier.padding(8.dp)) }
-                        item { CheckoutButtonContainer(onCheckoutClick) }
+                cartItemState.error?.let {
+                    Box(
+                        modifier = Modifier.fillMaxSize(),
+                        contentAlignment = Alignment.Center
+                    ) {
+                        Text(text = it)
+                        Spacer(modifier = Modifier.padding(mediumPadding))
+                        Button(
+                            onClick = { checkoutViewModel.loadCart() },
+                            modifier = Modifier.wrapContentSize()
+                        ) {
+                            Text(text = stringResource(id = R.string.try_again))
+                        }
                     }
                 }
-            } else {
-                Box(
-                    modifier = Modifier.fillMaxSize(),
-                    contentAlignment = Alignment.Center
-                ) {
-                    Text(text = stringResource(id = R.string.cart_is_empty))
+
+                if (cartItemState.isLoading) {
+                    Box(
+                        modifier = Modifier.fillMaxSize(),
+                        contentAlignment = Alignment.Center
+                    ) {
+                        CircularProgressIndicator(modifier = Modifier.wrapContentSize())
+                    }
+                } else {
+                    if (cartItemState.items.isNotEmpty()) {
+                        Box(
+                            modifier = Modifier
+                                .fillMaxSize()
+                                .padding(0.dp, mediumPadding, 0.dp, 0.dp)
+                        ) {
+                            LazyColumn {
+                                item { CartItemList(cartItemState) }
+                                item { CheckoutCartTotal(cartTotalState) }
+                                item { Spacer(modifier = Modifier.padding(smallPadding)) }
+                                item { CheckoutButtonContainer(onCheckoutClick) }
+                            }
+                        }
+                    } else {
+                        Box(
+                            modifier = Modifier.fillMaxSize(),
+                            contentAlignment = Alignment.Center
+                        ) {
+                            Text(text = stringResource(id = R.string.cart_is_empty))
+                        }
+                    }
                 }
             }
         }
-    }
+    )
 }
 
 @Composable
@@ -94,7 +138,7 @@ fun CheckoutButtonContainer(onCheckoutClick: () -> Unit) {
         Box(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(16.dp),
+                .padding(largePadding),
             contentAlignment = Alignment.BottomCenter
         ) {
             SquaredButton(
@@ -107,7 +151,7 @@ fun CheckoutButtonContainer(onCheckoutClick: () -> Unit) {
                     text = stringResource(id = R.string.checkout),
                     fontWeight = FontWeight.Bold,
                     modifier = Modifier
-                        .padding(8.dp)
+                        .padding(mediumPadding)
                         .fillMaxWidth(),
                     maxLines = 1,
                     textAlign = TextAlign.Center
@@ -118,37 +162,12 @@ fun CheckoutButtonContainer(onCheckoutClick: () -> Unit) {
 }
 
 @Composable
-fun CheckoutHeader() {
-    ElevatedCard(
-        modifier = Modifier
-            .fillMaxWidth()
-            .wrapContentHeight()
-            .padding(0.dp, 0.dp, 0.dp, 8.dp),
-        elevation = CardDefaults.elevatedCardElevation(4.dp),
-        shape = MaterialTheme.shapes.extraSmall,
-        colors = CardDefaults.elevatedCardColors(
-            containerColor = Color.White
-        )
-    ) {
-        Text(
-            text = stringResource(id = R.string.checkout),
-            modifier = Modifier
-                .padding(16.dp)
-                .fillMaxWidth(),
-            style = MaterialTheme.typography.headlineMedium,
-            color = MaterialTheme.colorScheme.onSurface,
-            textAlign = TextAlign.Center
-        )
-    }
-}
-
-@Composable
 fun CheckoutCartTotal(cartTotalState: String) {
     Surface {
         Box(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(16.dp),
+                .padding(largePadding),
             contentAlignment = Alignment.BottomEnd
         ) {
             Text(

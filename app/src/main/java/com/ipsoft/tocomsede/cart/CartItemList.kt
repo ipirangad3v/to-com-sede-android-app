@@ -14,6 +14,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.ipsoft.tocomsede.core.ui.state.CartItemState
+import com.ipsoft.tocomsede.core.ui.theme.mediumPadding
+import com.ipsoft.tocomsede.core.ui.theme.smallPadding
 
 @Composable
 fun CartItemList(
@@ -24,21 +26,21 @@ fun CartItemList(
         Column(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(8.dp)
+                .padding(mediumPadding)
 
         ) {
             val height =
                 if (itemState.items.size >= 2) ((itemState.items.size * 320) / 2).dp else ((itemState.items.size * 320)).dp
-            Spacer(modifier = Modifier.padding(4.dp))
+            Spacer(modifier = Modifier.padding(smallPadding))
             LazyVerticalGrid(
                 modifier = Modifier.height(height),
                 columns = GridCells.Fixed(2),
-                horizontalArrangement = Arrangement.spacedBy(8.dp),
-                verticalArrangement = Arrangement.spacedBy(8.dp)
+                horizontalArrangement = Arrangement.spacedBy(mediumPadding),
+                verticalArrangement = Arrangement.spacedBy(mediumPadding)
             ) {
                 itemState.items.let { items ->
                     items(items.size) {
-                        Spacer(modifier = Modifier.padding(8.dp))
+                        Spacer(modifier = Modifier.padding(mediumPadding))
                         CartCardListItem(item = items[it]) {
                             cartViewModel.removeItem(items[it])
                         }

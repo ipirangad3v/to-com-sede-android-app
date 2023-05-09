@@ -24,13 +24,17 @@ import com.ipsoft.tocomsede.R
 import com.ipsoft.tocomsede.core.extensions.toCurrency
 import com.ipsoft.tocomsede.core.model.Item
 import com.ipsoft.tocomsede.core.ui.components.SquaredButton
+import com.ipsoft.tocomsede.core.ui.theme.defaultCartElevation
+import com.ipsoft.tocomsede.core.ui.theme.defaultImageSize
+import com.ipsoft.tocomsede.core.ui.theme.mediumPadding
+import com.ipsoft.tocomsede.core.ui.theme.smallPadding
 import com.ipsoft.tocomsede.core.ui.theme.softBlue
 
 @OptIn(ExperimentalGlideComposeApi::class)
 @Composable
 fun CartCardListItem(item: Pair<Item, Int>, onItemDeleteClick: () -> Unit) {
     Column(
-        modifier = Modifier.padding(0.dp, 8.dp, 0.dp, 8.dp),
+        modifier = Modifier.padding(0.dp, mediumPadding, 0.dp, mediumPadding),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         ElevatedCard(
@@ -40,7 +44,7 @@ fun CartCardListItem(item: Pair<Item, Int>, onItemDeleteClick: () -> Unit) {
             colors = CardDefaults.elevatedCardColors(
                 containerColor = softBlue
             ),
-            elevation = CardDefaults.elevatedCardElevation(6.dp)
+            elevation = CardDefaults.elevatedCardElevation(defaultCartElevation)
         ) {
             Column(modifier = Modifier.wrapContentSize()) {
                 ElevatedCard(
@@ -49,30 +53,30 @@ fun CartCardListItem(item: Pair<Item, Int>, onItemDeleteClick: () -> Unit) {
                     GlideImage(
                         model = item.first.imageUrl,
                         contentDescription = null,
-                        modifier = Modifier.size(180.dp)
+                        modifier = Modifier.size(defaultImageSize)
                     )
                 }
             }
         }
-        Spacer(modifier = Modifier.height(8.dp))
+        Spacer(modifier = Modifier.height(mediumPadding))
         Text(
             text = item.first.name,
             style = MaterialTheme.typography.bodySmall,
             color = androidx.compose.material.MaterialTheme.colors.onSurface
         )
-        Spacer(modifier = Modifier.height(4.dp))
+        Spacer(modifier = Modifier.height(smallPadding))
         Text(
             text = item.first.price.toString().toCurrency(),
             style = MaterialTheme.typography.titleSmall,
             color = androidx.compose.material.MaterialTheme.colors.onSurface
         )
-        Spacer(modifier = Modifier.height(4.dp))
+        Spacer(modifier = Modifier.height(smallPadding))
         Text(
             text = stringResource(id = R.string.selected_quantity) + ": ${item.second}",
             style = MaterialTheme.typography.titleSmall,
             color = androidx.compose.material.MaterialTheme.colors.onSurface
         )
-        Spacer(modifier = Modifier.height(4.dp))
+        Spacer(modifier = Modifier.height(smallPadding))
         RemoveButton(onItemDeleteClick = onItemDeleteClick)
     }
 }
