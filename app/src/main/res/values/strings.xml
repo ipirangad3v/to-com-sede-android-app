@@ -1,4 +1,4 @@
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
     <string name="app_name">tô com sede</string>
     <string name="error_loading_itens">Ocorreu um erro ao carregar os produtos</string>
     <string name="home">início</string>
@@ -16,11 +16,12 @@
     <string name="item_added_to_cart">Item adicionado ao carrinho com sucesso</string>
     <string name="total">TOTAL</string>
     <string name="unavailable">indisponível</string>
-    <string name="item_not_available">Opa, estamos sem estoque desse item no momento</string>
+    <string name="item_not_available" tools:ignore="Typos">Opa, estamos sem estoque desse item no momento</string>
     <string name="cart_is_empty">Seu Carrinho está vazio!</string>
     <string name="water">Água mineral\n</string>
     <string name="selected_quantity">quantidade</string>
     <string name="no_internet">sem conexão com a internet</string>
     <string name="checkout">finalizar pedido</string>
     <string name="in_cart">no carrinho</string>
+    <string name="login">entrar</string>
 </resources>

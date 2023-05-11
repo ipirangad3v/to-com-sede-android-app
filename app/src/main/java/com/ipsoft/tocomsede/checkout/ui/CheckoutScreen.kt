@@ -35,6 +35,7 @@ import com.ipsoft.tocomsede.cart.CartItemList
 import com.ipsoft.tocomsede.core.ui.components.SquaredButton
 import com.ipsoft.tocomsede.core.ui.theme.darkBlue80
 import com.ipsoft.tocomsede.core.ui.theme.gray
+import com.ipsoft.tocomsede.core.ui.theme.itemDividerPadding
 import com.ipsoft.tocomsede.core.ui.theme.largePadding
 import com.ipsoft.tocomsede.core.ui.theme.mediumPadding
 import com.ipsoft.tocomsede.core.ui.theme.smallPadding
@@ -83,7 +84,8 @@ fun CheckoutScreen(
             ) {
                 cartItemState.error?.let {
                     Box(
-                        modifier = Modifier.fillMaxSize(),
+                        modifier = Modifier
+                            .fillMaxSize(),
                         contentAlignment = Alignment.Center
                     ) {
                         Text(text = it)
@@ -109,12 +111,12 @@ fun CheckoutScreen(
                         Box(
                             modifier = Modifier
                                 .fillMaxSize()
-                                .padding(0.dp, mediumPadding, 0.dp, 0.dp)
+                                .padding(0.dp, smallPadding, 0.dp, 0.dp)
                         ) {
                             LazyColumn {
                                 item { CartItemList(cartItemState) }
                                 item { CheckoutCartTotal(cartTotalState) }
-                                item { Spacer(modifier = Modifier.padding(smallPadding)) }
+                                item { Spacer(modifier = Modifier.padding(itemDividerPadding)) }
                                 item { CheckoutButtonContainer(onCheckoutClick) }
                             }
                         }

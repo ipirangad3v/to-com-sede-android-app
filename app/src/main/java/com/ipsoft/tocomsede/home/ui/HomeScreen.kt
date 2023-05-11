@@ -7,15 +7,20 @@ import androidx.compose.animation.slideInVertically
 import androidx.compose.animation.slideOutVertically
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Person
 import androidx.compose.material3.Button
 import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.ExtendedFloatingActionButton
+import androidx.compose.material3.Icon
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
@@ -35,15 +40,18 @@ import androidx.navigation.NavHostController
 import com.ipsoft.tocomsede.R
 import com.ipsoft.tocomsede.core.ui.theme.darkBlue80
 import com.ipsoft.tocomsede.core.ui.theme.gray
+import com.ipsoft.tocomsede.core.ui.theme.itemDividerPadding
 import com.ipsoft.tocomsede.core.ui.theme.mediumPadding
 import com.ipsoft.tocomsede.core.ui.theme.smallPadding
+import com.ipsoft.tocomsede.core.ui.theme.xxLargePadding
 import com.ipsoft.tocomsede.data.network.NetworkHandler
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun HomeScreen(
     homeViewModel: HomeViewModel = hiltViewModel(),
-    navController: NavHostController
+    navController: NavHostController,
+    onLoginClick: () -> Unit
 ) {
     val context = LocalContext.current
 
@@ -53,6 +61,8 @@ fun HomeScreen(
     val categoryState = homeViewModel.categories.value
 
     val visibility = remember { mutableStateOf(false) }
+
+    val loginButtonVisibility = homeViewModel.isUserLogged.value
 
     Scaffold(
         topBar = {
@@ -69,6 +79,27 @@ fun HomeScreen(
                     navigationIconContentColor = darkBlue80
                 )
             )
+        },
+        floatingActionButton = {
+            if (!loginButtonVisibility) {
+                ExtendedFloatingActionButton(
+                    onClick = onLoginClick,
+                    modifier = Modifier.padding(smallPadding),
+                    containerColor = darkBlue80
+                ) {
+                    Row(
+                        modifier = Modifier.padding(smallPadding),
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        Icon(
+                            imageVector = Icons.Default.Person,
+                            contentDescription = stringResource(id = R.string.login)
+                        )
+                        Spacer(modifier = Modifier.padding(smallPadding))
+                        Text(text = stringResource(id = R.string.login))
+                    }
+                }
+            }
         }
     ) { padding ->
         Surface(
@@ -123,7 +154,17 @@ fun HomeScreen(
                                             navController = navController
                                         )
                                     }
-                                    item { Spacer(modifier = Modifier.padding(smallPadding)) }
+                                    if (categoryState.item.last() == category && !loginButtonVisibility) {
+                                        item {
+                                            Spacer(
+                                                modifier = Modifier.padding(
+                                                    xxLargePadding
+                                                )
+                                            )
+                                        }
+                                    } else {
+                                        item { Spacer(modifier = Modifier.padding(itemDividerPadding)) }
+                                    }
                                 }
                             }
                         }

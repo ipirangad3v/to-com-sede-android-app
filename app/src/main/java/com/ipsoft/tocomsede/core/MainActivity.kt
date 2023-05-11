@@ -171,7 +171,9 @@ class MainActivity : ComponentActivity() {
                             Modifier.padding(innerPadding)
                         ) {
                             composable(Screen.Home.route) {
-                                HomeScreen(navController = navController)
+                                HomeScreen(navController = navController) {
+                                    launchLoginActivity()
+                                }
                             }
                             composable(Screen.Cart.route) {
                                 CartScreen {
@@ -189,13 +191,7 @@ class MainActivity : ComponentActivity() {
                             composable(Screen.About.route) {
                                 AboutScreen {
                                     {
-                                        signInLauncher.launch(
-                                            AuthUI.getInstance()
-                                                .createSignInIntentBuilder()
-                                                .setAvailableProviders(providers)
-                                                .setLogo(R.drawable.ic_launcher_foreground)
-                                                .build()
-                                        )
+                                        launchLoginActivity()
                                     }
                                 }
                             }
@@ -234,6 +230,16 @@ class MainActivity : ComponentActivity() {
         }
     }
 
+    private fun launchLoginActivity() {
+        signInLauncher.launch(
+            AuthUI.getInstance()
+                .createSignInIntentBuilder()
+                .setAvailableProviders(providers)
+                .setLogo(R.drawable.ic_launcher_foreground)
+                .build()
+        )
+    }
+
     override fun onResume() {
         super.onResume()
         loadUser()
@@ -254,20 +260,19 @@ class MainActivity : ComponentActivity() {
             // Successfully signed in
             FirebaseAuth.getInstance().currentUser?.let { user ->
 
+                val userModel = User(
+                    name = user.displayName ?: "",
+                    email = user.email ?: "",
+                    phone = user.phoneNumber ?: "",
+                    photoUrl = user.photoUrl?.toString() ?: "",
+                    uid = user.uid
+                )
+                loggedUser = userModel
+
                 lifecycleScope.launch {
                     preferencesRepository.storeUser(
-                        User(
-                            name = user.displayName ?: "",
-                            email = user.email ?: "",
-                            phone = user.phoneNumber ?: "",
-                            photoUrl = user.photoUrl?.toString() ?: "",
-                            uid = user.uid
-                        )
-                    ).let {
-                        if (it is ResultState.Success) {
-                            loadUser()
-                        }
-                    }
+                        userModel
+                    )
                 }
             }
         } else {

@@ -8,16 +8,29 @@ import androidx.lifecycle.viewModelScope
 import com.ipsoft.tocomsede.core.model.Category
 import com.ipsoft.tocomsede.core.model.ResultState
 import com.ipsoft.tocomsede.data.firebaserealtimedb.RealtimeRepository
+import com.ipsoft.tocomsede.utils.UserInfo
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 class HomeViewModel @Inject constructor(private val repo: RealtimeRepository) :
-    ViewModel() {
+    ViewModel(), UserInfo.UserInfoListener {
 
     private val _categories: MutableState<CategoryState> = mutableStateOf(CategoryState())
     val categories: State<CategoryState> = _categories
+
+    private val _isUserLogged: MutableState<Boolean> = mutableStateOf(UserInfo.isUserLogged)
+    val isUserLogged: State<Boolean> = _isUserLogged
+
+    init {
+        UserInfo.addListener(this)
+    }
+
+    override fun onCleared() {
+        super.onCleared()
+        UserInfo.removeListener(this)
+    }
 
     fun loadItems() {
         viewModelScope.launch {
@@ -47,6 +60,10 @@ class HomeViewModel @Inject constructor(private val repo: RealtimeRepository) :
 
     init {
         loadItems()
+    }
+
+    override fun onUserInfoChanged(isUserLogged: Boolean) {
+        _isUserLogged.value = isUserLogged
     }
 }
 
