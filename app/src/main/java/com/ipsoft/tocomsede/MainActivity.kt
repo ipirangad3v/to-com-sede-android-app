@@ -3,6 +3,7 @@ package com.ipsoft.tocomsede
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -86,6 +87,8 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
+                    val isDarkTheme = isSystemInDarkTheme()
+
                     val bottomBarState = rememberSaveable { (mutableStateOf(true)) }
 
                     val navController = rememberNavController()
@@ -172,7 +175,7 @@ class MainActivity : ComponentActivity() {
                         ) {
                             composable(Screen.Home.route) {
                                 HomeScreen(navController = navController) {
-                                    launchLoginActivity()
+                                    launchLoginActivity(isDarkTheme)
                                 }
                             }
                             composable(Screen.Cart.route) {
@@ -192,22 +195,9 @@ class MainActivity : ComponentActivity() {
                                 AboutScreen(onAddressesClick = {
                                     navController.navigate(Screen.AddressForm.route)
                                 }, onLogoutClick = {
-                                        AuthUI.getInstance()
-                                            .signOut(this@MainActivity)
-                                            .addOnCompleteListener {
-                                                lifecycleScope.launch {
-                                                    preferencesRepository.clearUser()
-                                                    loggedUser = null
-                                                }
-                                            }
+                                        firebaseLogout()
                                     }, onLoginClick = {
-                                        signInLauncher.launch(
-                                            AuthUI.getInstance()
-                                                .createSignInIntentBuilder()
-                                                .setAvailableProviders(providers)
-                                                .setLogo(R.drawable.ic_launcher_foreground)
-                                                .build()
-                                        )
+                                        launchLoginActivity(isDarkTheme)
                                     })
                             }
 
@@ -237,14 +227,36 @@ class MainActivity : ComponentActivity() {
         }
     }
 
-    private fun launchLoginActivity() {
-        signInLauncher.launch(
-            AuthUI.getInstance()
-                .createSignInIntentBuilder()
-                .setAvailableProviders(providers)
-                .setLogo(R.drawable.ic_launcher_foreground)
-                .build()
-        )
+    private fun firebaseLogout() {
+        AuthUI.getInstance()
+            .signOut(this@MainActivity)
+            .addOnCompleteListener {
+                lifecycleScope.launch {
+                    preferencesRepository.clearUser()
+                    loggedUser = null
+                }
+            }
+    }
+
+    private fun launchLoginActivity(isDarkTheme: Boolean) {
+        if (isDarkTheme) {
+            signInLauncher.launch(
+                AuthUI.getInstance()
+                    .createSignInIntentBuilder()
+                    .setAvailableProviders(providers)
+                    .setTheme(R.style.Theme_FirebaseAuthUIDark)
+                    .setLogo(R.drawable.sem_fundo)
+                    .build()
+            )
+        } else {
+            signInLauncher.launch(
+                AuthUI.getInstance()
+                    .createSignInIntentBuilder()
+                    .setAvailableProviders(providers)
+                    .setLogo(R.drawable.sem_fundo)
+                    .build()
+            )
+        }
     }
 
     override fun onResume() {
