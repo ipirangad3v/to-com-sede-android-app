@@ -50,7 +50,7 @@ fun AboutScreen(
     Column(modifier = Modifier.fillMaxSize(), verticalArrangement = Arrangement.SpaceBetween) {
         Spacer(modifier = Modifier.padding(mediumPadding))
         LazyColumn(
-            modifier = Modifier.fillMaxWidth(),
+            modifier = Modifier.fillMaxSize(),
             verticalArrangement = Arrangement.Center,
             horizontalAlignment = CenterHorizontally
         ) {

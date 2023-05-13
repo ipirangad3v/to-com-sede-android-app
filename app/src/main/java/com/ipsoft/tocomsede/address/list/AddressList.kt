@@ -11,23 +11,29 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material.icons.filled.Delete
+import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material3.Button
 import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.ExtendedFloatingActionButton
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
@@ -37,12 +43,12 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.ipsoft.tocomsede.R
+import com.ipsoft.tocomsede.core.model.Address
 import com.ipsoft.tocomsede.core.ui.theme.darkBlue80
 import com.ipsoft.tocomsede.core.ui.theme.gray
 import com.ipsoft.tocomsede.core.ui.theme.itemDividerPadding
 import com.ipsoft.tocomsede.core.ui.theme.mediumPadding
 import com.ipsoft.tocomsede.core.ui.theme.smallPadding
-import com.ipsoft.tocomsede.core.ui.theme.xxLargePadding
 import com.ipsoft.tocomsede.core.util.network.NetworkHandler
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -60,6 +66,8 @@ fun AddressList(
     val addressesState = viewModel.addressState.value
 
     val visibility = remember { mutableStateOf(false) }
+
+    val canRetrieve = remember { mutableStateOf(true) }
 
     Scaffold(
         modifier = Modifier
@@ -114,6 +122,12 @@ fun AddressList(
                 .padding(padding),
             color = gray
         ) {
+            LaunchedEffect(canRetrieve) {
+                if (canRetrieve.value) {
+                    viewModel.getAddresses()
+                    canRetrieve.value = false
+                }
+            }
             if (hasInternet.value) {
                 addressesState.error?.let {
                     Box(
@@ -151,20 +165,38 @@ fun AddressList(
                             modifier = Modifier
                                 .fillMaxSize()
                         ) {
+                            canRetrieve.value = true
                             Column {
-                                LazyColumn {
-                                    addressesState.addresses?.forEach { address ->
+                                LazyColumn(modifier = Modifier.fillMaxSize()) {
+                                    item {
+                                        Spacer(
+                                            modifier = Modifier.padding(itemDividerPadding)
+                                        )
+                                    }
+                                    if (addressesState.addresses.isNullOrEmpty()) {
                                         item {
-                                        }
-                                        if (addressesState.addresses.last() == address) {
-                                            item {
-                                                Spacer(
-                                                    modifier = Modifier.padding(
-                                                        xxLargePadding
-                                                    )
+                                            Box(
+                                                modifier = Modifier
+                                                    .fillMaxWidth()
+                                                    .padding(mediumPadding),
+                                                contentAlignment = Alignment.Center
+                                            ) {
+                                                Text(
+                                                    text = stringResource(id = R.string.no_addresses)
                                                 )
                                             }
-                                        } else {
+                                        }
+                                    } else {
+                                        addressesState.addresses.forEach { address ->
+                                            item {
+                                                AddressListItem(
+                                                    address = address,
+                                                    onEditClick = {
+                                                    }
+                                                ) {
+                                                    viewModel.deleteAddress(address)
+                                                }
+                                            }
                                             item {
                                                 Spacer(
                                                     modifier = Modifier.padding(
@@ -197,6 +229,37 @@ fun AddressList(
                         }
                     }
                 }
+            }
+        }
+    }
+}
+
+@Composable
+fun AddressListItem(
+    address: Address,
+    onEditClick: () -> Unit,
+    onAddressDeleteClick: () -> Unit
+) {
+    Surface(color = Color.White) {
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(smallPadding),
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Text(
+                text = address.toString(),
+                modifier = Modifier.weight(1f)
+            )
+            IconButton(onClick = onAddressDeleteClick) {
+                Icon(
+                    Icons.Default.Delete,
+                    contentDescription = "Delete",
+                    tint = MaterialTheme.colorScheme.error
+                )
+            }
+            IconButton(onClick = onEditClick) {
+                Icon(Icons.Default.Edit, contentDescription = "Edit", tint = darkBlue80)
             }
         }
     }

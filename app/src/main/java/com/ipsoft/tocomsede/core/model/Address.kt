@@ -7,8 +7,13 @@ data class Address(
     val street: String,
     val number: String,
     val complement: String,
-    val neighborhood: String
+    val neighborhood: String,
+    var id: String
 ) {
     @Suppress("unused")
-    constructor() : this("", "", "", "", "", "", "")
+    constructor() : this("", "", "", "", "", "", "", id = "")
+
+    override fun toString(): String {
+        return "$street, $number, $neighborhood, $city - $state, $zipCode"
+    }
 }

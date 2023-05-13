@@ -25,6 +25,32 @@ class AddressListViewModel @Inject constructor(private val addressRepository: Re
         getAddresses()
     }
 
+    fun deleteAddress(address: Address) {
+        viewModelScope.launch {
+            addressRepository.deleteAddress(address).collect { deleteResponse ->
+                when (deleteResponse) {
+                    is Success -> {
+                        getAddresses()
+                    }
+
+                    is Failure -> {
+                        _addressState.value = _addressState.value.copy(
+                            loading = false,
+                            error = deleteResponse.msg.toString()
+                        )
+                    }
+
+                    is Loading -> {
+                        _addressState.value = AddressState(
+                            addresses = null,
+                            loading = true
+                        )
+                    }
+                }
+            }
+        }
+    }
+
     fun getAddresses() {
         viewModelScope.launch {
             addressRepository.getAddresses().collect {

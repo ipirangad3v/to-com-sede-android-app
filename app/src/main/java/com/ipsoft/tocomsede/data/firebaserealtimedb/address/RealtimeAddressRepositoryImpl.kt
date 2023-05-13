@@ -12,7 +12,6 @@ import javax.inject.Inject
 
 class RealtimeAddressRepositoryImpl @Inject constructor(dbReference: DatabaseReference) :
     RealtimeAddressRepository {
-
     private val userReference = dbReference.child("users").child(userUid ?: "")
 
     override suspend fun saveAddress(address: Address): Flow<ResultState<Boolean>> = callbackFlow {
@@ -47,7 +46,8 @@ class RealtimeAddressRepositoryImpl @Inject constructor(dbReference: DatabaseRef
                 if (it.isSuccessful) {
                     val addresses = mutableListOf<Address>()
                     it.result?.children?.forEach { address ->
-                        address.getValue(Address::class.java)?.let { addressValue -> addresses.add(addressValue) }
+                        address.getValue(Address::class.java)?.apply { id = address.key.toString() }
+                            ?.let { addressValue -> addresses.add(addressValue) }
                     }
                     trySend(ResultState.Success(addresses))
                 } else {
@@ -63,4 +63,28 @@ class RealtimeAddressRepositoryImpl @Inject constructor(dbReference: DatabaseRef
             close()
         }
     }
+
+    override suspend fun deleteAddress(address: Address): Flow<ResultState<Boolean>> =
+        callbackFlow {
+            trySend(ResultState.Loading)
+            if (userUid == null) {
+                trySend(ResultState.Failure(UserNotLoggedException("User not logged")))
+            } else {
+                userReference.child("addresses").child(address.id).removeValue()
+                    .addOnCompleteListener {
+                        if (it.isSuccessful) {
+                            trySend(ResultState.Success(true))
+                        } else {
+                            trySend(
+                                ResultState.Failure(
+                                    it.exception ?: Exception("Error deleting address")
+                                )
+                            )
+                        }
+                    }.addOnFailureListener { ResultState.Failure(it) }
+            }
+            awaitClose {
+                close()
+            }
+        }
 }

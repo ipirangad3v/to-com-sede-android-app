@@ -7,4 +7,5 @@ import kotlinx.coroutines.flow.Flow
 interface RealtimeAddressRepository {
     suspend fun saveAddress(address: Address): Flow<ResultState<Boolean>>
     suspend fun getAddresses(): Flow<ResultState<List<Address>>>
+    suspend fun deleteAddress(address: Address): Flow<ResultState<Boolean>>
 }

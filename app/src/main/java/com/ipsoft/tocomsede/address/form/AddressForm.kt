@@ -208,7 +208,8 @@ fun AddressFormScreen(
                                     complement = complement.value,
                                     neighborhood = neighborhood.value,
                                     city = city.value,
-                                    state = state.value
+                                    state = state.value,
+                                    id = ""
                                 )
                             )
                         } else {
