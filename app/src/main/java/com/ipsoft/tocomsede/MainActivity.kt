@@ -51,6 +51,7 @@ import com.ipsoft.tocomsede.data.user.PreferencesRepository
 import com.ipsoft.tocomsede.home.ui.HomeScreen
 import com.ipsoft.tocomsede.itemdetails.ItemDetailsScreen
 import com.ipsoft.tocomsede.orders.OrdersScreen
+import com.ipsoft.tocomsede.phone.PhoneScreen
 import com.ipsoft.tocomsede.utils.UserInfo.loggedUser
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
@@ -96,7 +97,7 @@ class MainActivity : ComponentActivity() {
                     val navBackStackEntry by navController.currentBackStackEntryAsState()
 
                     when (navBackStackEntry?.destination?.route) {
-                        Screen.ItemDetails.route, Screen.Checkout.route, Screen.AddressForm.route, Screen.AddressList.route -> {
+                        Screen.ItemDetails.route, Screen.Checkout.route, Screen.AddressForm.route, Screen.AddressList.route, Screen.Phone.route -> {
                             bottomBarState.value = false
                         }
 
@@ -192,14 +193,27 @@ class MainActivity : ComponentActivity() {
                             composable(Screen.Orders.route) {
                                 OrdersScreen()
                             }
+                            composable(Screen.Phone.route) {
+                                PhoneScreen {
+                                    navController.navigateUp()
+                                }
+                            }
                             composable(Screen.About.route) {
-                                AboutScreen(onAddressesClick = {
-                                    navController.navigate(Screen.AddressList.route)
-                                }, onLogoutClick = {
+                                AboutScreen(
+                                    onAddressesClick = {
+                                        navController.navigate(Screen.AddressList.route)
+                                    },
+                                    onLogoutClick = {
                                         firebaseLogout()
-                                    }, onLoginClick = {
+                                    },
+                                    onPhoneClick =
+                                    {
+                                        navController.navigate(Screen.Phone.route)
+                                    },
+                                    onLoginClick = {
                                         launchLoginActivity(isDarkTheme)
-                                    })
+                                    }
+                                )
                             }
                             composable(Screen.AddressList.route) {
                                 AddressList(onNewAddressClick = { navController.navigate(Screen.AddressForm.route) }) {

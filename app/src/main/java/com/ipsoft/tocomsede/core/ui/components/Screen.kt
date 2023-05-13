@@ -32,6 +32,8 @@ sealed class Screen(
 
     object AddressList : Screen("address_list", R.string.addresses, Icons.Filled.Add)
 
+    object Phone : Screen("phone", R.string.phone, Icons.Filled.Add)
+
     companion object {
         val items = listOf(Home, Cart, Orders, About)
         const val ITEM_ID = "itemId"

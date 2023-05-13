@@ -4,6 +4,8 @@ import com.ipsoft.tocomsede.data.firebaserealtimedb.address.RealtimeAddressRepos
 import com.ipsoft.tocomsede.data.firebaserealtimedb.address.RealtimeAddressRepositoryImpl
 import com.ipsoft.tocomsede.data.firebaserealtimedb.items.RealtimeItemRepository
 import com.ipsoft.tocomsede.data.firebaserealtimedb.items.RealtimeItemRepositoryImpl
+import com.ipsoft.tocomsede.data.firebaserealtimedb.phone.RealtimePhoneRepository
+import com.ipsoft.tocomsede.data.firebaserealtimedb.phone.RealtimePhoneRepositoryImpl
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn
@@ -21,4 +23,9 @@ abstract class RealtimeRepositoryModule {
     abstract fun providesRealtimeUserRepository(
         repo: RealtimeAddressRepositoryImpl
     ): RealtimeAddressRepository
+
+    @Binds
+    abstract fun providesRealtimePhoneRepository(
+        repo: RealtimePhoneRepositoryImpl
+    ): RealtimePhoneRepository
 }

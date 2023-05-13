@@ -38,8 +38,11 @@
     <string name="addresses">endereços</string>
     <string name="logout">sair</string>
     <string name="fill_all_fields">verifique os campos e tente novamente</string>
-    <string name="login_text">Efetue Login abaixo para ver suas informações</string>
+    <string name="login_text">Faça Login abaixo para acessar suas informações</string>
     <string name="version">Versão %1$s</string>
     <string name="new_address">novo endereço</string>
     <string name="no_addresses">você ainda não adicionou nenhum endereço</string>
+    <string name="phone_number">Número de telefone</string>
+    <string name="phone">Telefone</string>
+    <string name="phone_update_success">Telefone atualizado com sucesso!</string>
 </resources>

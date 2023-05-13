@@ -13,3 +13,10 @@ fun String.isValidCep(): Boolean {
     val regex = Regex("^\\d{8}\$")
     return regex.matches(this)
 }
+
+fun String.isBrazilianPhone(): Boolean {
+    val regex = Regex("^\\d{11}\$")
+    return regex.matches(this)
+}
+
+fun String.digitsOnly(): String = this.replace("[^\\d]".toRegex(), "")

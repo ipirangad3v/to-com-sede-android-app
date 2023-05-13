@@ -12,6 +12,7 @@ import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Call
 import androidx.compose.material.icons.filled.LocationOn
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
@@ -43,6 +44,7 @@ fun AboutScreen(
     viewModel: AboutViewModel = hiltViewModel(),
     onAddressesClick: () -> Unit,
     onLoginClick: () -> Unit,
+    onPhoneClick: () -> Unit,
     onLogoutClick: () -> Unit
 ) {
     val isUserLoggedState = viewModel.isUserLogged.value
@@ -61,6 +63,14 @@ fun AboutScreen(
                 item {
                     MenuItem(Icons.Filled.LocationOn, stringResource(id = R.string.addresses)) {
                         onAddressesClick()
+                    }
+                }
+                item {
+                    MenuItem(
+                        imageVector = Icons.Filled.Call,
+                        title = stringResource(id = R.string.phone)
+                    ) {
+                        onPhoneClick()
                     }
                 }
                 if (isUserLoggedState) {
