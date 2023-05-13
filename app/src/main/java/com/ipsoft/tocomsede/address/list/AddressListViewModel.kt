@@ -83,6 +83,32 @@ class AddressListViewModel @Inject constructor(private val addressRepository: Re
         }
     }
 
+    fun updateAddress(address: Address) {
+        viewModelScope.launch {
+            addressRepository.updateAddress(address).collect { updateResponse ->
+                when (updateResponse) {
+                    is Success -> {
+                        getAddresses()
+                    }
+
+                    is Failure -> {
+                        _addressState.value = _addressState.value.copy(
+                            loading = false,
+                            error = updateResponse.msg.toString()
+                        )
+                    }
+
+                    is Loading -> {
+                        _addressState.value = AddressState(
+                            addresses = null,
+                            loading = true
+                        )
+                    }
+                }
+            }
+        }
+    }
+
     data class AddressState(
         val addresses: List<Address>? = null,
         val loading: Boolean = false,

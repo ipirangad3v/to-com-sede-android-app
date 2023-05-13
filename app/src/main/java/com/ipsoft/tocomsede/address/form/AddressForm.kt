@@ -209,7 +209,8 @@ fun AddressFormScreen(
                                     neighborhood = neighborhood.value,
                                     city = city.value,
                                     state = state.value,
-                                    id = ""
+                                    id = "",
+                                    isFavorite = true
                                 )
                             )
                         } else {

@@ -87,4 +87,45 @@ class RealtimeAddressRepositoryImpl @Inject constructor(dbReference: DatabaseRef
                 close()
             }
         }
+
+    override suspend fun updateAddress(address: Address): Flow<ResultState<Boolean>> =
+        callbackFlow {
+            trySend(ResultState.Loading)
+            if (userUid == null) {
+                trySend(ResultState.Failure(UserNotLoggedException("User not logged")))
+            } else {
+                if (address.isFavorite) {
+                    userReference.child("addresses").get().addOnCompleteListener {
+                        if (it.isSuccessful) {
+                            it.result?.children?.forEach { address ->
+                                address.getValue(Address::class.java)
+                                    ?.apply { id = address.key.toString() }
+                                    ?.let { addressValue ->
+                                        if (addressValue.isFavorite) {
+                                            addressValue.isFavorite = false
+                                            userReference.child("addresses").child(addressValue.id)
+                                                .setValue(addressValue)
+                                        }
+                                    }
+                            }
+                        }
+                    }
+                }
+                userReference.child("addresses").child(address.id).setValue(address)
+                    .addOnCompleteListener {
+                        if (it.isSuccessful) {
+                            trySend(ResultState.Success(true))
+                        } else {
+                            trySend(
+                                ResultState.Failure(
+                                    it.exception ?: Exception("Error updating address")
+                                )
+                            )
+                        }
+                    }.addOnFailureListener { ResultState.Failure(it) }
+            }
+            awaitClose {
+                close()
+            }
+        }
 }

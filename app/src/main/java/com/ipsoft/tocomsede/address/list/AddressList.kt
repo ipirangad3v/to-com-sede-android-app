@@ -15,11 +15,13 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.material.LocalContentAlpha
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.Delete
-import androidx.compose.material.icons.filled.Edit
+import androidx.compose.material.icons.filled.Favorite
+import androidx.compose.material.icons.filled.FavoriteBorder
 import androidx.compose.material3.Button
 import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.CircularProgressIndicator
@@ -27,6 +29,7 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.ExtendedFloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.LocalContentColor
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
@@ -192,6 +195,13 @@ fun AddressList(
                                                 AddressListItem(
                                                     address = address,
                                                     onEditClick = {
+                                                    },
+                                                    onFavoriteClick = {
+                                                        viewModel.updateAddress(
+                                                            address.copy(
+                                                                isFavorite = !address.isFavorite
+                                                            )
+                                                        )
                                                     }
                                                 ) {
                                                     viewModel.deleteAddress(address)
@@ -238,9 +248,10 @@ fun AddressList(
 fun AddressListItem(
     address: Address,
     onEditClick: () -> Unit,
+    onFavoriteClick: () -> Unit,
     onAddressDeleteClick: () -> Unit
 ) {
-    Surface(color = Color.White) {
+    Surface(color = Color.White, modifier = Modifier.clickable(onClick = onEditClick)) {
         Row(
             modifier = Modifier
                 .fillMaxWidth()
@@ -251,15 +262,19 @@ fun AddressListItem(
                 text = address.toString(),
                 modifier = Modifier.weight(1f)
             )
+            Icon(
+                if (address.isFavorite) Icons.Default.Favorite else Icons.Default.FavoriteBorder,
+                contentDescription = if (address.isFavorite) "Remove from favorites" else "Add to favorites",
+                tint = if (address.isFavorite) Color.Red else LocalContentColor.current.copy(alpha = LocalContentAlpha.current),
+                modifier = Modifier.clickable { onFavoriteClick() }
+            )
+
             IconButton(onClick = onAddressDeleteClick) {
                 Icon(
                     Icons.Default.Delete,
                     contentDescription = "Delete",
                     tint = MaterialTheme.colorScheme.error
                 )
-            }
-            IconButton(onClick = onEditClick) {
-                Icon(Icons.Default.Edit, contentDescription = "Edit", tint = darkBlue80)
             }
         }
     }

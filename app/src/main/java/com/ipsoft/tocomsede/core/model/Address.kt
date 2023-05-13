@@ -8,10 +8,11 @@ data class Address(
     val number: String,
     val complement: String,
     val neighborhood: String,
-    var id: String
+    var id: String,
+    var isFavorite: Boolean
 ) {
     @Suppress("unused")
-    constructor() : this("", "", "", "", "", "", "", id = "")
+    constructor() : this("", "", "", "", "", "", "", id = "", isFavorite = false)
 
     override fun toString(): String {
         return "$street, $number, $neighborhood, $city - $state, $zipCode"
