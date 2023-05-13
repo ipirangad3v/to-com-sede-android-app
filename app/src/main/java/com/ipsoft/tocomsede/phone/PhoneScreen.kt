@@ -41,6 +41,11 @@ fun PhoneScreen(viewModel: PhoneViewModel = hiltViewModel(), onBack: () -> Unit)
     var phoneNumber by remember { mutableStateOf(viewModel.phoneState.value.phone) }
     val phoneState = viewModel.phoneState.value
     val context = LocalContext.current
+    val shouldUpdateNumber = remember {
+        mutableStateOf(
+            true
+        )
+    }
 
     Scaffold(
         topBar = {
@@ -71,6 +76,10 @@ fun PhoneScreen(viewModel: PhoneViewModel = hiltViewModel(), onBack: () -> Unit)
 
             if (phoneState.phoneUpdateSuccess) {
                 context.showMsg(stringResource(id = R.string.phone_update_success))
+            }
+            if (phoneState.phone.isNotEmpty() && shouldUpdateNumber.value) {
+                phoneNumber = phoneState.phone
+                shouldUpdateNumber.value = false
             }
 
             Column(
