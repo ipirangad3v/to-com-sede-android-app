@@ -13,10 +13,10 @@ import kotlinx.coroutines.flow.callbackFlow
 import javax.inject.Inject
 
 class RealtimeItemRepositoryImpl @Inject constructor(
-    private val db: DatabaseReference
+    dbReference: DatabaseReference
 ) : RealtimeItemRepository {
 
-    private val itemReference = db.child("items")
+    private val itemReference = dbReference.child("items")
     override suspend fun getItems(): Flow<ResultState<List<Category>>> = callbackFlow {
         trySend(ResultState.Loading)
 
@@ -63,9 +63,9 @@ class RealtimeItemRepositoryImpl @Inject constructor(
             }
         }
 
-        db.addValueEventListener(valueEvent)
+        itemReference.addValueEventListener(valueEvent)
         awaitClose {
-            db.removeEventListener(valueEvent)
+            itemReference.removeEventListener(valueEvent)
             close()
         }
     }

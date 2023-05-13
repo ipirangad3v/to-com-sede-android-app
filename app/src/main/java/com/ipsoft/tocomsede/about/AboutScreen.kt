@@ -2,7 +2,6 @@ package com.ipsoft.tocomsede.about
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -14,7 +13,6 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.LocationOn
-import androidx.compose.material3.Button
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -26,12 +24,14 @@ import androidx.compose.ui.Alignment.Companion.CenterHorizontally
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
 import com.bumptech.glide.integration.compose.GlideImage
 import com.ipsoft.tocomsede.R
+import com.ipsoft.tocomsede.core.extensions.getVerCode
 import com.ipsoft.tocomsede.core.ui.components.SquaredButton
 import com.ipsoft.tocomsede.core.ui.theme.largePadding
 import com.ipsoft.tocomsede.core.ui.theme.mediumPadding
@@ -47,9 +47,10 @@ fun AboutScreen(
 ) {
     val isUserLoggedState = viewModel.isUserLogged.value
 
-    Box(modifier = Modifier.fillMaxSize()) {
+    Column(modifier = Modifier.fillMaxSize(), verticalArrangement = Arrangement.SpaceBetween) {
+        Spacer(modifier = Modifier.padding(mediumPadding))
         LazyColumn(
-            modifier = Modifier.fillMaxSize(),
+            modifier = Modifier.fillMaxWidth(),
             verticalArrangement = Arrangement.Center,
             horizontalAlignment = CenterHorizontally
         ) {
@@ -72,11 +73,46 @@ fun AboutScreen(
                 }
             } else {
                 item {
-                    Button(onClick = onLoginClick) {
-                        Text(text = "Login")
+                    Text(
+                        text = stringResource(id = R.string.login_text),
+                        Modifier.padding(mediumPadding),
+                        style = MaterialTheme.typography.titleMedium
+                    )
+                    Spacer(modifier = Modifier.padding(mediumPadding))
+                    SquaredButton(onClick = onLoginClick) {
+                        Text(
+                            text = stringResource(id = R.string.login),
+                            Modifier.padding(largePadding)
+                        )
                     }
                 }
             }
+        }
+        InfoFooter()
+    }
+}
+
+@Composable
+fun InfoFooter() {
+    Surface(
+        modifier = Modifier
+            .fillMaxWidth()
+    ) {
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(mediumPadding),
+            horizontalArrangement = Arrangement.SpaceBetween,
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Text(
+                text = stringResource(id = R.string.app_name),
+                style = MaterialTheme.typography.bodySmall
+            )
+            Text(
+                text = stringResource(id = R.string.version).format(LocalContext.current.getVerCode()),
+                style = MaterialTheme.typography.bodySmall
+            )
         }
     }
 }
