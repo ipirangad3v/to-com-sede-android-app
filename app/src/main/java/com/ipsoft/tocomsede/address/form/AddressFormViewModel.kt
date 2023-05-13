@@ -1,4 +1,4 @@
-package com.ipsoft.tocomsede.address
+package com.ipsoft.tocomsede.address.form
 
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.State

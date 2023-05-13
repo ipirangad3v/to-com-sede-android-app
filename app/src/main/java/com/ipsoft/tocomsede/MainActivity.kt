@@ -33,7 +33,8 @@ import com.firebase.ui.auth.FirebaseAuthUIActivityResultContract
 import com.firebase.ui.auth.data.model.FirebaseAuthUIAuthenticationResult
 import com.google.firebase.auth.FirebaseAuth
 import com.ipsoft.tocomsede.about.AboutScreen
-import com.ipsoft.tocomsede.address.AddressFormScreen
+import com.ipsoft.tocomsede.address.form.AddressFormScreen
+import com.ipsoft.tocomsede.address.list.AddressList
 import com.ipsoft.tocomsede.cart.CartBadge
 import com.ipsoft.tocomsede.cart.CartScreen
 import com.ipsoft.tocomsede.checkout.ui.CheckoutScreen
@@ -95,7 +96,7 @@ class MainActivity : ComponentActivity() {
                     val navBackStackEntry by navController.currentBackStackEntryAsState()
 
                     when (navBackStackEntry?.destination?.route) {
-                        Screen.ItemDetails.route, Screen.Checkout.route -> {
+                        Screen.ItemDetails.route, Screen.Checkout.route, Screen.AddressForm.route, Screen.AddressList.route -> {
                             bottomBarState.value = false
                         }
 
@@ -193,12 +194,17 @@ class MainActivity : ComponentActivity() {
                             }
                             composable(Screen.About.route) {
                                 AboutScreen(onAddressesClick = {
-                                    navController.navigate(Screen.AddressForm.route)
+                                    navController.navigate(Screen.AddressList.route)
                                 }, onLogoutClick = {
                                         firebaseLogout()
                                     }, onLoginClick = {
                                         launchLoginActivity(isDarkTheme)
                                     })
+                            }
+                            composable(Screen.AddressList.route) {
+                                AddressList(onNewAddressClick = { navController.navigate(Screen.AddressForm.route) }) {
+                                    navController.navigateUp()
+                                }
                             }
 
                             composable(

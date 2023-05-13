@@ -37,4 +37,30 @@ class RealtimeAddressRepositoryImpl @Inject constructor(dbReference: DatabaseRef
             close()
         }
     }
+
+    override suspend fun getAddresses(): Flow<ResultState<List<Address>>> = callbackFlow {
+        trySend(ResultState.Loading)
+        if (userUid == null) {
+            trySend(ResultState.Failure(UserNotLoggedException("User not logged")))
+        } else {
+            userReference.child("addresses").get().addOnCompleteListener {
+                if (it.isSuccessful) {
+                    val addresses = mutableListOf<Address>()
+                    it.result?.children?.forEach { address ->
+                        address.getValue(Address::class.java)?.let { addressValue -> addresses.add(addressValue) }
+                    }
+                    trySend(ResultState.Success(addresses))
+                } else {
+                    trySend(
+                        ResultState.Failure(
+                            it.exception ?: Exception("Error getting addresses")
+                        )
+                    )
+                }
+            }.addOnFailureListener { ResultState.Failure(it) }
+        }
+        awaitClose {
+            close()
+        }
+    }
 }

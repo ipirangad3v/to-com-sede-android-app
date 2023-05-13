@@ -8,4 +8,7 @@ data class Address(
     val number: String,
     val complement: String,
     val neighborhood: String
-)
+) {
+    @Suppress("unused")
+    constructor() : this("", "", "", "", "", "", "")
+}

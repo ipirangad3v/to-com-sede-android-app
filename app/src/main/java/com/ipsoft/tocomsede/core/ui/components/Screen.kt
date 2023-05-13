@@ -2,6 +2,7 @@ package com.ipsoft.tocomsede.core.ui.components
 
 import androidx.annotation.StringRes
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.Build
 import androidx.compose.material.icons.filled.Home
@@ -13,7 +14,9 @@ import com.ipsoft.tocomsede.R
 
 sealed class Screen(
     val route: String,
-    @StringRes val resourceId: Int,
+    @Suppress("unused")
+    @StringRes
+    val resourceId: Int,
     val icon: ImageVector
 ) {
     object Home : Screen("home", R.string.home, Icons.Filled.Home)
@@ -26,6 +29,8 @@ sealed class Screen(
     object Checkout : Screen("checkout", R.string.checkout, Icons.Filled.ShoppingCart)
 
     object AddressForm : Screen("address_form", R.string.address_form, Icons.Filled.Build)
+
+    object AddressList : Screen("address_list", R.string.addresses, Icons.Filled.Add)
 
     companion object {
         val items = listOf(Home, Cart, Orders, About)
