@@ -10,8 +10,6 @@ fun String.toCurrency(currency: String = "R$"): String =
     }
 
 fun String.isValidCep(): Boolean {
-    val cepRegex = Regex("^\\d{5}-\\d{3}$")
-    return cepRegex.matches(this)
+    val regex = Regex("^\\d{8}\$")
+    return regex.matches(this)
 }
-
-fun String.CepDigitsOnly(): String = this.replace(Regex("[^0-9]"), "")

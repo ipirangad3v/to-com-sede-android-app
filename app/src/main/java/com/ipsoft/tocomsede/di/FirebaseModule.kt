@@ -15,5 +15,5 @@ object FirebaseModule {
     fun providesFirebaseRealtimeDatabase() = Firebase.database
 
     @Provides
-    fun providesItemsReference(database: FirebaseDatabase) = database.getReference("items")
+    fun providesDatabaseReference(database: FirebaseDatabase) = database.reference
 }

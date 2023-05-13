@@ -7,14 +7,14 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.ipsoft.tocomsede.core.model.Category
 import com.ipsoft.tocomsede.core.model.ResultState
-import com.ipsoft.tocomsede.data.firebaserealtimedb.RealtimeRepository
+import com.ipsoft.tocomsede.data.firebaserealtimedb.items.RealtimeItemRepository
 import com.ipsoft.tocomsede.utils.UserInfo
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class HomeViewModel @Inject constructor(private val repo: RealtimeRepository) :
+class HomeViewModel @Inject constructor(private val repo: RealtimeItemRepository) :
     ViewModel(), UserInfo.UserInfoListener {
 
     private val _categories: MutableState<CategoryState> = mutableStateOf(CategoryState())

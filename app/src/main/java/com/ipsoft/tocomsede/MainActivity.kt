@@ -191,15 +191,24 @@ class MainActivity : ComponentActivity() {
                             composable(Screen.About.route) {
                                 AboutScreen(onAddressesClick = {
                                     navController.navigate(Screen.AddressForm.route)
-                                }) {
-                                    signInLauncher.launch(
+                                }, onLogoutClick = {
                                         AuthUI.getInstance()
-                                            .createSignInIntentBuilder()
-                                            .setAvailableProviders(providers)
-                                            .setLogo(R.drawable.ic_launcher_foreground)
-                                            .build()
-                                    )
-                                }
+                                            .signOut(this@MainActivity)
+                                            .addOnCompleteListener {
+                                                lifecycleScope.launch {
+                                                    preferencesRepository.clearUser()
+                                                    loggedUser = null
+                                                }
+                                            }
+                                    }, onLoginClick = {
+                                        signInLauncher.launch(
+                                            AuthUI.getInstance()
+                                                .createSignInIntentBuilder()
+                                                .setAvailableProviders(providers)
+                                                .setLogo(R.drawable.ic_launcher_foreground)
+                                                .build()
+                                        )
+                                    })
                             }
 
                             composable(
@@ -217,7 +226,9 @@ class MainActivity : ComponentActivity() {
                                 }
                             }
                             composable(Screen.AddressForm.route) {
-                                AddressFormScreen()
+                                AddressFormScreen {
+                                    navController.navigateUp()
+                                }
                             }
                         }
                     }

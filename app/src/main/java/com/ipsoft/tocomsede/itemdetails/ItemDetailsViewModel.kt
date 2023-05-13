@@ -10,14 +10,14 @@ import com.ipsoft.tocomsede.core.model.ResultState.Failure
 import com.ipsoft.tocomsede.core.model.ResultState.Loading
 import com.ipsoft.tocomsede.core.model.ResultState.Success
 import com.ipsoft.tocomsede.data.cart.CartRepository
-import com.ipsoft.tocomsede.data.firebaserealtimedb.RealtimeRepository
+import com.ipsoft.tocomsede.data.firebaserealtimedb.items.RealtimeItemRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 class ItemDetailsViewModel @Inject constructor(
-    private val itemRepository: RealtimeRepository,
+    private val itemRepository: RealtimeItemRepository,
     private val cartRepository: CartRepository
 ) : ViewModel() {
 

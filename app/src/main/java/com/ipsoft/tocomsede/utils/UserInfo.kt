@@ -19,6 +19,9 @@ object UserInfo {
     val isUserLogged: Boolean
         get() = loggedUser != null && loggedUser?.uid != null
 
+    val userUid
+        get() = if (isUserLogged) loggedUser?.uid else null
+
     fun addListener(listener: UserInfoListener) {
         listeners.add(listener)
     }
@@ -32,6 +35,6 @@ object UserInfo {
     }
 
     interface UserInfoListener {
-        fun onUserInfoChanged(isUserLogged: Boolean = false)
+        fun onUserInfoChanged(isUserLogged: Boolean)
     }
 }

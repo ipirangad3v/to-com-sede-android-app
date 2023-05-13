@@ -50,14 +50,13 @@ class PreferencesDataStore(private val context: Context) {
         return user.first()
     }
 
-    suspend fun deleteUser(): ResultState<Boolean> {
+    suspend fun clearUser() {
         context.preferencesDataStore.edit { preferences ->
             preferences[userName] = ""
             preferences[userEmail] = ""
             preferences[userPhone] = ""
             preferences[userPhotoUrl] = ""
         }
-        return ResultState.Success(true)
     }
 
     private val Context.preferencesDataStore: DataStore<Preferences> by preferencesDataStore("preferences")

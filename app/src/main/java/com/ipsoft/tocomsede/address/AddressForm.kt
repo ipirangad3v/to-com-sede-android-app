@@ -15,22 +15,30 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.ipsoft.tocomsede.R
 import com.ipsoft.tocomsede.core.extensions.isValidCep
+import com.ipsoft.tocomsede.core.extensions.showMsg
 import com.ipsoft.tocomsede.core.model.Address
 import com.ipsoft.tocomsede.core.ui.theme.largePadding
 import com.ipsoft.tocomsede.core.ui.theme.mediumPadding
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun AddressFormScreen(addressFormViewModel: AddressFormViewModel = hiltViewModel()) {
+fun AddressFormScreen(
+    addressFormViewModel: AddressFormViewModel = hiltViewModel(),
+    onAddressAdded: () -> Unit
+) {
+    val context = LocalContext.current
+
     val cepState = addressFormViewModel.cepState
 
     val cep = remember { mutableStateOf("") }
@@ -41,6 +49,32 @@ fun AddressFormScreen(addressFormViewModel: AddressFormViewModel = hiltViewModel
     val state = remember { mutableStateOf("") }
     val street = remember { mutableStateOf("") }
 
+    val isFilled = cep.value.isNotEmpty() &&
+        number.value.isNotEmpty() &&
+        neighborhood.value.isNotEmpty() &&
+        city.value.isNotEmpty() &&
+        state.value.isNotEmpty() &&
+        street.value.isNotEmpty()
+
+    val showToast = remember { mutableStateOf(true) }
+
+    if (cepState.value.cepResponse != null) {
+        cep.value = cepState.value.cepResponse!!.cep
+        street.value = cepState.value.cepResponse!!.street
+        neighborhood.value = cepState.value.cepResponse!!.neighborhood
+        city.value = cepState.value.cepResponse!!.city
+        state.value = cepState.value.cepResponse!!.state
+    }
+
+    if (cepState.value.addressAddedSuccess && showToast.value) {
+        context.showMsg(stringResource(R.string.address_added_success))
+        showToast.value = false
+        onAddressAdded()
+    }
+
+    cepState.value.error?.let {
+        context.showMsg(it)
+    }
     if (cepState.value.loading) {
         Box(
             modifier = Modifier.fillMaxSize(),
@@ -59,23 +93,14 @@ fun AddressFormScreen(addressFormViewModel: AddressFormViewModel = hiltViewModel
                 style = MaterialTheme.typography.titleSmall,
                 modifier = Modifier.padding(bottom = largePadding)
             )
+            CepTextField(cep) {
+                if (it.isValidCep()) {
+                    addressFormViewModel.getCep(it)
+                }
+            }
             OutlinedTextField(
-                value = cep.value,
-                onValueChange = {
-                    cep.value = it
-                    if (it.isValidCep()) {
-                        addressFormViewModel.getCep(it)
-                    }
-                },
-                label = { Text(stringResource(R.string.cep)) },
-                keyboardOptions = KeyboardOptions(
-                    keyboardType = KeyboardType.Number
-                ),
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(bottom = largePadding)
-            )
-            OutlinedTextField(
+                isError = street.value.isEmpty(),
+                maxLines = 1,
                 value = street.value,
                 onValueChange = { street.value = it },
                 label = { Text(stringResource(R.string.street)) },
@@ -87,7 +112,9 @@ fun AddressFormScreen(addressFormViewModel: AddressFormViewModel = hiltViewModel
                 modifier = Modifier.fillMaxWidth()
             ) {
                 OutlinedTextField(
+                    isError = number.value.isEmpty(),
                     value = number.value,
+                    maxLines = 1,
                     onValueChange = { number.value = it },
                     label = { Text(stringResource(R.string.number)) },
                     modifier = Modifier
@@ -95,6 +122,7 @@ fun AddressFormScreen(addressFormViewModel: AddressFormViewModel = hiltViewModel
                         .padding(end = mediumPadding)
                 )
                 OutlinedTextField(
+                    maxLines = 1,
                     value = complement.value,
                     onValueChange = { complement.value = it },
                     label = { Text(stringResource(R.string.complement)) },
@@ -104,6 +132,8 @@ fun AddressFormScreen(addressFormViewModel: AddressFormViewModel = hiltViewModel
                 )
             }
             OutlinedTextField(
+                isError = neighborhood.value.isEmpty(),
+                maxLines = 1,
                 value = neighborhood.value,
                 onValueChange = { neighborhood.value = it },
                 label = { Text(stringResource(R.string.neighborhood)) },
@@ -112,7 +142,9 @@ fun AddressFormScreen(addressFormViewModel: AddressFormViewModel = hiltViewModel
                     .padding(bottom = largePadding)
             )
             OutlinedTextField(
+                isError = city.value.isEmpty(),
                 value = city.value,
+                maxLines = 1,
                 onValueChange = { city.value = it },
                 label = { Text(stringResource(R.string.city)) },
                 modifier = Modifier
@@ -120,6 +152,8 @@ fun AddressFormScreen(addressFormViewModel: AddressFormViewModel = hiltViewModel
                     .padding(bottom = largePadding)
             )
             OutlinedTextField(
+                isError = state.value.isEmpty(),
+                maxLines = 1,
                 value = state.value,
                 onValueChange = { state.value = it },
                 label = { Text(stringResource(R.string.state)) },
@@ -127,17 +161,21 @@ fun AddressFormScreen(addressFormViewModel: AddressFormViewModel = hiltViewModel
             )
             Button(
                 onClick = {
-                    addressFormViewModel.saveAddress(
-                        Address(
-                            zipCode = cep.value,
-                            street = street.value,
-                            number = number.value,
-                            complement = complement.value,
-                            neighborhood = neighborhood.value,
-                            city = city.value,
-                            state = state.value
+                    if (isFilled) {
+                        addressFormViewModel.saveAddress(
+                            Address(
+                                zipCode = cep.value,
+                                street = street.value,
+                                number = number.value,
+                                complement = complement.value,
+                                neighborhood = neighborhood.value,
+                                city = city.value,
+                                state = state.value
+                            )
                         )
-                    )
+                    } else {
+                        context.showMsg(context.getString(R.string.fill_all_fields))
+                    }
                 },
                 modifier = Modifier
                     .fillMaxWidth()
@@ -147,4 +185,31 @@ fun AddressFormScreen(addressFormViewModel: AddressFormViewModel = hiltViewModel
             }
         }
     }
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun CepTextField(
+    cep: MutableState<String>,
+    onCepChange: (String) -> Unit
+) {
+    OutlinedTextField(
+        maxLines = 1,
+        isError = !cep.value.isValidCep(),
+        value = cep.value,
+        onValueChange = {
+            if (it.length <= 8) {
+                cep.value = it
+                onCepChange(it)
+            }
+        },
+        keyboardOptions = KeyboardOptions(
+            keyboardType = KeyboardType.Number
+        ),
+        label = { Text(stringResource(id = R.string.cep)) },
+        placeholder = { Text("12345678") },
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(bottom = largePadding)
+    )
 }

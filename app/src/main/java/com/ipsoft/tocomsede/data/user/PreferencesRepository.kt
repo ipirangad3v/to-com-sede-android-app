@@ -9,4 +9,6 @@ class PreferencesRepository @Inject constructor(private val preferencesDataStore
 
     suspend fun storeUser(user: User): ResultState<Boolean> =
         preferencesDataStore.storeUser(user)
+
+    suspend fun clearUser() = preferencesDataStore.clearUser()
 }

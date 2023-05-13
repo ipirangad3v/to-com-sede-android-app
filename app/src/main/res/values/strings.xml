@@ -34,4 +34,8 @@
     <string name="city">Cidade</string>
     <string name="state">Estado</string>
     <string name="save_address">Salvar endereço</string>
+    <string name="address_added_success">Endereço adicionado com sucesso</string>
+    <string name="addresses">endereços</string>
+    <string name="logout">sair</string>
+    <string name="fill_all_fields">verifique os campos e tente novamente</string>
 </resources>

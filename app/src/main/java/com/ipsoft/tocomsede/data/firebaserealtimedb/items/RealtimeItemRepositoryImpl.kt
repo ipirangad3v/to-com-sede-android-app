@@ -1,4 +1,4 @@
-package com.ipsoft.tocomsede.data.firebaserealtimedb
+package com.ipsoft.tocomsede.data.firebaserealtimedb.items
 
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
@@ -12,9 +12,11 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.callbackFlow
 import javax.inject.Inject
 
-class RealtimeRepositoryImpl @Inject constructor(
+class RealtimeItemRepositoryImpl @Inject constructor(
     private val db: DatabaseReference
-) : RealtimeRepository {
+) : RealtimeItemRepository {
+
+    private val itemReference = db.child("items")
     override suspend fun getItems(): Flow<ResultState<List<Category>>> = callbackFlow {
         trySend(ResultState.Loading)
 
@@ -37,9 +39,9 @@ class RealtimeRepositoryImpl @Inject constructor(
             }
         }
 
-        db.addValueEventListener(valueEvent)
+        itemReference.addValueEventListener(valueEvent)
         awaitClose {
-            db.removeEventListener(valueEvent)
+            itemReference.removeEventListener(valueEvent)
             close()
         }
     }
