@@ -24,4 +24,14 @@
     <string name="checkout">finalizar pedido</string>
     <string name="in_cart">no carrinho</string>
     <string name="login">entrar</string>
+    <string name="user_banner_welcome">Olá, %1$s. O que vamos pedir hoje?</string>
+    <string name="address_form">cadastrar endereço</string>
+    <string name="street">Rua</string>
+    <string name="cep">CEP</string>
+    <string name="number">Número</string>
+    <string name="complement">Complemento</string>
+    <string name="neighborhood">Bairro</string>
+    <string name="city">Cidade</string>
+    <string name="state">Estado</string>
+    <string name="save_address">Salvar endereço</string>
 </resources>

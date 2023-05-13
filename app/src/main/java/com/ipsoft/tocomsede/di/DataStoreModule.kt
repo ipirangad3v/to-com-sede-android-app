@@ -1,7 +1,7 @@
 package com.ipsoft.tocomsede.di
 
 import android.content.Context
-import com.ipsoft.tocomsede.data.datastore.PreferencesDataStore
+import com.ipsoft.tocomsede.data.user.PreferencesDataStore
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn

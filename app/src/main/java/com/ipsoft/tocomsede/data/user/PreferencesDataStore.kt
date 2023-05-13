@@ -1,4 +1,4 @@
-package com.ipsoft.tocomsede.data.datastore
+package com.ipsoft.tocomsede.data.user
 
 import android.content.Context
 import androidx.datastore.core.DataStore

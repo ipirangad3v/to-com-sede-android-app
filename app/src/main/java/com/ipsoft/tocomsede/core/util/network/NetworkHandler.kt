@@ -1,4 +1,4 @@
-package com.ipsoft.tocomsede.data.network
+package com.ipsoft.tocomsede.core.util.network
 
 import android.content.Context
 import android.net.NetworkCapabilities

@@ -1,4 +1,4 @@
-package com.ipsoft.tocomsede.data.datastore
+package com.ipsoft.tocomsede.data.user
 
 import com.ipsoft.tocomsede.core.model.ResultState
 import com.ipsoft.tocomsede.core.model.User

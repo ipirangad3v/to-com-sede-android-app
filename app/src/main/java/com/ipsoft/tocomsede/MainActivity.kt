@@ -1,4 +1,4 @@
-package com.ipsoft.tocomsede.core
+package com.ipsoft.tocomsede
 
 import android.os.Bundle
 import androidx.activity.ComponentActivity
@@ -31,8 +31,8 @@ import com.firebase.ui.auth.AuthUI
 import com.firebase.ui.auth.FirebaseAuthUIActivityResultContract
 import com.firebase.ui.auth.data.model.FirebaseAuthUIAuthenticationResult
 import com.google.firebase.auth.FirebaseAuth
-import com.ipsoft.tocomsede.R
 import com.ipsoft.tocomsede.about.AboutScreen
+import com.ipsoft.tocomsede.address.AddressFormScreen
 import com.ipsoft.tocomsede.cart.CartBadge
 import com.ipsoft.tocomsede.cart.CartScreen
 import com.ipsoft.tocomsede.checkout.ui.CheckoutScreen
@@ -45,7 +45,7 @@ import com.ipsoft.tocomsede.core.ui.theme.ToComSedeTheme
 import com.ipsoft.tocomsede.core.ui.theme.darkBlue80
 import com.ipsoft.tocomsede.core.ui.theme.lightBlue
 import com.ipsoft.tocomsede.data.cart.CartRepository
-import com.ipsoft.tocomsede.data.datastore.PreferencesRepository
+import com.ipsoft.tocomsede.data.user.PreferencesRepository
 import com.ipsoft.tocomsede.home.ui.HomeScreen
 import com.ipsoft.tocomsede.itemdetails.ItemDetailsScreen
 import com.ipsoft.tocomsede.orders.OrdersScreen
@@ -189,23 +189,16 @@ class MainActivity : ComponentActivity() {
                                 OrdersScreen()
                             }
                             composable(Screen.About.route) {
-                                AboutScreen {
-                                    {
-                                        launchLoginActivity()
-                                    }
-                                }
-                            }
-                            composable(Screen.About.route) {
-                                AboutScreen {
-                                    {
-                                        signInLauncher.launch(
-                                            AuthUI.getInstance()
-                                                .createSignInIntentBuilder()
-                                                .setAvailableProviders(providers)
-                                                .setLogo(R.drawable.ic_launcher_foreground)
-                                                .build()
-                                        )
-                                    }
+                                AboutScreen(onAddressesClick = {
+                                    navController.navigate(Screen.AddressForm.route)
+                                }) {
+                                    signInLauncher.launch(
+                                        AuthUI.getInstance()
+                                            .createSignInIntentBuilder()
+                                            .setAvailableProviders(providers)
+                                            .setLogo(R.drawable.ic_launcher_foreground)
+                                            .build()
+                                    )
                                 }
                             }
 
@@ -222,6 +215,9 @@ class MainActivity : ComponentActivity() {
                                 ) {
                                     navController.navigateUp()
                                 }
+                            }
+                            composable(Screen.AddressForm.route) {
+                                AddressFormScreen()
                             }
                         }
                     }
