@@ -11,9 +11,9 @@ import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
-import androidx.compose.material3.Button
 import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.ElevatedButton
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -197,7 +197,7 @@ fun AddressFormScreen(
                     label = { Text(stringResource(R.string.state)) },
                     modifier = Modifier.fillMaxWidth()
                 )
-                Button(
+                ElevatedButton(
                     onClick = {
                         if (isFilled) {
                             addressFormViewModel.saveAddress(

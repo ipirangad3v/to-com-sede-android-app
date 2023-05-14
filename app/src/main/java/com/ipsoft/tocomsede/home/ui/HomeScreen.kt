@@ -19,6 +19,7 @@ import androidx.compose.material.icons.filled.Person
 import androidx.compose.material3.Button
 import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.ElevatedButton
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.ExtendedFloatingActionButton
 import androidx.compose.material3.Icon
@@ -118,13 +119,15 @@ fun HomeScreen(
                         modifier = Modifier.fillMaxSize(),
                         contentAlignment = Center
                     ) {
-                        Text(text = it)
-                        Spacer(modifier = Modifier.padding(mediumPadding))
-                        Button(
-                            onClick = { homeViewModel.loadItems() },
-                            modifier = Modifier.wrapContentSize()
-                        ) {
-                            Text(text = stringResource(id = R.string.try_again))
+                        Column(modifier = Modifier.fillMaxSize()) {
+                            Text(text = it)
+                            Spacer(modifier = Modifier.padding(mediumPadding))
+                            ElevatedButton(
+                                onClick = { homeViewModel.loadItems() },
+                                modifier = Modifier.wrapContentSize()
+                            ) {
+                                Text(text = stringResource(id = R.string.try_again))
+                            }
                         }
                     }
                 }

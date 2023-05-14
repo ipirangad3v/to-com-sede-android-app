@@ -14,7 +14,6 @@ import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Edit
-import androidx.compose.material3.Button
 import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ElevatedButton
@@ -93,13 +92,18 @@ fun CartScreen(
                             .fillMaxSize(),
                         contentAlignment = Alignment.Center
                     ) {
-                        Text(text = it)
-                        Spacer(modifier = Modifier.padding(smallPadding))
-                        Button(
-                            onClick = { checkoutViewModel.loadCart() },
-                            modifier = Modifier.wrapContentSize()
+                        Column(
+                            modifier = Modifier
+                                .fillMaxSize()
                         ) {
-                            Text(text = stringResource(id = R.string.try_again))
+                            Text(text = it)
+                            Spacer(modifier = Modifier.padding(smallPadding))
+                            ElevatedButton(
+                                onClick = { checkoutViewModel.loadCart() },
+                                modifier = Modifier.wrapContentSize()
+                            ) {
+                                Text(text = stringResource(id = R.string.try_again))
+                            }
                         }
                     }
                 }

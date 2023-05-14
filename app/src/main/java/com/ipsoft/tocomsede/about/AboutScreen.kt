@@ -15,7 +15,6 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Call
 import androidx.compose.material.icons.filled.LocationOn
 import androidx.compose.material3.AlertDialog
-import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.ElevatedButton
 import androidx.compose.material3.Icon
@@ -63,7 +62,7 @@ fun AboutScreen(
             title = { Text(stringResource(id = R.string.confirm_logout)) },
             text = { Text(stringResource(id = R.string.confirm_logout_ask)) },
             confirmButton = {
-                Button(
+                ElevatedButton(
                     onClick = {
                         onLogoutClick()
                         showDialog = false

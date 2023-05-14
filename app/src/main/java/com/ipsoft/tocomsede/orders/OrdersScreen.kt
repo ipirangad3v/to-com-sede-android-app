@@ -18,9 +18,9 @@ import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.CheckCircle
-import androidx.compose.material3.Button
 import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.ElevatedButton
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -168,14 +168,15 @@ fun OrdersScreen(viewModel: OrdersViewModel = hiltViewModel(), onLoginClick: () 
                                         ) {
                                             Text(
                                                 text = stringResource(id = R.string.login_to_see_orders),
+                                                Modifier.padding(mediumPadding),
                                                 style = MaterialTheme.typography.titleMedium
                                             )
-                                            Spacer(modifier = Modifier.padding(smallPadding))
-                                            Button(
-                                                onClick = onLoginClick,
-                                                modifier = Modifier.wrapContentSize()
-                                            ) {
-                                                Text(text = stringResource(id = R.string.login))
+                                            Spacer(modifier = Modifier.padding(mediumPadding))
+                                            ElevatedButton(onClick = onLoginClick) {
+                                                Text(
+                                                    text = stringResource(id = R.string.login),
+                                                    Modifier.padding(largePadding)
+                                                )
                                             }
                                         }
                                     }
@@ -192,7 +193,7 @@ fun OrdersScreen(viewModel: OrdersViewModel = hiltViewModel(), onLoginClick: () 
                     Column(horizontalAlignment = Alignment.CenterHorizontally) {
                         Text(text = stringResource(id = R.string.no_internet))
                         Spacer(modifier = Modifier.padding(smallPadding))
-                        Button(
+                        ElevatedButton(
                             onClick = {
                                 hasInternet.value = NetworkHandler(context).isNetworkAvailable()
                             },
