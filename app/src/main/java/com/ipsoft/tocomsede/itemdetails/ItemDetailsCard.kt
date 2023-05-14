@@ -11,7 +11,8 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ShoppingCart
-import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.ElevatedButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
@@ -27,10 +28,8 @@ import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
 import com.bumptech.glide.integration.compose.GlideImage
 import com.ipsoft.tocomsede.R
 import com.ipsoft.tocomsede.core.ui.components.PriceTag
-import com.ipsoft.tocomsede.core.ui.components.SquaredButton
 import com.ipsoft.tocomsede.core.ui.theme.darkBlue80
 import com.ipsoft.tocomsede.core.ui.theme.largePadding
-import com.ipsoft.tocomsede.core.ui.theme.mediumPadding
 import com.ipsoft.tocomsede.core.ui.theme.smallPadding
 
 @OptIn(ExperimentalGlideComposeApi::class)
@@ -65,8 +64,9 @@ fun ItemDetailsCard(itemDetailScreenState: ItemDetailScreenState) {
                         verticalAlignment = Alignment.CenterVertically
                     ) {
                         PriceTag(price = it.price)
-                        SquaredButton(
-                            colors = CardDefaults.elevatedCardColors(
+                        ElevatedButton(
+                            onClick = {},
+                            colors = ButtonDefaults.elevatedButtonColors(
                                 containerColor = if (it.isAvailable) darkBlue80 else MaterialTheme.colorScheme.errorContainer
                             )
                         ) {
@@ -80,14 +80,14 @@ fun ItemDetailsCard(itemDetailScreenState: ItemDetailScreenState) {
                                 },
                                 style = MaterialTheme.typography.bodySmall,
                                 modifier = Modifier
-                                    .padding(mediumPadding)
+                                    .padding(smallPadding)
                                     .wrapContentSize(Alignment.Center),
                                 maxLines = 1,
                                 color = Color.White
                             )
                         }
                         if (itemDetailScreenState.quantityInCart > 0) {
-                            SquaredButton {
+                            ElevatedButton(onClick = { }) {
                                 Row(
                                     modifier = Modifier
                                         .padding(smallPadding)
@@ -99,12 +99,13 @@ fun ItemDetailsCard(itemDetailScreenState: ItemDetailScreenState) {
                                         style = MaterialTheme.typography.bodySmall,
                                         modifier = Modifier.padding(smallPadding),
                                         maxLines = 1,
-                                        color = Color.White
+                                        color = darkBlue80
                                     )
                                     Icon(
                                         imageVector = Icons.Filled.ShoppingCart,
                                         contentDescription = null,
-                                        modifier = Modifier.size(largePadding)
+                                        modifier = Modifier.size(smallPadding),
+                                        tint = darkBlue80
                                     )
                                 }
                             }

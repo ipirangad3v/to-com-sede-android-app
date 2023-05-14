@@ -55,4 +55,6 @@
     <string name="canceled">cancelado</string>
     <string name="confirmed">confirmado</string>
     <string name="login_to_see_orders">Faça login para ver seus pedidos</string>
+    <string name="confirm_logout">Confirmar saida</string>
+    <string name="confirm_logout_ask">deseja realmente sair?</string>
 </resources>

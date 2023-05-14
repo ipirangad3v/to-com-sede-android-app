@@ -86,6 +86,7 @@ fun HomeScreen(
         floatingActionButton = {
             if (!isUserLogged) {
                 ExtendedFloatingActionButton(
+                    shape = MaterialTheme.shapes.extraLarge,
                     onClick = onLoginClick,
                     modifier = Modifier.padding(smallPadding),
                     containerColor = darkBlue80

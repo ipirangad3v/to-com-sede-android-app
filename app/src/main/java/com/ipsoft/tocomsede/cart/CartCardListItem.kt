@@ -8,7 +8,9 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Delete
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.ElevatedButton
 import androidx.compose.material3.ElevatedCard
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -23,7 +25,6 @@ import com.bumptech.glide.integration.compose.GlideImage
 import com.ipsoft.tocomsede.R
 import com.ipsoft.tocomsede.core.extensions.toCurrency
 import com.ipsoft.tocomsede.core.model.Item
-import com.ipsoft.tocomsede.core.ui.components.SquaredButton
 import com.ipsoft.tocomsede.core.ui.theme.defaultCartElevation
 import com.ipsoft.tocomsede.core.ui.theme.defaultImageSize
 import com.ipsoft.tocomsede.core.ui.theme.mediumPadding
@@ -34,7 +35,6 @@ import com.ipsoft.tocomsede.core.ui.theme.softBlue
 @Composable
 fun CartCardListItem(
     item: Item,
-    showDelete: Boolean = true,
     onItemDeleteClick: () -> Unit
 ) {
     Column(
@@ -81,19 +81,17 @@ fun CartCardListItem(
             color = androidx.compose.material.MaterialTheme.colors.onSurface
         )
         Spacer(modifier = Modifier.height(smallPadding))
-        if (showDelete) {
-            RemoveButton(onItemDeleteClick = onItemDeleteClick)
-        }
+        RemoveButton(onItemDeleteClick = onItemDeleteClick)
     }
 }
 
 @Composable
 fun RemoveButton(onItemDeleteClick: () -> Unit) {
-    SquaredButton(
+    ElevatedButton(
         modifier = Modifier
             .wrapContentSize(),
         onClick = { onItemDeleteClick() },
-        colors = CardDefaults.elevatedCardColors(
+        colors = ButtonDefaults.elevatedButtonColors(
             containerColor = MaterialTheme.colorScheme.errorContainer
         )
     ) {

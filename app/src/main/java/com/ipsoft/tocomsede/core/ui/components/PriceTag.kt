@@ -1,9 +1,8 @@
 package com.ipsoft.tocomsede.core.ui.components
 
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.CardDefaults
-import androidx.compose.material3.ElevatedCard
+import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.ElevatedButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -12,13 +11,14 @@ import com.ipsoft.tocomsede.core.extensions.toCurrency
 import com.ipsoft.tocomsede.core.ui.theme.almostWhite
 import com.ipsoft.tocomsede.core.ui.theme.darkBlue80
 import com.ipsoft.tocomsede.core.ui.theme.mediumPadding
+import com.ipsoft.tocomsede.core.ui.theme.smallPadding
 
 @Composable
 fun PriceTag(price: Double) {
-    ElevatedCard(
-        shape = RoundedCornerShape(mediumPadding),
+    ElevatedButton(
+        onClick = {},
         modifier = Modifier.padding(mediumPadding),
-        colors = CardDefaults.elevatedCardColors(
+        colors = ButtonDefaults.elevatedButtonColors(
             containerColor = darkBlue80,
             contentColor = almostWhite
         )
@@ -26,7 +26,7 @@ fun PriceTag(price: Double) {
         Text(
             text = price.toString().toCurrency(),
             style = MaterialTheme.typography.bodySmall,
-            modifier = Modifier.padding(mediumPadding)
+            modifier = Modifier.padding(smallPadding)
         )
     }
 }

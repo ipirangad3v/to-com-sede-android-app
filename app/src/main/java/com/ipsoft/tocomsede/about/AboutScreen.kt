@@ -14,16 +14,24 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Call
 import androidx.compose.material.icons.filled.LocationOn
-import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.AlertDialog
+import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.ElevatedButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Alignment.Companion.CenterHorizontally
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
@@ -33,7 +41,6 @@ import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
 import com.bumptech.glide.integration.compose.GlideImage
 import com.ipsoft.tocomsede.R
 import com.ipsoft.tocomsede.core.extensions.getVerCode
-import com.ipsoft.tocomsede.core.ui.components.SquaredButton
 import com.ipsoft.tocomsede.core.ui.theme.largePadding
 import com.ipsoft.tocomsede.core.ui.theme.mediumPadding
 import com.ipsoft.tocomsede.core.ui.theme.smallPadding
@@ -48,6 +55,25 @@ fun AboutScreen(
     onLogoutClick: () -> Unit
 ) {
     val isUserLoggedState = viewModel.isUserLogged.value
+    var showDialog by remember { mutableStateOf(false) }
+
+    if (showDialog) {
+        AlertDialog(
+            onDismissRequest = { showDialog = false },
+            title = { Text(stringResource(id = R.string.confirm_logout)) },
+            text = { Text(stringResource(id = R.string.confirm_logout_ask)) },
+            confirmButton = {
+                Button(
+                    onClick = {
+                        onLogoutClick()
+                        showDialog = false
+                    }
+                ) {
+                    Text("OK")
+                }
+            }
+        )
+    }
 
     Column(modifier = Modifier.fillMaxSize(), verticalArrangement = Arrangement.SpaceBetween) {
         Spacer(modifier = Modifier.padding(mediumPadding))
@@ -77,7 +103,7 @@ fun AboutScreen(
                     item { Spacer(modifier = Modifier.padding(mediumPadding)) }
                     item {
                         LogoutButton {
-                            onLogoutClick()
+                            showDialog = true
                         }
                     }
                 }
@@ -89,7 +115,7 @@ fun AboutScreen(
                         style = MaterialTheme.typography.titleMedium
                     )
                     Spacer(modifier = Modifier.padding(mediumPadding))
-                    SquaredButton(onClick = onLoginClick) {
+                    ElevatedButton(onClick = onLoginClick) {
                         Text(
                             text = stringResource(id = R.string.login),
                             Modifier.padding(largePadding)
@@ -129,9 +155,9 @@ fun InfoFooter() {
 
 @Composable
 fun LogoutButton(onLogoutClick: () -> Unit = {}) {
-    SquaredButton(
+    ElevatedButton(
         onClick = onLogoutClick,
-        colors = CardDefaults.cardColors(
+        colors = ButtonDefaults.buttonColors(
             containerColor = MaterialTheme.colorScheme.errorContainer
         )
     ) {
@@ -139,7 +165,8 @@ fun LogoutButton(onLogoutClick: () -> Unit = {}) {
             text = stringResource(id = R.string.logout),
             modifier = Modifier
                 .wrapContentSize()
-                .padding(largePadding)
+                .padding(largePadding),
+            color = Color.Black
         )
     }
 }

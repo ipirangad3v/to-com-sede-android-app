@@ -17,6 +17,7 @@ import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material3.Button
 import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.ElevatedButton
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -37,7 +38,6 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.ipsoft.tocomsede.R
 import com.ipsoft.tocomsede.core.model.Address
-import com.ipsoft.tocomsede.core.ui.components.SquaredButton
 import com.ipsoft.tocomsede.core.ui.theme.darkBlue80
 import com.ipsoft.tocomsede.core.ui.theme.gray
 import com.ipsoft.tocomsede.core.ui.theme.itemDividerPadding
@@ -125,7 +125,7 @@ fun CartScreen(
                                 .padding(0.dp, smallPadding, 0.dp, 0.dp)
                         ) {
                             LazyColumn {
-                                item { CartItemList(cartItemState, showDelete = false) }
+                                item { CartItemList(cartItemState) }
                                 item { CheckoutCartTotal(cartTotalState) }
                                 item { Spacer(modifier = Modifier.padding(itemDividerPadding)) }
                                 if (isUserLoggedState) {
@@ -212,7 +212,7 @@ fun CheckoutButtonContainer(viewModel: CartViewModel) {
                 .padding(largePadding),
             contentAlignment = Alignment.BottomCenter
         ) {
-            SquaredButton(
+            ElevatedButton(
                 onClick = { viewModel.checkout() },
                 modifier = Modifier
                     .fillMaxWidth()
@@ -250,7 +250,7 @@ fun LoginContainer(onLoginClick: () -> Unit) {
                         .padding(largePadding),
                     textAlign = TextAlign.Center
                 )
-                SquaredButton(
+                ElevatedButton(
                     onClick = { onLoginClick() },
                     modifier = Modifier
                         .fillMaxWidth()

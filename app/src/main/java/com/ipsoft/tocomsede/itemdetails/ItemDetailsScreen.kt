@@ -20,6 +20,7 @@ import androidx.compose.material.icons.filled.ShoppingCart
 import androidx.compose.material3.Button
 import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.ElevatedButton
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -40,10 +41,8 @@ import androidx.compose.ui.res.stringResource
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.ipsoft.tocomsede.R
 import com.ipsoft.tocomsede.core.extensions.showMsg
-import com.ipsoft.tocomsede.core.ui.components.SquaredButton
 import com.ipsoft.tocomsede.core.ui.theme.darkBlue80
 import com.ipsoft.tocomsede.core.ui.theme.largePadding
-import com.ipsoft.tocomsede.core.ui.theme.mediumPadding
 import com.ipsoft.tocomsede.core.ui.theme.smallPadding
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -193,7 +192,7 @@ fun ItemAddContainer(
             }
             Spacer(modifier = Modifier.weight(1f))
 
-            SquaredButton(
+            ElevatedButton(
                 onClick = {
                     itemDetailScreenState.item?.let { item ->
                         if (canAddToCart) {
@@ -209,15 +208,18 @@ fun ItemAddContainer(
             ) {
                 Row(
                     Modifier
-                        .padding(mediumPadding)
+                        .padding(smallPadding)
                         .wrapContentSize(Alignment.Center),
                     verticalAlignment = Alignment.CenterVertically
                 ) {
-                    Text(text = stringResource(id = R.string.add_to), style = MaterialTheme.typography.bodySmall)
+                    Text(
+                        text = stringResource(id = R.string.add_to),
+                        style = MaterialTheme.typography.bodySmall
+                    )
                     Icon(
                         imageVector = Icons.Filled.ShoppingCart,
                         contentDescription = null,
-                        tint = Color.White,
+                        tint = darkBlue80,
                         modifier = Modifier
                             .wrapContentSize()
                             .padding(smallPadding)
