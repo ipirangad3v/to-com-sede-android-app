@@ -57,7 +57,7 @@ fun AccountScreen(
     onAddressesClick: () -> Unit,
     onLoginClick: () -> Unit,
     onPhoneClick: () -> Unit,
-    onLogoutClick: () -> Unit,
+    onLogoutClick: () -> Unit
 ) {
     val isUserLoggedState = viewModel.isUserLogged.value
     var showDialog by remember { mutableStateOf(false) }
@@ -165,20 +165,22 @@ fun AccountScreen(
 fun UserInfoBanner() {
     val user = UserInfo.loggedUser
 
-    Column(
-        modifier = Modifier
-            .wrapContentSize()
-            .padding(mediumPadding),
-        horizontalAlignment = CenterHorizontally,
-        verticalArrangement = Arrangement.SpaceBetween
-    ) {
-        GlideImage(
-            model = user?.photoUrl,
-            contentDescription = null,
-            modifier = Modifier.clip(shape = CircleShape)
-        )
-        Spacer(modifier = Modifier.padding(smallPadding))
-        user?.name?.let { Text(text = it, style = MaterialTheme.typography.titleLarge) }
+    Surface(modifier = Modifier.fillMaxWidth()) {
+        Column(
+            modifier = Modifier
+                .wrapContentSize()
+                .padding(mediumPadding),
+            horizontalAlignment = CenterHorizontally,
+            verticalArrangement = Arrangement.SpaceBetween
+        ) {
+            GlideImage(
+                model = user?.photoUrl,
+                contentDescription = null,
+                modifier = Modifier.clip(shape = CircleShape)
+            )
+            Spacer(modifier = Modifier.padding(smallPadding))
+            user?.name?.let { Text(text = it, style = MaterialTheme.typography.titleLarge) }
+        }
     }
 }
 
@@ -247,4 +249,3 @@ fun MenuItem(imageVector: ImageVector, title: String, onClick: () -> Unit) {
         }
     }
 }
-

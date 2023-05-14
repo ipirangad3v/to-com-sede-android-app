@@ -61,7 +61,7 @@ import com.ipsoft.tocomsede.core.util.network.NetworkHandler
 fun AddressList(
     viewModel: AddressListViewModel = hiltViewModel(),
     onNewAddressClick: () -> Unit,
-    onBack: () -> Unit,
+    onBack: () -> Unit
 ) {
     val context = LocalContext.current
 
@@ -273,7 +273,7 @@ fun AddressListItem(
     address: Address,
     onEditClick: () -> Unit,
     onFavoriteClick: () -> Unit,
-    onAddressDeleteClick: () -> Unit,
+    onAddressDeleteClick: () -> Unit
 ) {
     Surface(color = Color.White, modifier = Modifier.clickable(onClick = onEditClick)) {
         Row(

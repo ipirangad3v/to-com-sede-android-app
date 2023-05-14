@@ -17,7 +17,7 @@ sealed class Screen(
     @Suppress("unused")
     @StringRes
     val resourceId: Int,
-    val icon: ImageVector,
+    val icon: ImageVector
 ) {
     object Home : Screen("home", R.string.home, Icons.Filled.Home)
     object Cart : Screen("cart", R.string.cart, Icons.Filled.ShoppingCart)
