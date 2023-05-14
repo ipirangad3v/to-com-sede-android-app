@@ -22,7 +22,7 @@
     <string name="selected_quantity">quantidade</string>
     <string name="no_internet">sem conexão com a internet</string>
     <string name="checkout">finalizar pedido</string>
-    <string name="in_cart">no carrinho</string>
+    <string name="in_cart">Você colocou %1$s desse item no </string>
     <string name="login">entrar</string>
     <string name="user_banner_welcome">Olá, %1$s. O que vamos pedir hoje?</string>
     <string name="address_form">cadastrar endereço</string>

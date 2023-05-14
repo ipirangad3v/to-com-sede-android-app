@@ -86,28 +86,31 @@ fun ItemDetailsCard(itemDetailScreenState: ItemDetailScreenState) {
                                 color = Color.White
                             )
                         }
-                        if (itemDetailScreenState.quantityInCart > 0) {
-                            ElevatedButton(onClick = { }) {
-                                Row(
-                                    modifier = Modifier
-                                        .padding(smallPadding)
-                                        .wrapContentSize(Alignment.Center),
-                                    verticalAlignment = Alignment.CenterVertically
-                                ) {
-                                    Text(
-                                        text = itemDetailScreenState.quantityInCart.toString() + " no ",
-                                        style = MaterialTheme.typography.bodySmall,
-                                        modifier = Modifier.padding(smallPadding),
-                                        maxLines = 1,
-                                        color = darkBlue80
-                                    )
-                                    Icon(
-                                        imageVector = Icons.Filled.ShoppingCart,
-                                        contentDescription = null,
-                                        modifier = Modifier.size(smallPadding),
-                                        tint = darkBlue80
-                                    )
-                                }
+                    }
+                    if (itemDetailScreenState.quantityInCart > 0) {
+                        Spacer(modifier = Modifier.padding(smallPadding))
+                        ElevatedButton(onClick = { }, modifier = Modifier.fillMaxWidth()) {
+                            Row(
+                                modifier = Modifier
+                                    .padding(smallPadding)
+                                    .wrapContentSize(Alignment.Center),
+                                verticalAlignment = Alignment.CenterVertically
+                            ) {
+                                Text(
+                                    text = stringResource(
+                                        id = R.string.in_cart
+                                    ).format(itemDetailScreenState.quantityInCart.toString()),
+                                    style = MaterialTheme.typography.bodySmall,
+                                    modifier = Modifier.padding(smallPadding),
+                                    maxLines = 1,
+                                    color = darkBlue80
+                                )
+                                Icon(
+                                    imageVector = Icons.Filled.ShoppingCart,
+                                    contentDescription = null,
+                                    modifier = Modifier.size(largePadding),
+                                    tint = darkBlue80
+                                )
                             }
                         }
                     }
