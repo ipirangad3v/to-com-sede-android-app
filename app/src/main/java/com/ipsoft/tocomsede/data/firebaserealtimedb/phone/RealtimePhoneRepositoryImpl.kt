@@ -8,10 +8,11 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.callbackFlow
 import javax.inject.Inject
 
-class RealtimePhoneRepositoryImpl @Inject constructor(dbReference: DatabaseReference) :
+class RealtimePhoneRepositoryImpl @Inject constructor(private val dbReference: DatabaseReference) :
     RealtimePhoneRepository {
 
-    private val userReference = dbReference.child("users").child(UserInfo.userUid ?: "")
+    private val userReference
+        get() = dbReference.child("users").child(UserInfo.userUid ?: "")
 
     override suspend fun savePhone(phone: String): Flow<ResultState<Boolean>> = callbackFlow {
         val phoneReference = userReference.child("phone")

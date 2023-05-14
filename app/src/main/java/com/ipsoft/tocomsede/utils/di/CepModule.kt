@@ -1,4 +1,4 @@
-package com.ipsoft.tocomsede.di
+package com.ipsoft.tocomsede.utils.di
 
 import com.ipsoft.tocomsede.core.util.Constants.CEP_BASE_URL
 import com.ipsoft.tocomsede.core.util.Constants.DEBUG

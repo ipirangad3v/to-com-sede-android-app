@@ -32,7 +32,11 @@ import com.ipsoft.tocomsede.core.ui.theme.softBlue
 
 @OptIn(ExperimentalGlideComposeApi::class)
 @Composable
-fun CartCardListItem(item: Pair<Item, Int>, onItemDeleteClick: () -> Unit) {
+fun CartCardListItem(
+    item: Item,
+    showDelete: Boolean = true,
+    onItemDeleteClick: () -> Unit
+) {
     Column(
         modifier = Modifier.padding(0.dp, mediumPadding, 0.dp, mediumPadding),
         horizontalAlignment = Alignment.CenterHorizontally
@@ -51,7 +55,7 @@ fun CartCardListItem(item: Pair<Item, Int>, onItemDeleteClick: () -> Unit) {
                     shape = MaterialTheme.shapes.small
                 ) {
                     GlideImage(
-                        model = item.first.imageUrl,
+                        model = item.imageUrl,
                         contentDescription = null,
                         modifier = Modifier.size(defaultImageSize)
                     )
@@ -60,24 +64,26 @@ fun CartCardListItem(item: Pair<Item, Int>, onItemDeleteClick: () -> Unit) {
         }
         Spacer(modifier = Modifier.height(mediumPadding))
         Text(
-            text = item.first.name,
+            text = item.name,
             style = MaterialTheme.typography.bodySmall,
             color = androidx.compose.material.MaterialTheme.colors.onSurface
         )
         Spacer(modifier = Modifier.height(smallPadding))
         Text(
-            text = item.first.price.toString().toCurrency(),
+            text = item.price.toString().toCurrency(),
             style = MaterialTheme.typography.titleSmall,
             color = androidx.compose.material.MaterialTheme.colors.onSurface
         )
         Spacer(modifier = Modifier.height(smallPadding))
         Text(
-            text = stringResource(id = R.string.selected_quantity) + ": ${item.second}",
+            text = stringResource(id = R.string.selected_quantity) + ": ${item.selectedQuantity}",
             style = MaterialTheme.typography.titleSmall,
             color = androidx.compose.material.MaterialTheme.colors.onSurface
         )
         Spacer(modifier = Modifier.height(smallPadding))
-        RemoveButton(onItemDeleteClick = onItemDeleteClick)
+        if (showDelete) {
+            RemoveButton(onItemDeleteClick = onItemDeleteClick)
+        }
     }
 }
 

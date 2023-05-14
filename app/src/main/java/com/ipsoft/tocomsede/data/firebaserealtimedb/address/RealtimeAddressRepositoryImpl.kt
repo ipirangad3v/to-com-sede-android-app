@@ -10,9 +10,10 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.callbackFlow
 import javax.inject.Inject
 
-class RealtimeAddressRepositoryImpl @Inject constructor(dbReference: DatabaseReference) :
+class RealtimeAddressRepositoryImpl @Inject constructor(private val dbReference: DatabaseReference) :
     RealtimeAddressRepository {
-    private val userReference = dbReference.child("users").child(userUid ?: "")
+    private val userReference
+        get() = dbReference.child("users").child(userUid ?: "")
 
     override suspend fun saveAddress(address: Address): Flow<ResultState<Boolean>> = callbackFlow {
         trySend(ResultState.Loading)
@@ -128,4 +129,36 @@ class RealtimeAddressRepositoryImpl @Inject constructor(dbReference: DatabaseRef
                 close()
             }
         }
+
+    override suspend fun getFavoriteAddress(): Flow<ResultState<Address>> = callbackFlow {
+        trySend(ResultState.Loading)
+        if (userUid == null) {
+            trySend(ResultState.Failure(UserNotLoggedException("User not logged")))
+        } else {
+            userReference.child("addresses").get().addOnCompleteListener {
+                if (it.isSuccessful) {
+                    val addresses = mutableListOf<Address>()
+                    it.result?.children?.forEach { address ->
+                        address.getValue(Address::class.java)?.apply { id = address.key.toString() }
+                            ?.let { addressValue -> addresses.add(addressValue) }
+                    }
+                    val favoriteAddress = addresses.find { address -> address.isFavorite }
+                    if (favoriteAddress != null) {
+                        trySend(ResultState.Success(favoriteAddress))
+                    } else {
+                        trySend(ResultState.Failure(Exception("Favorite address not found")))
+                    }
+                } else {
+                    trySend(
+                        ResultState.Failure(
+                            it.exception ?: Exception("Error getting favorite address")
+                        )
+                    )
+                }
+            }.addOnFailureListener { ResultState.Failure(it) }
+        }
+        awaitClose {
+            close()
+        }
+    }
 }

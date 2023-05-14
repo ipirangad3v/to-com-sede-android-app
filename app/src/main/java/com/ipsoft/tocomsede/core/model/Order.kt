@@ -3,9 +3,17 @@ package com.ipsoft.tocomsede.core.model
 import java.util.Date
 
 data class Order(
-    val id: Int,
     val items: List<Item>,
-    val date: Date,
-    val price: Double,
-    val client: User
-)
+    val dateInMillis: String = Date().time.toString(),
+    val status: OrderStatus = OrderStatus.PENDING
+) {
+    @Suppress("unused")
+    constructor() : this(
+        items = emptyList(),
+        dateInMillis = Date().time.toString(),
+        status = OrderStatus.PENDING
+    )
+
+    val total
+        get() = items.sumOf { it.selectedQuantity * it.price }
+}

@@ -20,3 +20,10 @@ fun String.isBrazilianPhone(): Boolean {
 }
 
 fun String.digitsOnly(): String = this.replace("[^\\d]".toRegex(), "")
+
+fun String.millisToDateTime(): String {
+    val millis = this.toLong()
+    val date = java.util.Date(millis)
+    val sdf = java.text.SimpleDateFormat("HH:mm dd/MM/yyyy")
+    return sdf.format(date)
+}

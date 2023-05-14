@@ -1,4 +1,4 @@
-package com.ipsoft.tocomsede.di
+package com.ipsoft.tocomsede.utils.di
 
 import android.content.Context
 import com.ipsoft.tocomsede.data.user.PreferencesDataStore

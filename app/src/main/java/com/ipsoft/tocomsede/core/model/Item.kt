@@ -8,10 +8,11 @@ data class Item(
     val imageUrl: String,
     val category: String,
     val quantity: Int,
-    val vendor: String
+    val vendor: String,
+    val selectedQuantity: Int = 0
 ) {
     @Suppress("unused")
-    constructor() : this(0, "", "", 0.0, "", "", 0, "")
+    constructor() : this(0, "", "", 0.0, "", "", 0, "", selectedQuantity = 0)
 
     val isAvailable: Boolean
         get() = quantity > 0

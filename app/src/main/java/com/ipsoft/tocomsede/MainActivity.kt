@@ -186,12 +186,27 @@ class MainActivity : ComponentActivity() {
                                 }
                             }
                             composable(Screen.Checkout.route) {
-                                CheckoutScreen(onCheckoutClick = {}) {
+                                CheckoutScreen(
+                                    onEditClick = {
+                                        navController.navigate(Screen.AddressList.route)
+                                    },
+                                    onPhoneEditClick = {
+                                        navController.navigate(Screen.Phone.route)
+                                    },
+                                    onLoginClick = {
+                                        launchLoginActivity(isDarkTheme)
+                                    },
+                                    onCheckoutSuccess = {
+                                        navController.navigate(Screen.Orders.route)
+                                    }
+                                ) {
                                     navController.navigateUp()
                                 }
                             }
                             composable(Screen.Orders.route) {
-                                OrdersScreen()
+                                OrdersScreen {
+                                    launchLoginActivity(isDarkTheme)
+                                }
                             }
                             composable(Screen.Phone.route) {
                                 PhoneScreen {

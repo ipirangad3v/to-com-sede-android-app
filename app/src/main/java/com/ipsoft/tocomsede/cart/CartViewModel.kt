@@ -47,7 +47,7 @@ class CartViewModel @Inject constructor(private val cartRepository: CartReposito
             cartRepository.getCartItems().collect {
                 _cartItemState.value = when (it) {
                     is Success -> {
-                        CartItemState(items = it.data.toList())
+                        CartItemState(items = it.data)
                     }
 
                     is Failure -> {
@@ -62,9 +62,9 @@ class CartViewModel @Inject constructor(private val cartRepository: CartReposito
         }
     }
 
-    fun removeItem(item: Pair<Item, Int>) {
+    fun removeItem(item: Item) {
         viewModelScope.launch {
-            cartRepository.removeItemFromCart(item.first)
+            cartRepository.removeItemFromCart(item)
         }
     }
 

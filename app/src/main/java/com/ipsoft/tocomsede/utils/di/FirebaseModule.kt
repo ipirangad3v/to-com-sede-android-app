@@ -1,8 +1,10 @@
-package com.ipsoft.tocomsede.di
+package com.ipsoft.tocomsede.utils.di
 
+import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
+import com.ipsoft.tocomsede.data.firebaserealtimedb.orders.RealtimeOrdersRepositoryImpl
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -16,4 +18,9 @@ object FirebaseModule {
 
     @Provides
     fun providesDatabaseReference(database: FirebaseDatabase) = database.reference
+
+    @Provides
+    fun providesRealtimeOrdersRepository(
+        dbReference: DatabaseReference
+    ) = RealtimeOrdersRepositoryImpl(dbReference)
 }

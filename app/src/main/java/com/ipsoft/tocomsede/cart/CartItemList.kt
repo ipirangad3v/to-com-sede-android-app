@@ -20,7 +20,8 @@ import com.ipsoft.tocomsede.core.ui.theme.smallPadding
 @Composable
 fun CartItemList(
     itemState: CartItemState,
-    cartViewModel: CartViewModel = hiltViewModel()
+    cartViewModel: CartViewModel = hiltViewModel(),
+    showDelete: Boolean = true
 ) {
     Surface {
         Column(
@@ -41,7 +42,7 @@ fun CartItemList(
                 itemState.items.let { items ->
                     items(items.size) {
                         Spacer(modifier = Modifier.padding(mediumPadding))
-                        CartCardListItem(item = items[it]) {
+                        CartCardListItem(item = items[it], showDelete) {
                             cartViewModel.removeItem(items[it])
                         }
                     }

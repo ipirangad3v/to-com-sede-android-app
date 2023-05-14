@@ -45,4 +45,14 @@
     <string name="phone_number">Número de telefone</string>
     <string name="phone">Telefone</string>
     <string name="phone_update_success">Telefone atualizado com sucesso!</string>
+    <string name="delivery_at">Entregar em:</string>
+    <string name="login_to_continue">Faça o login para continuar</string>
+    <string name="delivery_principal">principal</string>
+    <string name="no_orders">Você ainda não fez nenhum pedido</string>
+    <string name="pending">Pendente</string>
+    <string name="delivering">Em rota de entrega</string>
+    <string name="concluded">concluído</string>
+    <string name="canceled">cancelado</string>
+    <string name="confirmed">confirmado</string>
+    <string name="login_to_see_orders">Faça login para ver seus pedidos</string>
 </resources>

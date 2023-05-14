@@ -92,7 +92,7 @@ fun PhoneScreen(viewModel: PhoneViewModel = hiltViewModel(), onBack: () -> Unit)
                     isError = !phoneNumber.digitsOnly().isBrazilianPhone(),
                     value = phoneNumber,
                     onValueChange = {
-                        val digitsOnly = it.digitsOnly().take(11)
+                        val digitsOnly = it.digitsOnly()
 
                         // Aplica a máscara "(##) #####-####"
                         phoneNumber = if (digitsOnly.isBrazilianPhone()) {

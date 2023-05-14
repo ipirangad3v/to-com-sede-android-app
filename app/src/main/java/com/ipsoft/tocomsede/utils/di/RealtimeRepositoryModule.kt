@@ -1,9 +1,11 @@
-package com.ipsoft.tocomsede.di
+package com.ipsoft.tocomsede.utils.di
 
 import com.ipsoft.tocomsede.data.firebaserealtimedb.address.RealtimeAddressRepository
 import com.ipsoft.tocomsede.data.firebaserealtimedb.address.RealtimeAddressRepositoryImpl
 import com.ipsoft.tocomsede.data.firebaserealtimedb.items.RealtimeItemRepository
 import com.ipsoft.tocomsede.data.firebaserealtimedb.items.RealtimeItemRepositoryImpl
+import com.ipsoft.tocomsede.data.firebaserealtimedb.orders.RealtimeOrdersRepository
+import com.ipsoft.tocomsede.data.firebaserealtimedb.orders.RealtimeOrdersRepositoryImpl
 import com.ipsoft.tocomsede.data.firebaserealtimedb.phone.RealtimePhoneRepository
 import com.ipsoft.tocomsede.data.firebaserealtimedb.phone.RealtimePhoneRepositoryImpl
 import dagger.Binds
@@ -28,4 +30,9 @@ abstract class RealtimeRepositoryModule {
     abstract fun providesRealtimePhoneRepository(
         repo: RealtimePhoneRepositoryImpl
     ): RealtimePhoneRepository
+
+    @Binds
+    abstract fun providesRealtimeOrdersRepository(
+        repo: RealtimeOrdersRepositoryImpl
+    ): RealtimeOrdersRepository
 }

@@ -13,10 +13,12 @@ import kotlinx.coroutines.flow.callbackFlow
 import javax.inject.Inject
 
 class RealtimeItemRepositoryImpl @Inject constructor(
-    dbReference: DatabaseReference
+    private val dbReference: DatabaseReference
 ) : RealtimeItemRepository {
 
-    private val itemReference = dbReference.child("items")
+    private val itemReference
+        get() = dbReference.child("items")
+
     override suspend fun getItems(): Flow<ResultState<List<Category>>> = callbackFlow {
         trySend(ResultState.Loading)
 
