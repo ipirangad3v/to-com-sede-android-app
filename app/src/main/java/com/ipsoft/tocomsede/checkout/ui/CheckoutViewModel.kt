@@ -108,19 +108,20 @@ class CheckoutViewModel @Inject constructor(
 
     fun checkout() {
         viewModelScope.launch {
-            cartRepository.checkout().collect { result ->
-                when (result) {
-                    is ResultState.Success -> {
-                        _cartItemState.value = CartItemState(checkoutSuccess = true)
-                        cartRepository.clearCart()
-                    }
+            _favoriteAddressState.value?.let { address ->
+                cartRepository.checkout(address).collect { result ->
+                    when (result) {
+                        is ResultState.Success -> {
+                            _cartItemState.value = CartItemState(checkoutSuccess = true)
+                        }
 
-                    is ResultState.Failure -> {
-                        _cartItemState.value = CartItemState(error = result.msg.toString())
-                    }
+                        is ResultState.Failure -> {
+                            _cartItemState.value = CartItemState(error = result.msg.toString())
+                        }
 
-                    ResultState.Loading -> {
-                        _cartItemState.value = CartItemState(isLoading = true)
+                        ResultState.Loading -> {
+                            _cartItemState.value = CartItemState(isLoading = true)
+                        }
                     }
                 }
             }

@@ -37,7 +37,7 @@ class OrdersViewModel @Inject constructor(private val ordersRepository: Realtime
         UserInfo.removeListener(this)
     }
 
-    fun getOrders() {
+    private fun getOrders() {
         viewModelScope.launch {
             ordersRepository.getOrders().collect {
                 when (it) {

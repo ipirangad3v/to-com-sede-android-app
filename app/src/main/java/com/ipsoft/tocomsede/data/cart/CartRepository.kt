@@ -1,5 +1,6 @@
 package com.ipsoft.tocomsede.data.cart
 
+import com.ipsoft.tocomsede.core.model.Address
 import com.ipsoft.tocomsede.core.model.Item
 import com.ipsoft.tocomsede.core.model.ResultState
 import kotlinx.coroutines.flow.Flow
@@ -12,5 +13,5 @@ interface CartRepository {
     suspend fun getCartTotal(): ResultState<String>
     fun getCartItemsCount(): Int
     suspend fun checkIfItemIsInCartAndReturnQuantity(item: Item): Int
-    suspend fun checkout(): Flow<ResultState<Boolean>>
+    suspend fun checkout(address: Address): Flow<ResultState<Boolean>>
 }

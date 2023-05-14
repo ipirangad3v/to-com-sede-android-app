@@ -5,7 +5,8 @@ import java.util.Date
 data class Order(
     val items: List<Item>,
     val dateInMillis: String = Date().time.toString(),
-    val status: OrderStatus = OrderStatus.PENDING
+    val status: OrderStatus = OrderStatus.PENDING,
+    val address: Address? = null
 ) {
     @Suppress("unused")
     constructor() : this(
