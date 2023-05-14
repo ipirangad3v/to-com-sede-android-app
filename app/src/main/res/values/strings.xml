@@ -57,4 +57,8 @@
     <string name="login_to_see_orders">Faça login para ver seus pedidos</string>
     <string name="confirm_logout">Confirmar saida</string>
     <string name="confirm_logout_ask">deseja realmente sair?</string>
+    <string name="no_address_found">Você ainda não possui endereços de entrega cadastrados</string>
+    <string name="add_address">adicionar endereço</string>
+    <string name="confirm_order">Fazer pedido</string>
+    <string name="confirm_order_ask">Prosseguir com o pedido?</string>
 </resources>

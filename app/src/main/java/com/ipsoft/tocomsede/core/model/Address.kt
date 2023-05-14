@@ -15,6 +15,6 @@ data class Address(
     constructor() : this("", "", "", "", "", "", "", id = "", isFavorite = false)
 
     override fun toString(): String {
-        return "$street, $number, $neighborhood. \n $city - $state, ${zipCode.format("#####-###")}"
+        return "$street, $number \n $neighborhood \n $city - $state, \n ${zipCode.format("#####-###")}"
     }
 }

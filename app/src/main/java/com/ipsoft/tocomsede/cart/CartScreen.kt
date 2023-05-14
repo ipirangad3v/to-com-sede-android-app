@@ -1,6 +1,5 @@
 package com.ipsoft.tocomsede.cart
 
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -14,6 +13,7 @@ import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Edit
+import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ElevatedButton
@@ -27,6 +27,10 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -59,8 +63,28 @@ fun CartScreen(
     val phoneState = checkoutViewModel.phoneState.value
     val isUserLoggedState = checkoutViewModel.userLoggedState.value
 
+    var showDialog by remember { mutableStateOf(false) }
+
     if (cartItemState.checkoutSuccess) {
         onCheckoutSuccess()
+    }
+
+    if (showDialog) {
+        AlertDialog(
+            onDismissRequest = { showDialog = false },
+            title = { Text(stringResource(id = R.string.confirm_order)) },
+            text = { Text(stringResource(id = R.string.confirm_order_ask)) },
+            confirmButton = {
+                ElevatedButton(
+                    onClick = {
+                        checkoutViewModel.checkout()
+                        showDialog = false
+                    }
+                ) {
+                    Text("OK")
+                }
+            }
+        )
     }
 
     Scaffold(
@@ -144,7 +168,11 @@ fun CartScreen(
                                             onPhoneEditClick = onPhoneEditClick
                                         )
                                     }
-                                    item { CheckoutButtonContainer(viewModel = checkoutViewModel) }
+                                    item {
+                                        CheckoutButtonContainer {
+                                            showDialog = true
+                                        }
+                                    }
                                 } else {
                                     item { LoginContainer(onLoginClick) }
                                 }
@@ -198,17 +226,15 @@ fun CheckoutPhone(phoneState: String?, onPhoneEditClick: () -> Unit) {
 @Composable
 fun CheckoutAddress(addressFavoriteState: Address?, onEditClick: () -> Unit) {
     Surface {
-        addressFavoriteState?.let { address ->
-            AddressListContainer(
-                address = address,
-                onEditClick = onEditClick
-            )
-        }
+        AddressListContainer(
+            address = addressFavoriteState,
+            onEditClick = onEditClick
+        )
     }
 }
 
 @Composable
-fun CheckoutButtonContainer(viewModel: CartViewModel) {
+fun CheckoutButtonContainer(onClick: () -> Unit) {
     Surface {
         Box(
             modifier = Modifier
@@ -217,7 +243,7 @@ fun CheckoutButtonContainer(viewModel: CartViewModel) {
             contentAlignment = Alignment.BottomCenter
         ) {
             ElevatedButton(
-                onClick = { viewModel.checkout() },
+                onClick = { onClick() },
                 modifier = Modifier
                     .fillMaxWidth()
                     .wrapContentHeight()
@@ -294,38 +320,55 @@ fun CheckoutCartTotal(cartTotalState: String) {
 
 @Composable
 fun AddressListContainer(
-    address: Address,
+    address: Address?,
     onEditClick: () -> Unit
 ) {
-    Surface(color = Color.White, modifier = Modifier.clickable(onClick = onEditClick)) {
-        Column(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(smallPadding),
-            horizontalAlignment = Alignment.CenterHorizontally
-        ) {
-            Text(
-                text = stringResource(id = R.string.delivery_at),
-                modifier = Modifier.padding(smallPadding)
-            )
-            Row(
+    Surface(color = Color.White) {
+        if (address == null) {
+            Column(
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(smallPadding),
-                verticalAlignment = Alignment.CenterVertically
+                horizontalAlignment = Alignment.CenterHorizontally,
+                verticalArrangement = Arrangement.Center
             ) {
                 Spacer(modifier = Modifier.padding(smallPadding))
+                Text(text = stringResource(id = R.string.no_address_found))
+                Spacer(modifier = Modifier.padding(smallPadding))
+                ElevatedButton(onClick = onEditClick) {
+                    Text(text = stringResource(id = R.string.add_address))
+                }
+            }
+        } else {
+            Column(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(smallPadding),
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
                 Text(
-                    text = address.toString(),
-                    modifier = Modifier.weight(1f)
+                    text = stringResource(id = R.string.delivery_at),
+                    modifier = Modifier.padding(smallPadding)
                 )
-
-                IconButton(onClick = onEditClick) {
-                    Icon(
-                        Icons.Default.Edit,
-                        contentDescription = "Edit address",
-                        tint = darkBlue80
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(smallPadding),
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Spacer(modifier = Modifier.padding(smallPadding))
+                    Text(
+                        text = address.toString(),
+                        modifier = Modifier.weight(1f)
                     )
+
+                    IconButton(onClick = onEditClick) {
+                        Icon(
+                            Icons.Default.Edit,
+                            contentDescription = "Edit address",
+                            tint = darkBlue80
+                        )
+                    }
                 }
             }
         }

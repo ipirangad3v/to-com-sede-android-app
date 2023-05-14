@@ -101,7 +101,8 @@ fun AddressList(
             ExtendedFloatingActionButton(
                 onClick = onNewAddressClick,
                 modifier = Modifier.padding(smallPadding),
-                containerColor = darkBlue80
+                containerColor = darkBlue80,
+                shape = MaterialTheme.shapes.extraLarge
             ) {
                 Row(
                     modifier = Modifier.padding(smallPadding),
