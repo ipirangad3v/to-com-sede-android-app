@@ -21,9 +21,11 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.Delete
+import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
 import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.ElevatedButton
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.ExtendedFloatingActionButton
 import androidx.compose.material3.Icon
@@ -35,8 +37,10 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -57,7 +61,7 @@ import com.ipsoft.tocomsede.core.util.network.NetworkHandler
 fun AddressList(
     viewModel: AddressListViewModel = hiltViewModel(),
     onNewAddressClick: () -> Unit,
-    onBack: () -> Unit
+    onBack: () -> Unit,
 ) {
     val context = LocalContext.current
 
@@ -69,6 +73,8 @@ fun AddressList(
     val visibility = remember { mutableStateOf(false) }
 
     val canRetrieve = remember { mutableStateOf(true) }
+
+    var showDialog by remember { mutableStateOf(false) }
 
     Scaffold(
         modifier = Modifier
@@ -191,6 +197,25 @@ fun AddressList(
                                     } else {
                                         addressesState.addresses.forEach { address ->
                                             item {
+                                                if (showDialog) {
+                                                    AlertDialog(
+                                                        onDismissRequest = { showDialog = false },
+                                                        title = { Text(stringResource(id = R.string.confirm_address_delete)) },
+                                                        text = { Text(stringResource(id = R.string.confirm_address_delete_ask)) },
+                                                        confirmButton = {
+                                                            ElevatedButton(
+                                                                onClick = {
+                                                                    viewModel.deleteAddress(address)
+                                                                    showDialog = false
+                                                                }
+                                                            ) {
+                                                                Text(stringResource(id = R.string.delete))
+                                                            }
+                                                        }
+                                                    )
+                                                }
+                                            }
+                                            item {
                                                 AddressListItem(
                                                     address = address,
                                                     onEditClick = {
@@ -203,7 +228,7 @@ fun AddressList(
                                                         )
                                                     }
                                                 ) {
-                                                    viewModel.deleteAddress(address)
+                                                    showDialog = true
                                                 }
                                             }
                                             item {
@@ -248,7 +273,7 @@ fun AddressListItem(
     address: Address,
     onEditClick: () -> Unit,
     onFavoriteClick: () -> Unit,
-    onAddressDeleteClick: () -> Unit
+    onAddressDeleteClick: () -> Unit,
 ) {
     Surface(color = Color.White, modifier = Modifier.clickable(onClick = onEditClick)) {
         Row(

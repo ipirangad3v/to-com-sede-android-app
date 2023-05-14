@@ -61,4 +61,7 @@
     <string name="add_address">adicionar endereço</string>
     <string name="confirm_order">Fazer pedido</string>
     <string name="confirm_order_ask">Prosseguir com o pedido?</string>
+    <string name="confirm_address_delete">Excluir endereço</string>
+    <string name="confirm_address_delete_ask">Deseja realmente apagar esse endereço?</string>
+    <string name="delete">Apagar</string>
 </resources>
