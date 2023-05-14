@@ -32,7 +32,7 @@ import com.firebase.ui.auth.AuthUI
 import com.firebase.ui.auth.FirebaseAuthUIActivityResultContract
 import com.firebase.ui.auth.data.model.FirebaseAuthUIAuthenticationResult
 import com.google.firebase.auth.FirebaseAuth
-import com.ipsoft.tocomsede.about.AboutScreen
+import com.ipsoft.tocomsede.account.AccountScreen
 import com.ipsoft.tocomsede.address.form.AddressFormScreen
 import com.ipsoft.tocomsede.address.list.AddressList
 import com.ipsoft.tocomsede.cart.CartBadge
@@ -219,8 +219,8 @@ class MainActivity : ComponentActivity() {
                                     navController.navigateUp()
                                 }
                             }
-                            composable(Screen.About.route) {
-                                AboutScreen(
+                            composable(Screen.Account.route) {
+                                AccountScreen(
                                     onAddressesClick = {
                                         navController.navigate(Screen.AddressList.route)
                                     },

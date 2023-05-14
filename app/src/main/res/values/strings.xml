@@ -64,4 +64,5 @@
     <string name="confirm_address_delete">Excluir endereço</string>
     <string name="confirm_address_delete_ask">Deseja realmente apagar esse endereço?</string>
     <string name="delete">Apagar</string>
+    <string name="account">Conta</string>
 </resources>

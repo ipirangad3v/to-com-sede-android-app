@@ -1,4 +1,4 @@
-package com.ipsoft.tocomsede.about
+package com.ipsoft.tocomsede.account
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -16,11 +16,15 @@ import androidx.compose.material.icons.filled.Call
 import androidx.compose.material.icons.filled.LocationOn
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.ElevatedButton
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
+import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -40,18 +44,20 @@ import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
 import com.bumptech.glide.integration.compose.GlideImage
 import com.ipsoft.tocomsede.R
 import com.ipsoft.tocomsede.core.extensions.getVerCode
+import com.ipsoft.tocomsede.core.ui.theme.darkBlue80
 import com.ipsoft.tocomsede.core.ui.theme.largePadding
 import com.ipsoft.tocomsede.core.ui.theme.mediumPadding
 import com.ipsoft.tocomsede.core.ui.theme.smallPadding
 import com.ipsoft.tocomsede.utils.UserInfo
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun AboutScreen(
-    viewModel: AboutViewModel = hiltViewModel(),
+fun AccountScreen(
+    viewModel: AccountViewModel = hiltViewModel(),
     onAddressesClick: () -> Unit,
     onLoginClick: () -> Unit,
     onPhoneClick: () -> Unit,
-    onLogoutClick: () -> Unit
+    onLogoutClick: () -> Unit,
 ) {
     val isUserLoggedState = viewModel.isUserLogged.value
     var showDialog by remember { mutableStateOf(false) }
@@ -74,56 +80,105 @@ fun AboutScreen(
         )
     }
 
-    Column(modifier = Modifier.fillMaxSize(), verticalArrangement = Arrangement.SpaceBetween) {
-        Spacer(modifier = Modifier.padding(mediumPadding))
-        LazyColumn(
-            modifier = Modifier.fillMaxSize(),
-            verticalArrangement = Arrangement.Center,
-            horizontalAlignment = CenterHorizontally
+    Scaffold(
+        modifier = Modifier
+            .fillMaxSize(),
+        topBar = {
+            CenterAlignedTopAppBar(
+                title = {
+                    Text(
+                        text = stringResource(id = R.string.account),
+                        maxLines = 1
+                    )
+                },
+                colors = TopAppBarDefaults.centerAlignedTopAppBarColors(
+                    containerColor = Color.White,
+                    titleContentColor = darkBlue80,
+                    navigationIconContentColor = darkBlue80
+                )
+            )
+        }
+    ) { padding ->
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(padding),
+            verticalArrangement = Arrangement.SpaceBetween
         ) {
-            if (isUserLoggedState) {
-                item { UserInfoBanner() }
-                item { Spacer(modifier = Modifier.padding(mediumPadding)) }
-
-                item {
-                    MenuItem(Icons.Filled.LocationOn, stringResource(id = R.string.addresses)) {
-                        onAddressesClick()
-                    }
-                }
-                item {
-                    MenuItem(
-                        imageVector = Icons.Filled.Call,
-                        title = stringResource(id = R.string.phone)
-                    ) {
-                        onPhoneClick()
-                    }
-                }
+            Spacer(modifier = Modifier.padding(mediumPadding))
+            LazyColumn(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(mediumPadding),
+                verticalArrangement = Arrangement.Top,
+                horizontalAlignment = CenterHorizontally
+            ) {
                 if (isUserLoggedState) {
+                    item { UserInfoBanner() }
                     item { Spacer(modifier = Modifier.padding(mediumPadding)) }
+
                     item {
-                        LogoutButton {
-                            showDialog = true
+                        MenuItem(Icons.Filled.LocationOn, stringResource(id = R.string.addresses)) {
+                            onAddressesClick()
+                        }
+                    }
+                    item {
+                        MenuItem(
+                            imageVector = Icons.Filled.Call,
+                            title = stringResource(id = R.string.phone)
+                        ) {
+                            onPhoneClick()
+                        }
+                    }
+                    if (isUserLoggedState) {
+                        item { Spacer(modifier = Modifier.padding(mediumPadding)) }
+                        item {
+                            LogoutButton {
+                                showDialog = true
+                            }
+                        }
+                    }
+                } else {
+                    item {
+                        Text(
+                            text = stringResource(id = R.string.login_text),
+                            Modifier.padding(mediumPadding),
+                            style = MaterialTheme.typography.titleMedium
+                        )
+                        Spacer(modifier = Modifier.padding(mediumPadding))
+                        ElevatedButton(onClick = onLoginClick) {
+                            Text(
+                                text = stringResource(id = R.string.login),
+                                Modifier.padding(largePadding)
+                            )
                         }
                     }
                 }
-            } else {
-                item {
-                    Text(
-                        text = stringResource(id = R.string.login_text),
-                        Modifier.padding(mediumPadding),
-                        style = MaterialTheme.typography.titleMedium
-                    )
-                    Spacer(modifier = Modifier.padding(mediumPadding))
-                    ElevatedButton(onClick = onLoginClick) {
-                        Text(
-                            text = stringResource(id = R.string.login),
-                            Modifier.padding(largePadding)
-                        )
-                    }
-                }
             }
+            InfoFooter()
         }
-        InfoFooter()
+    }
+}
+
+@OptIn(ExperimentalGlideComposeApi::class)
+@Composable
+fun UserInfoBanner() {
+    val user = UserInfo.loggedUser
+
+    Column(
+        modifier = Modifier
+            .wrapContentSize()
+            .padding(mediumPadding),
+        horizontalAlignment = CenterHorizontally,
+        verticalArrangement = Arrangement.SpaceBetween
+    ) {
+        GlideImage(
+            model = user?.photoUrl,
+            contentDescription = null,
+            modifier = Modifier.clip(shape = CircleShape)
+        )
+        Spacer(modifier = Modifier.padding(smallPadding))
+        user?.name?.let { Text(text = it, style = MaterialTheme.typography.titleLarge) }
     }
 }
 
@@ -170,28 +225,6 @@ fun LogoutButton(onLogoutClick: () -> Unit = {}) {
     }
 }
 
-@OptIn(ExperimentalGlideComposeApi::class)
-@Composable
-fun UserInfoBanner() {
-    val user = UserInfo.loggedUser
-
-    Column(
-        modifier = Modifier
-            .wrapContentSize()
-            .padding(mediumPadding),
-        horizontalAlignment = CenterHorizontally,
-        verticalArrangement = Arrangement.SpaceBetween
-    ) {
-        GlideImage(
-            model = user?.photoUrl,
-            contentDescription = null,
-            modifier = Modifier.clip(shape = CircleShape)
-        )
-        Spacer(modifier = Modifier.padding(smallPadding))
-        user?.name?.let { Text(text = it, style = MaterialTheme.typography.titleLarge) }
-    }
-}
-
 @Composable
 fun MenuItem(imageVector: ImageVector, title: String, onClick: () -> Unit) {
     Surface(
@@ -214,3 +247,4 @@ fun MenuItem(imageVector: ImageVector, title: String, onClick: () -> Unit) {
         }
     }
 }
+
