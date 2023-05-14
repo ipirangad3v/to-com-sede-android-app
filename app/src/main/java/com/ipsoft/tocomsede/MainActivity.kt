@@ -37,7 +37,6 @@ import com.ipsoft.tocomsede.address.form.AddressFormScreen
 import com.ipsoft.tocomsede.address.list.AddressList
 import com.ipsoft.tocomsede.cart.CartBadge
 import com.ipsoft.tocomsede.cart.CartScreen
-import com.ipsoft.tocomsede.checkout.ui.CheckoutScreen
 import com.ipsoft.tocomsede.core.model.ResultState
 import com.ipsoft.tocomsede.core.model.User
 import com.ipsoft.tocomsede.core.ui.components.Screen
@@ -97,7 +96,7 @@ class MainActivity : ComponentActivity() {
                     val navBackStackEntry by navController.currentBackStackEntryAsState()
 
                     when (navBackStackEntry?.destination?.route) {
-                        Screen.ItemDetails.route, Screen.Checkout.route, Screen.AddressForm.route, Screen.AddressList.route, Screen.Phone.route -> {
+                        Screen.ItemDetails.route, Screen.AddressForm.route, Screen.AddressList.route, Screen.Phone.route -> {
                             bottomBarState.value = false
                         }
 
@@ -181,12 +180,9 @@ class MainActivity : ComponentActivity() {
                                 }
                             }
                             composable(Screen.Cart.route) {
-                                CartScreen {
-                                    navController.navigate(Screen.Checkout.route)
-                                }
                             }
-                            composable(Screen.Checkout.route) {
-                                CheckoutScreen(
+                            composable(Screen.Cart.route) {
+                                CartScreen(
                                     onEditClick = {
                                         navController.navigate(Screen.AddressList.route)
                                     },
@@ -199,9 +195,7 @@ class MainActivity : ComponentActivity() {
                                     onCheckoutSuccess = {
                                         navController.navigate(Screen.Orders.route)
                                     }
-                                ) {
-                                    navController.navigateUp()
-                                }
+                                )
                             }
                             composable(Screen.Orders.route) {
                                 OrdersScreen {

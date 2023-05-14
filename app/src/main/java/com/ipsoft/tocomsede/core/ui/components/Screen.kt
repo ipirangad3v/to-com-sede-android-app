@@ -25,9 +25,6 @@ sealed class Screen(
     object About : Screen("about", R.string.about, Icons.Filled.Info)
     object ItemDetails :
         Screen("item_details/{$ITEM_ID}", R.string.item_details, Icons.Filled.ArrowBack)
-
-    object Checkout : Screen("checkout", R.string.checkout, Icons.Filled.ShoppingCart)
-
     object AddressForm : Screen("address_form", R.string.address_form, Icons.Filled.Build)
 
     object AddressList : Screen("address_list", R.string.addresses, Icons.Filled.Add)
