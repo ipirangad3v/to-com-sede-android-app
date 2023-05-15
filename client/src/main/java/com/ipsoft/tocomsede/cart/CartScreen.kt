@@ -71,9 +71,6 @@ fun CartScreen(
     val addressFavoriteState = cartViewModel.favoriteAddressState.value
     val phoneState = cartViewModel.phoneState.value
     val isUserLoggedState = cartViewModel.userLoggedState.value
-
-    val paymentMethodState = cartViewModel.paymentState.value
-
     var showDialog by remember { mutableStateOf(false) }
 
     if (cartItemState.checkoutSuccess) {
