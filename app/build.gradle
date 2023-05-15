@@ -11,11 +11,13 @@ plugins {
 android {
     namespace 'com.ipsoft.tocomsede'
     compileSdk 33
+    compileSdkVersion 33
 
     defaultConfig {
         applicationId "com.ipsoft.tocomsede"
         minSdk 24
         targetSdk 33
+        compileSdkVersion 33
         versionCode 1
         versionName "1.0.0"
 
@@ -71,6 +73,7 @@ dependencies {
     implementation 'com.google.firebase:firebase-analytics-ktx'
     implementation 'androidx.compose.material3:material3'
     implementation "androidx.compose.material:material:1.4.3"
+    implementation 'com.google.firebase:firebase-messaging-ktx:23.1.2'
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test.ext:junit:1.1.5'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.1'
@@ -117,7 +120,7 @@ dependencies {
     implementation 'com.squareup.retrofit2:converter-gson:2.9.0'
 
     // Logging interceptor
-    implementation 'com.squareup.okhttp3:logging-interceptor:4.9.1'
+    implementation 'com.squareup.okhttp3:logging-interceptor:5.0.0-alpha.6'
 
 }
 

@@ -1,8 +1,14 @@
 package com.ipsoft.tocomsede
 
+import android.Manifest
+import android.app.AlertDialog
+import android.content.Intent
+import android.content.pm.PackageManager
+import android.os.Build
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -19,6 +25,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Modifier
+import androidx.core.content.ContextCompat
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavDestination.Companion.hierarchy
 import androidx.navigation.NavGraph.Companion.findStartDestination
@@ -49,15 +56,29 @@ import com.ipsoft.tocomsede.data.cart.CartRepository
 import com.ipsoft.tocomsede.data.user.PreferencesRepository
 import com.ipsoft.tocomsede.home.ui.HomeScreen
 import com.ipsoft.tocomsede.itemdetails.ItemDetailsScreen
+import com.ipsoft.tocomsede.notifications.NotificationService
 import com.ipsoft.tocomsede.orders.OrdersScreen
 import com.ipsoft.tocomsede.phone.PhoneScreen
+import com.ipsoft.tocomsede.utils.UserInfo
+import com.ipsoft.tocomsede.utils.UserInfo.UserInfoListener
+import com.ipsoft.tocomsede.utils.UserInfo.isUserLogged
 import com.ipsoft.tocomsede.utils.UserInfo.loggedUser
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @AndroidEntryPoint
-class MainActivity : ComponentActivity() {
+class MainActivity : ComponentActivity(), UserInfoListener {
+
+    private val requestPermissionLauncher = registerForActivityResult(
+        ActivityResultContracts.RequestPermission()
+    ) { isGranted: Boolean ->
+        if (isGranted) {
+            // FCM SDK (and your app) can post notifications.
+        } else {
+            // TODO: Inform user that that your app will not show notifications.
+        }
+    }
 
     @Inject
     lateinit var preferencesRepository: PreferencesRepository
@@ -80,7 +101,7 @@ class MainActivity : ComponentActivity() {
     @OptIn(ExperimentalMaterial3Api::class)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
+        UserInfo.addListener(this)
         setContent {
             ToComSedeTheme {
                 // A surface container using the 'background' color from the theme
@@ -93,6 +114,7 @@ class MainActivity : ComponentActivity() {
                     val bottomBarState = rememberSaveable { (mutableStateOf(true)) }
 
                     val navController = rememberNavController()
+
                     val navBackStackEntry by navController.currentBackStackEntryAsState()
 
                     when (navBackStackEntry?.destination?.route) {
@@ -206,6 +228,7 @@ class MainActivity : ComponentActivity() {
                                             // Restore state when reselecting a previously selected item
                                             restoreState = true
                                         }
+                                        askNotificationPermission()
                                     }
                                 )
                             }
@@ -266,6 +289,14 @@ class MainActivity : ComponentActivity() {
                 }
             }
         }
+
+        if (isUserLogged) {
+            startNotifications()
+        }
+    }
+
+    private fun startNotifications() {
+        startService(Intent(this, NotificationService::class.java))
     }
 
     private fun firebaseLogout() {
@@ -305,6 +336,11 @@ class MainActivity : ComponentActivity() {
         loadUser()
     }
 
+    override fun onDestroy() {
+        super.onDestroy()
+        UserInfo.removeListener(this)
+    }
+
     private fun loadUser() {
         lifecycleScope.launch {
             preferencesRepository.readUser().let { result ->
@@ -341,5 +377,38 @@ class MainActivity : ComponentActivity() {
             // response.getError().getErrorCode() and handle the error.
             // ...
         }
+    }
+
+    private fun askNotificationPermission() {
+        // This is only necessary for API level >= 33 (TIRAMISU)
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            if (ContextCompat.checkSelfPermission(this, Manifest.permission.POST_NOTIFICATIONS) ==
+                PackageManager.PERMISSION_GRANTED
+            ) {
+                // FCM SDK (and your app) can post notifications.
+            } else if (shouldShowRequestPermissionRationale(Manifest.permission.POST_NOTIFICATIONS)) {
+                // Show a dialog explaining why you need the permission
+                AlertDialog.Builder(this)
+                    .setTitle(resources.getString(R.string.permission_title))
+                    .setMessage(resources.getString(R.string.permission_disclaimer))
+                    .setPositiveButton("OK") { _, _ ->
+                        // Ask for the permission
+                        requestPermissionLauncher.launch(Manifest.permission.POST_NOTIFICATIONS)
+                    }
+                    .setNegativeButton("Cancel") { _, _ ->
+                        // You can choose to not ask for the permission,
+                        // but then you have to disable the features
+                    }
+                    .create()
+                    .show()
+            } else {
+                // Directly ask for the permission
+                requestPermissionLauncher.launch(Manifest.permission.POST_NOTIFICATIONS)
+            }
+        }
+    }
+
+    override fun onUserInfoChanged(isUserLogged: Boolean) {
+        if (isUserLogged) startNotifications()
     }
 }

@@ -1,5 +1,6 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <string name="app_name">tô com sede</string>
+    <string name="notification_message">Seu pedido foi atualizado para %1$s, vem ver</string>
     <string name="error_loading_itens">Ocorreu um erro ao carregar os produtos</string>
     <string name="home">início</string>
     <string name="profile">Perfil</string>
@@ -50,10 +51,11 @@
     <string name="delivery_principal">principal</string>
     <string name="no_orders">Você ainda não fez nenhum pedido</string>
     <string name="pending">Pendente</string>
-    <string name="delivering">Em rota de entrega</string>
+    <string name="delivering">saiu para entrega</string>
     <string name="concluded">concluído</string>
     <string name="canceled">cancelado</string>
     <string name="confirmed">confirmado</string>
+    <string name="status_changed">Pedido atualizado</string>
     <string name="login_to_see_orders">Faça login para ver seus pedidos</string>
     <string name="confirm_logout">Confirmar saida</string>
     <string name="confirm_logout_ask">deseja realmente sair?</string>
@@ -65,4 +67,7 @@
     <string name="confirm_address_delete_ask">Deseja realmente apagar esse endereço?</string>
     <string name="delete">Apagar</string>
     <string name="account">Conta</string>
+    <string name="permission_title">Permitir recebimento de notificações</string>
+    <string name="permission_disclaimer">Para que possamos lhe enviar notificações quando seus pedidos forem aceitos, por favor forneça a permissão de receber notificações</string>
+    <string name="view_order">ver pedido</string>
 </resources>
