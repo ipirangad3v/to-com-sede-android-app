@@ -72,13 +72,7 @@ class MainActivity : ComponentActivity(), UserInfoListener {
 
     private val requestPermissionLauncher = registerForActivityResult(
         ActivityResultContracts.RequestPermission()
-    ) { isGranted: Boolean ->
-        if (isGranted) {
-            // FCM SDK (and your app) can post notifications.
-        } else {
-            // TODO: Inform user that that your app will not show notifications.
-        }
-    }
+    ) {}
 
     @Inject
     lateinit var preferencesRepository: PreferencesRepository
