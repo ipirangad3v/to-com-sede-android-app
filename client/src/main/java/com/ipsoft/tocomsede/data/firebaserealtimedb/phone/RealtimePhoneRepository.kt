@@ -6,5 +6,5 @@ import kotlinx.coroutines.flow.Flow
 interface RealtimePhoneRepository {
 
     suspend fun savePhone(phone: String): Flow<ResultState<Boolean>>
-    suspend fun getPhone(): Flow<ResultState<String>>
+    suspend fun getPhone(): Flow<ResultState<String?>>
 }

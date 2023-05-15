@@ -6,8 +6,8 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.ipsoft.tocomsede.core.model.Address
+import com.ipsoft.tocomsede.core.model.ResultState
 import com.ipsoft.tocomsede.core.model.ResultState.Failure
-import com.ipsoft.tocomsede.core.model.ResultState.Loading
 import com.ipsoft.tocomsede.core.model.ResultState.Success
 import com.ipsoft.tocomsede.data.firebaserealtimedb.address.RealtimeAddressRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -40,7 +40,7 @@ class AddressListViewModel @Inject constructor(private val addressRepository: Re
                         )
                     }
 
-                    is Loading -> {
+                    is ResultState.Loading -> {
                         _addressState.value = AddressState(
                             addresses = null,
                             loading = true
@@ -72,7 +72,7 @@ class AddressListViewModel @Inject constructor(private val addressRepository: Re
                         )
                     }
 
-                    is Loading -> {
+                    is ResultState.Loading -> {
                         _addressState.value = AddressState(
                             addresses = null,
                             loading = true
@@ -98,7 +98,7 @@ class AddressListViewModel @Inject constructor(private val addressRepository: Re
                         )
                     }
 
-                    is Loading -> {
+                    is ResultState.Loading -> {
                         _addressState.value = AddressState(
                             addresses = null,
                             loading = true

@@ -14,8 +14,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import com.ipsoft.tocomsede.R
-import com.ipsoft.tocomsede.core.ui.theme.mediumPadding
-import com.ipsoft.tocomsede.core.ui.theme.smallPadding
+import com.ipsoft.tocomsede.base.ui.theme.mediumPadding
+import com.ipsoft.tocomsede.base.ui.theme.smallPadding
 
 @Composable
 fun QuantitySelector(selectedQuantity: MutableState<Int>, maxQuantity: Int, available: Boolean) {

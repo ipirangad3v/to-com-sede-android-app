@@ -1,4 +1,4 @@
-package com.ipsoft.tocomsede.core.ui.components
+package com.ipsoft.tocomsede.base.ui.components
 
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.ButtonDefaults
@@ -7,11 +7,11 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import com.ipsoft.tocomsede.base.ui.theme.almostWhite
+import com.ipsoft.tocomsede.base.ui.theme.darkBlue80
+import com.ipsoft.tocomsede.base.ui.theme.mediumPadding
+import com.ipsoft.tocomsede.base.ui.theme.smallPadding
 import com.ipsoft.tocomsede.core.extensions.toCurrency
-import com.ipsoft.tocomsede.core.ui.theme.almostWhite
-import com.ipsoft.tocomsede.core.ui.theme.darkBlue80
-import com.ipsoft.tocomsede.core.ui.theme.mediumPadding
-import com.ipsoft.tocomsede.core.ui.theme.smallPadding
 
 @Composable
 fun PriceTag(price: Double) {

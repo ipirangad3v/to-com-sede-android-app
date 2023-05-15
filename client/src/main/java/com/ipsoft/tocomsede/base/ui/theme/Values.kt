@@ -1,4 +1,4 @@
-package com.ipsoft.tocomsede.core.ui.theme
+package com.ipsoft.tocomsede.base.ui.theme
 
 import androidx.compose.ui.unit.dp
 

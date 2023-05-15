@@ -7,8 +7,8 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.ipsoft.tocomsede.core.model.Address
 import com.ipsoft.tocomsede.core.model.CepResponse
+import com.ipsoft.tocomsede.core.model.ResultState
 import com.ipsoft.tocomsede.core.model.ResultState.Failure
-import com.ipsoft.tocomsede.core.model.ResultState.Loading
 import com.ipsoft.tocomsede.core.model.ResultState.Success
 import com.ipsoft.tocomsede.data.cep.CepRepository
 import com.ipsoft.tocomsede.data.firebaserealtimedb.address.RealtimeAddressRepository
@@ -47,7 +47,7 @@ class AddressFormViewModel @Inject constructor(
                         )
                     }
 
-                    is Loading -> {
+                    is ResultState.Loading -> {
                         _cepState.value = CepState(
                             cepResponse = null,
                             loading = true
@@ -76,7 +76,7 @@ class AddressFormViewModel @Inject constructor(
                         )
                     }
 
-                    is Loading -> {
+                    is ResultState.Loading -> {
                         _cepState.value = CepState(
                             cepResponse = null,
                             loading = true

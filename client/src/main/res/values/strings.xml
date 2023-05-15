@@ -70,4 +70,8 @@
     <string name="permission_title">Permitir recebimento de notificações</string>
     <string name="permission_disclaimer">Para que possamos lhe enviar notificações quando seus pedidos forem aceitos, por favor forneça a permissão de receber notificações</string>
     <string name="view_order">ver pedido</string>
+    <string name="save">salvar</string>
+    <string name="invalid_phone">Telefone inválido</string>
+    <string name="not_informed">adicione um número de contato</string>
+    <string name="cep_not_found">CEP não encontrado, tente novamente</string>
 </resources>

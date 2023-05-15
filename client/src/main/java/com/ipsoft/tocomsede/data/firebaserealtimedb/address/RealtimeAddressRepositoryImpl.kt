@@ -18,7 +18,13 @@ class RealtimeAddressRepositoryImpl @Inject constructor(private val dbReference:
     override suspend fun saveAddress(address: Address): Flow<ResultState<Boolean>> = callbackFlow {
         trySend(ResultState.Loading)
         if (userUid == null) {
-            trySend(ResultState.Failure(UserNotLoggedException("User not logged")))
+            trySend(
+                ResultState.Failure(
+                    UserNotLoggedException(
+                        "User not logged"
+                    )
+                )
+            )
         } else {
             userReference.child("addresses").push().setValue(address)
                 .addOnCompleteListener {
@@ -41,7 +47,13 @@ class RealtimeAddressRepositoryImpl @Inject constructor(private val dbReference:
     override suspend fun getAddresses(): Flow<ResultState<List<Address>>> = callbackFlow {
         trySend(ResultState.Loading)
         if (userUid == null) {
-            trySend(ResultState.Failure(UserNotLoggedException("User not logged")))
+            trySend(
+                ResultState.Failure(
+                    UserNotLoggedException(
+                        "User not logged"
+                    )
+                )
+            )
         } else {
             userReference.child("addresses").get().addOnCompleteListener {
                 if (it.isSuccessful) {
@@ -69,7 +81,13 @@ class RealtimeAddressRepositoryImpl @Inject constructor(private val dbReference:
         callbackFlow {
             trySend(ResultState.Loading)
             if (userUid == null) {
-                trySend(ResultState.Failure(UserNotLoggedException("User not logged")))
+                trySend(
+                    ResultState.Failure(
+                        UserNotLoggedException(
+                            "User not logged"
+                        )
+                    )
+                )
             } else {
                 userReference.child("addresses").child(address.id).removeValue()
                     .addOnCompleteListener {
@@ -93,7 +111,13 @@ class RealtimeAddressRepositoryImpl @Inject constructor(private val dbReference:
         callbackFlow {
             trySend(ResultState.Loading)
             if (userUid == null) {
-                trySend(ResultState.Failure(UserNotLoggedException("User not logged")))
+                trySend(
+                    ResultState.Failure(
+                        UserNotLoggedException(
+                            "User not logged"
+                        )
+                    )
+                )
             } else {
                 if (address.isFavorite) {
                     userReference.child("addresses").get().addOnCompleteListener {
@@ -133,7 +157,13 @@ class RealtimeAddressRepositoryImpl @Inject constructor(private val dbReference:
     override suspend fun getFavoriteAddress(): Flow<ResultState<Address>> = callbackFlow {
         trySend(ResultState.Loading)
         if (userUid == null) {
-            trySend(ResultState.Failure(UserNotLoggedException("User not logged")))
+            trySend(
+                ResultState.Failure(
+                    UserNotLoggedException(
+                        "User not logged"
+                    )
+                )
+            )
         } else {
             userReference.child("addresses").get().addOnCompleteListener {
                 if (it.isSuccessful) {

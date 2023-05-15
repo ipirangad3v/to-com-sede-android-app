@@ -40,10 +40,10 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.ipsoft.tocomsede.R
-import com.ipsoft.tocomsede.core.extensions.showMsg
-import com.ipsoft.tocomsede.core.ui.theme.darkBlue80
-import com.ipsoft.tocomsede.core.ui.theme.largePadding
-import com.ipsoft.tocomsede.core.ui.theme.smallPadding
+import com.ipsoft.tocomsede.base.extensions.showMsg
+import com.ipsoft.tocomsede.base.ui.theme.darkBlue80
+import com.ipsoft.tocomsede.base.ui.theme.largePadding
+import com.ipsoft.tocomsede.base.ui.theme.smallPadding
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable

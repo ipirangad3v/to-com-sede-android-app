@@ -13,9 +13,9 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import com.ipsoft.tocomsede.core.ui.state.CartItemState
-import com.ipsoft.tocomsede.core.ui.theme.mediumPadding
-import com.ipsoft.tocomsede.core.ui.theme.smallPadding
+import com.ipsoft.tocomsede.base.ui.state.CartItemState
+import com.ipsoft.tocomsede.base.ui.theme.mediumPadding
+import com.ipsoft.tocomsede.base.ui.theme.smallPadding
 
 @Composable
 fun CartItemList(

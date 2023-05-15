@@ -1,4 +1,4 @@
-package com.ipsoft.tocomsede.core.extensions
+package com.ipsoft.tocomsede.base.extensions
 
 import android.content.Context
 import android.net.ConnectivityManager

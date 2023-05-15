@@ -1,8 +1,8 @@
 package com.ipsoft.tocomsede.utils.di
 
-import com.ipsoft.tocomsede.core.util.Constants.CEP_BASE_URL
-import com.ipsoft.tocomsede.core.util.Constants.DEBUG
-import com.ipsoft.tocomsede.core.util.Constants.SOCKET_TIMEOUT
+import com.ipsoft.tocomsede.base.util.Constants.CEP_BASE_URL
+import com.ipsoft.tocomsede.base.util.Constants.DEBUG
+import com.ipsoft.tocomsede.base.util.Constants.SOCKET_TIMEOUT
 import com.ipsoft.tocomsede.data.cep.CepRepository
 import com.ipsoft.tocomsede.data.cep.CepRepositoryImpl
 import com.ipsoft.tocomsede.data.cep.CepService

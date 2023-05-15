@@ -11,9 +11,13 @@ class CepRepositoryImpl @Inject constructor(private val api: CepService) : CepRe
 
     override suspend fun getCep(cep: String): Flow<ResultState<CepResponse>> = callbackFlow {
         trySend(ResultState.Loading)
-        val response = api.getCep(cep)
+        try {
+            val response = api.getCep(cep)
 
-        trySend(ResultState.Success(response))
+            trySend(ResultState.Success(response))
+        } catch (e: Exception) {
+            trySend(ResultState.Failure(e))
+        }
 
         awaitClose { close() }
     }

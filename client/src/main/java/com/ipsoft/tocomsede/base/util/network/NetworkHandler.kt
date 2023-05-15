@@ -1,8 +1,8 @@
-package com.ipsoft.tocomsede.core.util.network
+package com.ipsoft.tocomsede.base.util.network
 
 import android.content.Context
 import android.net.NetworkCapabilities
-import com.ipsoft.tocomsede.core.extensions.connectivityManager
+import com.ipsoft.tocomsede.base.extensions.connectivityManager
 import dagger.hilt.android.qualifiers.ApplicationContext
 import javax.inject.Inject
 import javax.inject.Singleton

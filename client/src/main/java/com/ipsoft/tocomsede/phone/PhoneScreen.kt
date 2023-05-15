@@ -29,16 +29,16 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.ipsoft.tocomsede.R
+import com.ipsoft.tocomsede.base.extensions.showMsg
+import com.ipsoft.tocomsede.base.ui.theme.darkBlue80
+import com.ipsoft.tocomsede.base.ui.theme.largePadding
 import com.ipsoft.tocomsede.core.extensions.digitsOnly
 import com.ipsoft.tocomsede.core.extensions.isBrazilianPhone
-import com.ipsoft.tocomsede.core.extensions.showMsg
-import com.ipsoft.tocomsede.core.ui.theme.darkBlue80
-import com.ipsoft.tocomsede.core.ui.theme.largePadding
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun PhoneScreen(viewModel: PhoneViewModel = hiltViewModel(), onBack: () -> Unit) {
-    var phoneNumber by remember { mutableStateOf(viewModel.phoneState.value.phone) }
+    var phoneNumber by remember { mutableStateOf("") }
     val phoneState = viewModel.phoneState.value
     val context = LocalContext.current
     val shouldUpdateNumber = remember {
@@ -77,7 +77,7 @@ fun PhoneScreen(viewModel: PhoneViewModel = hiltViewModel(), onBack: () -> Unit)
             if (phoneState.phoneUpdateSuccess) {
                 context.showMsg(stringResource(id = R.string.phone_update_success))
             }
-            if (phoneState.phone.isNotEmpty() && shouldUpdateNumber.value) {
+            if (phoneState.phone?.isNotEmpty() == true && shouldUpdateNumber.value) {
                 phoneNumber = phoneState.phone
                 shouldUpdateNumber.value = false
             }
@@ -123,14 +123,14 @@ fun PhoneScreen(viewModel: PhoneViewModel = hiltViewModel(), onBack: () -> Unit)
                         ) {
                             viewModel.savePhone(phoneNumber.digitsOnly())
                         } else {
-                            context.showMsg("Telefone inválido")
+                            context.showMsg(context.getString(R.string.invalid_phone))
                         }
                     },
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(vertical = 16.dp)
                 ) {
-                    Text(text = "Salvar")
+                    Text(text = stringResource(id = R.string.save))
                 }
             }
         }

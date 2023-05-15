@@ -33,12 +33,12 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.ipsoft.tocomsede.R
+import com.ipsoft.tocomsede.base.extensions.showMsg
+import com.ipsoft.tocomsede.base.ui.theme.darkBlue80
+import com.ipsoft.tocomsede.base.ui.theme.largePadding
+import com.ipsoft.tocomsede.base.ui.theme.mediumPadding
 import com.ipsoft.tocomsede.core.extensions.isValidCep
-import com.ipsoft.tocomsede.core.extensions.showMsg
 import com.ipsoft.tocomsede.core.model.Address
-import com.ipsoft.tocomsede.core.ui.theme.darkBlue80
-import com.ipsoft.tocomsede.core.ui.theme.largePadding
-import com.ipsoft.tocomsede.core.ui.theme.mediumPadding
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -110,7 +110,7 @@ fun AddressFormScreen(
         }
     ) { padding ->
         cepState.value.error?.let {
-            context.showMsg(it)
+            context.showMsg(stringResource(id = R.string.cep_not_found))
         }
         if (cepState.value.loading) {
             Box(

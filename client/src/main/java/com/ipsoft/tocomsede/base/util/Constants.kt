@@ -1,4 +1,4 @@
-package com.ipsoft.tocomsede.core.util
+package com.ipsoft.tocomsede.base.util
 
 object Constants {
 

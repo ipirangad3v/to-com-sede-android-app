@@ -42,16 +42,16 @@ import com.google.firebase.auth.FirebaseAuth
 import com.ipsoft.tocomsede.account.AccountScreen
 import com.ipsoft.tocomsede.address.form.AddressFormScreen
 import com.ipsoft.tocomsede.address.list.AddressList
+import com.ipsoft.tocomsede.base.ui.components.Screen
+import com.ipsoft.tocomsede.base.ui.components.Screen.Companion.ITEM_ID
+import com.ipsoft.tocomsede.base.ui.components.Screen.Companion.items
+import com.ipsoft.tocomsede.base.ui.theme.ToComSedeTheme
+import com.ipsoft.tocomsede.base.ui.theme.darkBlue80
+import com.ipsoft.tocomsede.base.ui.theme.lightBlue
 import com.ipsoft.tocomsede.cart.CartBadge
 import com.ipsoft.tocomsede.cart.CartScreen
 import com.ipsoft.tocomsede.core.model.ResultState
 import com.ipsoft.tocomsede.core.model.User
-import com.ipsoft.tocomsede.core.ui.components.Screen
-import com.ipsoft.tocomsede.core.ui.components.Screen.Companion.ITEM_ID
-import com.ipsoft.tocomsede.core.ui.components.Screen.Companion.items
-import com.ipsoft.tocomsede.core.ui.theme.ToComSedeTheme
-import com.ipsoft.tocomsede.core.ui.theme.darkBlue80
-import com.ipsoft.tocomsede.core.ui.theme.lightBlue
 import com.ipsoft.tocomsede.data.cart.CartRepository
 import com.ipsoft.tocomsede.data.user.PreferencesRepository
 import com.ipsoft.tocomsede.home.ui.HomeScreen
@@ -88,7 +88,6 @@ class MainActivity : ComponentActivity(), UserInfoListener {
 
     private val providers = arrayListOf(
         AuthUI.IdpConfig.EmailBuilder().build(),
-        AuthUI.IdpConfig.PhoneBuilder().build(),
         AuthUI.IdpConfig.GoogleBuilder().build()
     )
 
@@ -222,7 +221,6 @@ class MainActivity : ComponentActivity(), UserInfoListener {
                                             // Restore state when reselecting a previously selected item
                                             restoreState = true
                                         }
-                                        askNotificationPermission()
                                     }
                                 )
                             }
@@ -283,6 +281,8 @@ class MainActivity : ComponentActivity(), UserInfoListener {
                 }
             }
         }
+
+        askNotificationPermission()
 
         if (isUserLogged) {
             startNotifications()
@@ -403,6 +403,9 @@ class MainActivity : ComponentActivity(), UserInfoListener {
     }
 
     override fun onUserInfoChanged(isUserLogged: Boolean) {
-        if (isUserLogged) startNotifications()
+        askNotificationPermission()
+        if (isUserLogged) {
+            startNotifications()
+        }
     }
 }

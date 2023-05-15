@@ -14,12 +14,11 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
-import com.ipsoft.tocomsede.core.model.Category
-import com.ipsoft.tocomsede.core.ui.theme.mediumPadding
-import com.ipsoft.tocomsede.core.ui.theme.smallPadding
+import com.ipsoft.tocomsede.base.ui.theme.mediumPadding
+import com.ipsoft.tocomsede.base.ui.theme.smallPadding
 
 @Composable
-fun HomeCategoryList(category: Category, navController: NavHostController) {
+fun HomeCategoryList(category: com.ipsoft.tocomsede.core.model.Category, navController: NavHostController) {
     Surface {
         Column(
             modifier = Modifier

@@ -1,4 +1,4 @@
-package com.ipsoft.tocomsede.core.ui.state
+package com.ipsoft.tocomsede.base.ui.state
 
 import com.ipsoft.tocomsede.core.model.Item
 

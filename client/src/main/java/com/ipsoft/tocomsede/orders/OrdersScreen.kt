@@ -38,17 +38,16 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.ipsoft.tocomsede.R
+import com.ipsoft.tocomsede.base.ui.theme.darkBlue80
+import com.ipsoft.tocomsede.base.ui.theme.gray
+import com.ipsoft.tocomsede.base.ui.theme.itemDividerPadding
+import com.ipsoft.tocomsede.base.ui.theme.largePadding
+import com.ipsoft.tocomsede.base.ui.theme.mediumPadding
+import com.ipsoft.tocomsede.base.ui.theme.smallPadding
+import com.ipsoft.tocomsede.base.util.network.NetworkHandler
 import com.ipsoft.tocomsede.core.extensions.millisToDateTime
 import com.ipsoft.tocomsede.core.extensions.toCurrency
-import com.ipsoft.tocomsede.core.model.Order
 import com.ipsoft.tocomsede.core.model.OrderStatus
-import com.ipsoft.tocomsede.core.ui.theme.darkBlue80
-import com.ipsoft.tocomsede.core.ui.theme.gray
-import com.ipsoft.tocomsede.core.ui.theme.itemDividerPadding
-import com.ipsoft.tocomsede.core.ui.theme.largePadding
-import com.ipsoft.tocomsede.core.ui.theme.mediumPadding
-import com.ipsoft.tocomsede.core.ui.theme.smallPadding
-import com.ipsoft.tocomsede.core.util.network.NetworkHandler
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -210,7 +209,7 @@ fun OrdersScreen(viewModel: OrdersViewModel = hiltViewModel(), onLoginClick: () 
 
 @Composable
 fun OrderListItem(
-    order: Order
+    order: com.ipsoft.tocomsede.core.model.Order
 ) {
     Surface(color = Color.White) {
         Column(

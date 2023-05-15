@@ -20,12 +20,12 @@ import com.ipsoft.tocomsede.MainActivity
 import com.ipsoft.tocomsede.R.drawable
 import com.ipsoft.tocomsede.R.mipmap
 import com.ipsoft.tocomsede.R.string
+import com.ipsoft.tocomsede.base.ui.components.Screen
+import com.ipsoft.tocomsede.base.util.Constants.NOTIFICATION_CHANNEL_DESCRIPTION
+import com.ipsoft.tocomsede.base.util.Constants.NOTIFICATION_CHANNEL_ID
+import com.ipsoft.tocomsede.base.util.Constants.NOTIFICATION_CHANNEL_NAME
 import com.ipsoft.tocomsede.core.model.Order
 import com.ipsoft.tocomsede.core.model.OrderStatus
-import com.ipsoft.tocomsede.core.ui.components.Screen
-import com.ipsoft.tocomsede.core.util.Constants.NOTIFICATION_CHANNEL_DESCRIPTION
-import com.ipsoft.tocomsede.core.util.Constants.NOTIFICATION_CHANNEL_ID
-import com.ipsoft.tocomsede.core.util.Constants.NOTIFICATION_CHANNEL_NAME
 import com.ipsoft.tocomsede.utils.UserInfo.userUid
 
 class NotificationService : Service() {
@@ -56,6 +56,7 @@ class NotificationService : Service() {
         // Configurar o Firebase Realtime Database
         FirebaseApp.initializeApp(this)
         val database = FirebaseDatabase.getInstance()
+        if (userUid == null) return
         databaseRef = database.getReference("users").child(userUid!!).child("orders")
 
         // Configurar o gerenciador de notificações

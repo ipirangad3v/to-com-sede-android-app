@@ -1,4 +1,4 @@
-package com.ipsoft.tocomsede.core.ui.theme
+package com.ipsoft.tocomsede.base.ui.theme
 
 import androidx.compose.material3.Typography
 import androidx.compose.ui.text.TextStyle

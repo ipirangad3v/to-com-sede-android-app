@@ -71,7 +71,7 @@ class PhoneViewModel @Inject constructor(private val phoneRepository: RealtimePh
     }
 
     data class PhoneState(
-        val phone: String = "",
+        val phone: String? = null,
         val loading: Boolean = false,
         val error: String = "",
         val phoneUpdateSuccess: Boolean = false

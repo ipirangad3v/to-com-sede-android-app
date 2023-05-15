@@ -1,4 +1,4 @@
-package com.ipsoft.tocomsede.core.extension
+package com.ipsoft.tocomsede.base.extension
 
 import com.ipsoft.tocomsede.core.extensions.toCurrency
 import junit.framework.TestCase.assertEquals

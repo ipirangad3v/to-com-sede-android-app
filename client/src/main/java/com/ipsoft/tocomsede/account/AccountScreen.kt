@@ -43,11 +43,11 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
 import com.bumptech.glide.integration.compose.GlideImage
 import com.ipsoft.tocomsede.R
-import com.ipsoft.tocomsede.core.extensions.getVerCode
-import com.ipsoft.tocomsede.core.ui.theme.darkBlue80
-import com.ipsoft.tocomsede.core.ui.theme.largePadding
-import com.ipsoft.tocomsede.core.ui.theme.mediumPadding
-import com.ipsoft.tocomsede.core.ui.theme.smallPadding
+import com.ipsoft.tocomsede.base.extensions.getVerCode
+import com.ipsoft.tocomsede.base.ui.theme.darkBlue80
+import com.ipsoft.tocomsede.base.ui.theme.largePadding
+import com.ipsoft.tocomsede.base.ui.theme.mediumPadding
+import com.ipsoft.tocomsede.base.ui.theme.smallPadding
 import com.ipsoft.tocomsede.utils.UserInfo
 
 @OptIn(ExperimentalMaterial3Api::class)

@@ -53,7 +53,8 @@ class CartRepositoryImpl @Inject constructor(
             trySend(ResultState.Failure(Exception("Usuário não logado")))
             return@callbackFlow
         } else {
-            val order = Order(cart.getItems().toList(), address = address)
+            val order =
+                Order(cart.getItems().toList(), address = address)
             ordersReference.push().setValue(order).addOnCompleteListener {
                 if (it.isSuccessful) {
                     cart.clearCart()

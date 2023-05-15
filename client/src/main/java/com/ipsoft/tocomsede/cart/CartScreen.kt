@@ -12,6 +12,7 @@ import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.CenterAlignedTopAppBar
@@ -40,13 +41,13 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.ipsoft.tocomsede.R
+import com.ipsoft.tocomsede.base.ui.theme.darkBlue80
+import com.ipsoft.tocomsede.base.ui.theme.gray
+import com.ipsoft.tocomsede.base.ui.theme.itemDividerPadding
+import com.ipsoft.tocomsede.base.ui.theme.largePadding
+import com.ipsoft.tocomsede.base.ui.theme.mediumPadding
+import com.ipsoft.tocomsede.base.ui.theme.smallPadding
 import com.ipsoft.tocomsede.core.model.Address
-import com.ipsoft.tocomsede.core.ui.theme.darkBlue80
-import com.ipsoft.tocomsede.core.ui.theme.gray
-import com.ipsoft.tocomsede.core.ui.theme.itemDividerPadding
-import com.ipsoft.tocomsede.core.ui.theme.largePadding
-import com.ipsoft.tocomsede.core.ui.theme.mediumPadding
-import com.ipsoft.tocomsede.core.ui.theme.smallPadding
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -195,29 +196,27 @@ fun CartScreen(
 @Composable
 fun CheckoutPhone(phoneState: String?, onPhoneEditClick: () -> Unit) {
     Surface {
-        phoneState?.let { phone ->
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.SpaceBetween
-            ) {
-                Text(
-                    text = stringResource(id = R.string.phone) + ": ",
-                    modifier = Modifier.padding(largePadding)
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.SpaceBetween
+        ) {
+            Text(
+                text = stringResource(id = R.string.phone) + ": ",
+                modifier = Modifier.padding(largePadding)
+            )
+            Text(
+                text = phoneState ?: stringResource(id = R.string.not_informed),
+                style = if (phoneState != null) MaterialTheme.typography.bodyLarge else MaterialTheme.typography.bodySmall,
+                modifier = Modifier
+                    .padding(largePadding)
+            )
+            IconButton(onClick = onPhoneEditClick) {
+                Icon(
+                    if (phoneState != null) Icons.Default.Edit else Icons.Default.Add,
+                    contentDescription = "Edit phone",
+                    tint = darkBlue80
                 )
-                Text(
-                    text = phone,
-                    style = MaterialTheme.typography.bodyLarge,
-                    modifier = Modifier
-                        .padding(largePadding)
-                )
-                IconButton(onClick = onPhoneEditClick) {
-                    Icon(
-                        Icons.Default.Edit,
-                        contentDescription = "Edit address",
-                        tint = darkBlue80
-                    )
-                }
             }
         }
     }

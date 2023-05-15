@@ -19,13 +19,13 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
 import com.bumptech.glide.integration.compose.GlideImage
+import com.ipsoft.tocomsede.base.ui.theme.defaultCartElevation
+import com.ipsoft.tocomsede.base.ui.theme.defaultImageSize
+import com.ipsoft.tocomsede.base.ui.theme.mediumPadding
+import com.ipsoft.tocomsede.base.ui.theme.smallPadding
+import com.ipsoft.tocomsede.base.ui.theme.softBlue
 import com.ipsoft.tocomsede.core.extensions.toCurrency
 import com.ipsoft.tocomsede.core.model.Item
-import com.ipsoft.tocomsede.core.ui.theme.defaultCartElevation
-import com.ipsoft.tocomsede.core.ui.theme.defaultImageSize
-import com.ipsoft.tocomsede.core.ui.theme.mediumPadding
-import com.ipsoft.tocomsede.core.ui.theme.smallPadding
-import com.ipsoft.tocomsede.core.ui.theme.softBlue
 
 @OptIn(ExperimentalGlideComposeApi::class)
 @Composable

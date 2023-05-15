@@ -5,12 +5,12 @@ import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.ipsoft.tocomsede.base.ui.state.CartItemState
 import com.ipsoft.tocomsede.core.model.Address
 import com.ipsoft.tocomsede.core.model.Item
 import com.ipsoft.tocomsede.core.model.ResultState.Failure
 import com.ipsoft.tocomsede.core.model.ResultState.Loading
 import com.ipsoft.tocomsede.core.model.ResultState.Success
-import com.ipsoft.tocomsede.core.ui.state.CartItemState
 import com.ipsoft.tocomsede.data.cart.CartRepository
 import com.ipsoft.tocomsede.data.firebaserealtimedb.address.RealtimeAddressRepository
 import com.ipsoft.tocomsede.data.firebaserealtimedb.phone.RealtimePhoneRepository
@@ -39,7 +39,9 @@ class CartViewModel @Inject constructor(
     private val _userLoggedState: MutableState<Boolean> = mutableStateOf(UserInfo.isUserLogged)
     val userLoggedState: State<Boolean> = _userLoggedState
 
-    private val _favoriteAddressState: MutableState<Address?> = mutableStateOf(Address())
+    private val _favoriteAddressState: MutableState<Address?> = mutableStateOf(
+        Address()
+    )
     val favoriteAddressState: State<Address?> = _favoriteAddressState
 
     private val _phoneState: MutableState<String?> = mutableStateOf(null)

@@ -1,4 +1,4 @@
-package com.ipsoft.tocomsede.core.ui.components
+package com.ipsoft.tocomsede.base.ui.components
 
 import androidx.annotation.StringRes
 import androidx.compose.material.icons.Icons

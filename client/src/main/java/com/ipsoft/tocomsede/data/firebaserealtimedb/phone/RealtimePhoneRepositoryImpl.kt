@@ -32,11 +32,11 @@ class RealtimePhoneRepositoryImpl @Inject constructor(private val dbReference: D
         }
     }
 
-    override suspend fun getPhone(): Flow<ResultState<String>> = callbackFlow {
+    override suspend fun getPhone(): Flow<ResultState<String?>> = callbackFlow {
         val phoneReference = userReference.child("phone")
         phoneReference.get().addOnCompleteListener {
             if (it.isSuccessful) {
-                val phone = it.result?.value.toString()
+                val phone = it.result?.value as? String
                 trySend(ResultState.Success(phone))
             } else {
                 trySend(

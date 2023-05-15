@@ -6,8 +6,8 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.ipsoft.tocomsede.core.model.Order
+import com.ipsoft.tocomsede.core.model.ResultState
 import com.ipsoft.tocomsede.core.model.ResultState.Failure
-import com.ipsoft.tocomsede.core.model.ResultState.Loading
 import com.ipsoft.tocomsede.core.model.ResultState.Success
 import com.ipsoft.tocomsede.data.firebaserealtimedb.orders.RealtimeOrdersRepository
 import com.ipsoft.tocomsede.utils.UserInfo
@@ -41,7 +41,7 @@ class OrdersViewModel @Inject constructor(private val ordersRepository: Realtime
         viewModelScope.launch {
             ordersRepository.getOrders().collect {
                 when (it) {
-                    is Loading -> {
+                    is ResultState.Loading -> {
                         _state.value = OrdersState(isLoading = true)
                     }
 

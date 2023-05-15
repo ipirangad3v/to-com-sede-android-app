@@ -41,13 +41,13 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import com.ipsoft.tocomsede.R
-import com.ipsoft.tocomsede.core.ui.theme.darkBlue80
-import com.ipsoft.tocomsede.core.ui.theme.gray
-import com.ipsoft.tocomsede.core.ui.theme.itemDividerPadding
-import com.ipsoft.tocomsede.core.ui.theme.mediumPadding
-import com.ipsoft.tocomsede.core.ui.theme.smallPadding
-import com.ipsoft.tocomsede.core.ui.theme.xxLargePadding
-import com.ipsoft.tocomsede.core.util.network.NetworkHandler
+import com.ipsoft.tocomsede.base.ui.theme.darkBlue80
+import com.ipsoft.tocomsede.base.ui.theme.gray
+import com.ipsoft.tocomsede.base.ui.theme.itemDividerPadding
+import com.ipsoft.tocomsede.base.ui.theme.mediumPadding
+import com.ipsoft.tocomsede.base.ui.theme.smallPadding
+import com.ipsoft.tocomsede.base.ui.theme.xxLargePadding
+import com.ipsoft.tocomsede.base.util.network.NetworkHandler
 import com.ipsoft.tocomsede.utils.UserInfo
 
 @OptIn(ExperimentalMaterial3Api::class)

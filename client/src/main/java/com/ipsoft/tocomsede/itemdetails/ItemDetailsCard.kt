@@ -27,10 +27,10 @@ import androidx.compose.ui.unit.dp
 import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
 import com.bumptech.glide.integration.compose.GlideImage
 import com.ipsoft.tocomsede.R
-import com.ipsoft.tocomsede.core.ui.components.PriceTag
-import com.ipsoft.tocomsede.core.ui.theme.darkBlue80
-import com.ipsoft.tocomsede.core.ui.theme.largePadding
-import com.ipsoft.tocomsede.core.ui.theme.smallPadding
+import com.ipsoft.tocomsede.base.ui.components.PriceTag
+import com.ipsoft.tocomsede.base.ui.theme.darkBlue80
+import com.ipsoft.tocomsede.base.ui.theme.largePadding
+import com.ipsoft.tocomsede.base.ui.theme.smallPadding
 
 @OptIn(ExperimentalGlideComposeApi::class)
 @Composable
