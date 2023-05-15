@@ -2,6 +2,7 @@ package com.ipsoft.tocomsede.data.cart
 
 import com.google.firebase.database.DatabaseReference
 import com.ipsoft.tocomsede.core.model.Address
+import com.ipsoft.tocomsede.core.model.Change
 import com.ipsoft.tocomsede.core.model.Item
 import com.ipsoft.tocomsede.core.model.Order
 import com.ipsoft.tocomsede.core.model.PaymentMethod
@@ -50,7 +51,8 @@ class CartRepositoryImpl @Inject constructor(
 
     override suspend fun checkout(
         address: Address,
-        paymentMethod: PaymentMethod
+        paymentMethod: PaymentMethod,
+        change: Change
     ): Flow<ResultState<Boolean>> = callbackFlow {
         trySend(ResultState.Loading)
         if (userUid == null) {
@@ -58,7 +60,7 @@ class CartRepositoryImpl @Inject constructor(
             return@callbackFlow
         } else {
             val order =
-                Order(cart.getItems().toList(), address = address, paymentMethod = paymentMethod)
+                Order(cart.getItems().toList(), address = address, paymentMethod = paymentMethod, change = change)
             ordersReference.push().setValue(order).addOnCompleteListener {
                 if (it.isSuccessful) {
                     cart.clearCart()

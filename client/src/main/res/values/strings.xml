@@ -79,4 +79,7 @@
     <string name="credit_card">Cartão de credito</string>
     <string name="debit_card">Cartão de debito</string>
     <string name="pix">pix</string>
+    <string name="change">troco</string>
+    <string name="no_change">sem troco</string>
+    <string name="change_for">troco para</string>
 </resources>

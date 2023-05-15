@@ -7,6 +7,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.ipsoft.tocomsede.base.ui.state.CartItemState
 import com.ipsoft.tocomsede.core.model.Address
+import com.ipsoft.tocomsede.core.model.Change
 import com.ipsoft.tocomsede.core.model.Item
 import com.ipsoft.tocomsede.core.model.PaymentMethod
 import com.ipsoft.tocomsede.core.model.ResultState.Failure
@@ -25,7 +26,7 @@ import javax.inject.Inject
 class CartViewModel @Inject constructor(
     private val cartRepository: CartRepository,
     private val addressRepository: RealtimeAddressRepository,
-    private val phoneRepository: RealtimePhoneRepository
+    private val phoneRepository: RealtimePhoneRepository,
 ) :
     ViewModel(),
     Cart.CartListener,
@@ -36,6 +37,9 @@ class CartViewModel @Inject constructor(
 
     private val _paymentState: MutableState<PaymentMethod> = mutableStateOf(PaymentMethod.MONEY)
     val paymentState: State<PaymentMethod> = _paymentState
+
+    private val _changePaymentState: MutableState<Change> = mutableStateOf(Change())
+    val changePaymentState: State<Change> = _changePaymentState
 
     private val _cartTotalState: MutableState<String> = mutableStateOf("")
     val cartTotalState: State<String> = _cartTotalState
@@ -67,7 +71,7 @@ class CartViewModel @Inject constructor(
                         _favoriteAddressState.value = result.data
                     }
 
-                    else -> {
+                    else       -> {
                         _favoriteAddressState.value = null
                     }
                 }
@@ -83,7 +87,7 @@ class CartViewModel @Inject constructor(
                         _phoneState.value = result.data
                     }
 
-                    else -> {
+                    else       -> {
                         _phoneState.value = null
                     }
                 }
@@ -100,21 +104,22 @@ class CartViewModel @Inject constructor(
     fun checkout() {
         viewModelScope.launch {
             _favoriteAddressState.value?.let { address ->
-                cartRepository.checkout(address, _paymentState.value).collect { result ->
-                    when (result) {
-                        is Success -> {
-                            _cartItemState.value = CartItemState(checkoutSuccess = true)
-                        }
+                cartRepository.checkout(address, _paymentState.value, _changePaymentState.value)
+                    .collect { result ->
+                        when (result) {
+                            is Success -> {
+                                _cartItemState.value = CartItemState(checkoutSuccess = true)
+                            }
 
-                        is Failure -> {
-                            _cartItemState.value = CartItemState(error = result.msg.toString())
-                        }
+                            is Failure -> {
+                                _cartItemState.value = CartItemState(error = result.msg.toString())
+                            }
 
-                        Loading -> {
-                            _cartItemState.value = CartItemState(isLoading = true)
+                            Loading    -> {
+                                _cartItemState.value = CartItemState(isLoading = true)
+                            }
                         }
                     }
-                }
             }
         }
     }
@@ -159,11 +164,16 @@ class CartViewModel @Inject constructor(
                         CartItemState(error = it.msg.toString())
                     }
 
-                    Loading -> {
+                    Loading    -> {
                         CartItemState(isLoading = true)
                     }
                 }
             }
         }
+    }
+
+    fun updateChange(change: Change) {
+        _changePaymentState.value = change
+
     }
 }

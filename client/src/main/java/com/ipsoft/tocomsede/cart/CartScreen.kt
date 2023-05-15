@@ -12,6 +12,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Edit
@@ -23,6 +24,7 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.RadioButton
 import androidx.compose.material3.RadioButtonDefaults
 import androidx.compose.material3.Scaffold
@@ -40,6 +42,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -51,6 +54,7 @@ import com.ipsoft.tocomsede.base.ui.theme.largePadding
 import com.ipsoft.tocomsede.base.ui.theme.mediumPadding
 import com.ipsoft.tocomsede.base.ui.theme.smallPadding
 import com.ipsoft.tocomsede.core.model.Address
+import com.ipsoft.tocomsede.core.model.Change
 import com.ipsoft.tocomsede.core.model.PaymentMethod
 import com.ipsoft.tocomsede.core.model.PaymentMethod.CREDIT_CARD
 import com.ipsoft.tocomsede.core.model.PaymentMethod.DEBIT_CARD
@@ -64,7 +68,7 @@ fun CartScreen(
     onEditClick: () -> Unit,
     onPhoneEditClick: () -> Unit,
     onLoginClick: () -> Unit,
-    onCheckoutSuccess: () -> Unit
+    onCheckoutSuccess: () -> Unit,
 ) {
     val cartItemState = cartViewModel.cartItemState.value
     val cartTotalState = cartViewModel.cartTotalState.value
@@ -185,6 +189,14 @@ fun CartScreen(
                                     item {
                                         PaymentMethodSelection(cartViewModel)
                                     }
+                                    if (cartViewModel.paymentState.value == MONEY) {
+                                        item {
+                                            Spacer(modifier = Modifier.padding(itemDividerPadding))
+                                        }
+                                        item {
+                                            ChangeSelectContainer(cartViewModel)
+                                        }
+                                    }
                                     item {
                                         Spacer(modifier = Modifier.padding(itemDividerPadding))
                                     }
@@ -210,6 +222,88 @@ fun CartScreen(
             }
         }
     )
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun ChangeSelectContainer(cartViewModel: CartViewModel) {
+
+    Surface {
+        Box(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(largePadding),
+            contentAlignment = Alignment.Center
+        ) {
+            Column {
+                Text(
+                    text = stringResource(id = R.string.change),
+                    style = MaterialTheme.typography.bodyLarge,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(largePadding),
+                    textAlign = TextAlign.Center
+                )
+                Column(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(largePadding),
+                    verticalArrangement = Arrangement.spacedBy(smallPadding)
+                ) {
+                    Row(
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        RadioButton(
+                            selected = cartViewModel.changePaymentState.value.hasChange,
+                            onClick = {
+                                cartViewModel.updateChange(
+                                    Change(
+                                        hasChange = true,
+                                        changeFor = cartViewModel.changePaymentState.value.changeFor
+                                    )
+                                )
+                            }
+                        )
+                        Text(
+                            text = stringResource(id = R.string.change_for),
+                            modifier = Modifier.padding(smallPadding)
+                        )
+                        OutlinedTextField(
+                            enabled = cartViewModel.changePaymentState.value.hasChange,
+                            isError = cartViewModel.changePaymentState.value.changeFor == 0.0,
+                            value = cartViewModel.changePaymentState.value.changeFor.toString(),
+                            onValueChange = {
+                                cartViewModel.updateChange(
+                                    Change(
+                                        hasChange = true,
+                                        changeFor = it.toDouble()
+                                    )
+                                )
+                            },
+                            keyboardOptions = KeyboardOptions.Default.copy(
+                                keyboardType = KeyboardType.Decimal
+                            ),
+                            singleLine = true,
+                        )
+                    }
+                    Row {
+                        RadioButton(
+                            selected = !cartViewModel.changePaymentState.value.hasChange,
+                            onClick = {
+                                cartViewModel.updateChange(
+                                    Change()
+                                )
+                            }
+                        )
+                        Text(
+                            text = stringResource(id = R.string.no_change),
+                            modifier = Modifier.padding(smallPadding)
+                        )
+                    }
+                }
+            }
+        }
+    }
 }
 
 @Composable
@@ -409,7 +503,7 @@ fun CheckoutCartTotal(cartTotalState: String) {
 @Composable
 fun AddressListContainer(
     address: Address?,
-    onEditClick: () -> Unit
+    onEditClick: () -> Unit,
 ) {
     Surface(color = Color.White) {
         if (address == null) {

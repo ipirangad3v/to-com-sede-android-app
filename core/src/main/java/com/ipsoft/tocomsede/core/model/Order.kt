@@ -9,7 +9,7 @@ data class Order(
     val status: OrderStatus = OrderStatus.PENDING,
     val address: Address? = null,
     val paymentMethod: PaymentMethod = MONEY,
-    val changeFor: Double = 0.0,
+    val change: Change = Change(),
 ) {
     @Suppress("unused")
     constructor() : this(
