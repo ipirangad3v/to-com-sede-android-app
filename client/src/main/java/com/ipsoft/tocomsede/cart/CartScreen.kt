@@ -1,5 +1,6 @@
 package com.ipsoft.tocomsede.cart
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -22,6 +23,8 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.RadioButton
+import androidx.compose.material3.RadioButtonDefaults
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
@@ -48,21 +51,28 @@ import com.ipsoft.tocomsede.base.ui.theme.largePadding
 import com.ipsoft.tocomsede.base.ui.theme.mediumPadding
 import com.ipsoft.tocomsede.base.ui.theme.smallPadding
 import com.ipsoft.tocomsede.core.model.Address
+import com.ipsoft.tocomsede.core.model.PaymentMethod
+import com.ipsoft.tocomsede.core.model.PaymentMethod.CREDIT_CARD
+import com.ipsoft.tocomsede.core.model.PaymentMethod.DEBIT_CARD
+import com.ipsoft.tocomsede.core.model.PaymentMethod.MONEY
+import com.ipsoft.tocomsede.core.model.PaymentMethod.PIX
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun CartScreen(
-    checkoutViewModel: CartViewModel = hiltViewModel(),
+    cartViewModel: CartViewModel = hiltViewModel(),
     onEditClick: () -> Unit,
     onPhoneEditClick: () -> Unit,
     onLoginClick: () -> Unit,
     onCheckoutSuccess: () -> Unit
 ) {
-    val cartItemState = checkoutViewModel.cartItemState.value
-    val cartTotalState = checkoutViewModel.cartTotalState.value
-    val addressFavoriteState = checkoutViewModel.favoriteAddressState.value
-    val phoneState = checkoutViewModel.phoneState.value
-    val isUserLoggedState = checkoutViewModel.userLoggedState.value
+    val cartItemState = cartViewModel.cartItemState.value
+    val cartTotalState = cartViewModel.cartTotalState.value
+    val addressFavoriteState = cartViewModel.favoriteAddressState.value
+    val phoneState = cartViewModel.phoneState.value
+    val isUserLoggedState = cartViewModel.userLoggedState.value
+
+    val paymentMethodState = cartViewModel.paymentState.value
 
     var showDialog by remember { mutableStateOf(false) }
 
@@ -78,7 +88,7 @@ fun CartScreen(
             confirmButton = {
                 ElevatedButton(
                     onClick = {
-                        checkoutViewModel.checkout()
+                        cartViewModel.checkout()
                         showDialog = false
                     }
                 ) {
@@ -124,7 +134,7 @@ fun CartScreen(
                             Text(text = it)
                             Spacer(modifier = Modifier.padding(smallPadding))
                             ElevatedButton(
-                                onClick = { checkoutViewModel.loadCart() },
+                                onClick = { cartViewModel.loadCart() },
                                 modifier = Modifier.wrapContentSize()
                             ) {
                                 Text(text = stringResource(id = R.string.try_again))
@@ -144,8 +154,8 @@ fun CartScreen(
                     if (cartItemState.items.isNotEmpty()) {
                         LaunchedEffect(isUserLoggedState) {
                             if (isUserLoggedState) {
-                                checkoutViewModel.loadFavoriteAddress()
-                                checkoutViewModel.loadPhone()
+                                cartViewModel.loadFavoriteAddress()
+                                cartViewModel.loadPhone()
                             }
                         }
                         Box(
@@ -164,10 +174,22 @@ fun CartScreen(
                                         }
                                     }
                                     item {
+                                        Spacer(modifier = Modifier.padding(itemDividerPadding))
+                                    }
+                                    item {
                                         CheckoutPhone(
                                             phoneState,
                                             onPhoneEditClick = onPhoneEditClick
                                         )
+                                    }
+                                    item {
+                                        Spacer(modifier = Modifier.padding(itemDividerPadding))
+                                    }
+                                    item {
+                                        PaymentMethodSelection(cartViewModel)
+                                    }
+                                    item {
+                                        Spacer(modifier = Modifier.padding(itemDividerPadding))
                                     }
                                     item {
                                         CheckoutButtonContainer {
@@ -296,6 +318,76 @@ fun LoginContainer(onLoginClick: () -> Unit) {
                 }
             }
         }
+    }
+}
+
+@Composable
+fun PaymentMethodSelection(viewModel: CartViewModel) {
+    val validPayments = listOf(
+        MONEY,
+        PIX,
+        CREDIT_CARD,
+        DEBIT_CARD
+    )
+
+    Surface {
+        Box(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(largePadding),
+            contentAlignment = Alignment.Center
+        ) {
+            Column {
+                Text(
+                    text = stringResource(id = R.string.payment_method),
+                    style = MaterialTheme.typography.bodyLarge,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(largePadding),
+                    textAlign = TextAlign.Center
+                )
+                Column(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(largePadding),
+                    verticalArrangement = Arrangement.spacedBy(smallPadding)
+                ) {
+                    validPayments.forEach { payment ->
+                        PaymentMethodItem(payment, viewModel)
+                    }
+                }
+            }
+        }
+    }
+}
+
+@Composable
+fun PaymentMethodItem(payment: PaymentMethod, viewModel: CartViewModel) {
+    Row(
+        modifier = Modifier
+            .padding(smallPadding)
+            .clickable { viewModel.updatePaymentMethod(payment) }
+            .fillMaxWidth(),
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        RadioButton(
+            selected = viewModel.paymentState.value == payment,
+            onClick = { viewModel.updatePaymentMethod(payment) },
+            colors = RadioButtonDefaults.colors(
+                selectedColor = darkBlue80,
+                unselectedColor = darkBlue80
+            )
+        )
+        Text(
+            text = when (payment) {
+                MONEY -> stringResource(id = R.string.money)
+                CREDIT_CARD -> stringResource(id = R.string.credit_card)
+                DEBIT_CARD -> stringResource(id = R.string.debit_card)
+                PIX -> stringResource(id = R.string.pix)
+            },
+            style = MaterialTheme.typography.bodyLarge,
+            modifier = Modifier.padding(smallPadding)
+        )
     }
 }
 

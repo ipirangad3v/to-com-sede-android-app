@@ -8,6 +8,7 @@ import androidx.lifecycle.viewModelScope
 import com.ipsoft.tocomsede.base.ui.state.CartItemState
 import com.ipsoft.tocomsede.core.model.Address
 import com.ipsoft.tocomsede.core.model.Item
+import com.ipsoft.tocomsede.core.model.PaymentMethod
 import com.ipsoft.tocomsede.core.model.ResultState.Failure
 import com.ipsoft.tocomsede.core.model.ResultState.Loading
 import com.ipsoft.tocomsede.core.model.ResultState.Success
@@ -32,6 +33,9 @@ class CartViewModel @Inject constructor(
 
     private val _cartItemState: MutableState<CartItemState> = mutableStateOf(CartItemState())
     val cartItemState: State<CartItemState> = _cartItemState
+
+    private val _paymentState: MutableState<PaymentMethod> = mutableStateOf(PaymentMethod.MONEY)
+    val paymentState: State<PaymentMethod> = _paymentState
 
     private val _cartTotalState: MutableState<String> = mutableStateOf("")
     val cartTotalState: State<String> = _cartTotalState
@@ -96,7 +100,7 @@ class CartViewModel @Inject constructor(
     fun checkout() {
         viewModelScope.launch {
             _favoriteAddressState.value?.let { address ->
-                cartRepository.checkout(address).collect { result ->
+                cartRepository.checkout(address, _paymentState.value).collect { result ->
                     when (result) {
                         is Success -> {
                             _cartItemState.value = CartItemState(checkoutSuccess = true)
@@ -113,6 +117,10 @@ class CartViewModel @Inject constructor(
                 }
             }
         }
+    }
+
+    fun updatePaymentMethod(paymentMethod: PaymentMethod) {
+        _paymentState.value = paymentMethod
     }
 
     override fun onCleared() {

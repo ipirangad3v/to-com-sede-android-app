@@ -4,6 +4,7 @@ import com.google.firebase.database.DatabaseReference
 import com.ipsoft.tocomsede.core.model.Address
 import com.ipsoft.tocomsede.core.model.Item
 import com.ipsoft.tocomsede.core.model.Order
+import com.ipsoft.tocomsede.core.model.PaymentMethod
 import com.ipsoft.tocomsede.core.model.ResultState
 import com.ipsoft.tocomsede.utils.Cart
 import com.ipsoft.tocomsede.utils.UserInfo.userUid
@@ -47,14 +48,17 @@ class CartRepositoryImpl @Inject constructor(
         return cart.checkIfItemIsInCartAndReturnQuantity(item)
     }
 
-    override suspend fun checkout(address: Address): Flow<ResultState<Boolean>> = callbackFlow {
+    override suspend fun checkout(
+        address: Address,
+        paymentMethod: PaymentMethod
+    ): Flow<ResultState<Boolean>> = callbackFlow {
         trySend(ResultState.Loading)
         if (userUid == null) {
             trySend(ResultState.Failure(Exception("Usuário não logado")))
             return@callbackFlow
         } else {
             val order =
-                Order(cart.getItems().toList(), address = address)
+                Order(cart.getItems().toList(), address = address, paymentMethod = paymentMethod)
             ordersReference.push().setValue(order).addOnCompleteListener {
                 if (it.isSuccessful) {
                     cart.clearCart()

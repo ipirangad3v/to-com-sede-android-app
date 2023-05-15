@@ -47,7 +47,9 @@ import com.ipsoft.tocomsede.base.ui.theme.smallPadding
 import com.ipsoft.tocomsede.base.util.network.NetworkHandler
 import com.ipsoft.tocomsede.core.extensions.millisToDateTime
 import com.ipsoft.tocomsede.core.extensions.toCurrency
+import com.ipsoft.tocomsede.core.model.Order
 import com.ipsoft.tocomsede.core.model.OrderStatus
+import com.ipsoft.tocomsede.core.model.PaymentMethod
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -209,7 +211,7 @@ fun OrdersScreen(viewModel: OrdersViewModel = hiltViewModel(), onLoginClick: () 
 
 @Composable
 fun OrderListItem(
-    order: com.ipsoft.tocomsede.core.model.Order
+    order: Order
 ) {
     Surface(color = Color.White) {
         Column(
@@ -275,6 +277,24 @@ fun OrderListItem(
                 }
             }
             Spacer(modifier = Modifier.padding(largePadding))
+            Row(modifier = Modifier.fillMaxWidth()) {
+                Text(
+                    text = stringResource(id = R.string.payment_method),
+                    style = MaterialTheme.typography.bodyMedium,
+                    modifier = Modifier.weight(1f)
+                )
+                Text(
+                    text = when (order.paymentMethod) {
+                        PaymentMethod.MONEY -> stringResource(id = R.string.money)
+                        PaymentMethod.CREDIT_CARD -> stringResource(id = R.string.credit_card)
+                        PaymentMethod.DEBIT_CARD -> stringResource(id = R.string.debit_card)
+                        PaymentMethod.PIX -> stringResource(id = R.string.pix)
+                    },
+                    style = MaterialTheme.typography.bodyMedium,
+                    color = Color.Gray
+                )
+            }
+            Spacer(modifier = Modifier.padding(smallPadding))
             Row(modifier = Modifier.fillMaxWidth()) {
                 Text(
                     text = stringResource(id = R.string.total),

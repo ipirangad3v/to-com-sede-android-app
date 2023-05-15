@@ -74,4 +74,9 @@
     <string name="invalid_phone">Telefone inválido</string>
     <string name="not_informed">adicione um número de contato</string>
     <string name="cep_not_found">CEP não encontrado, tente novamente</string>
+    <string name="payment_method">Método de pagamento</string>
+    <string name="money">dinheiro</string>
+    <string name="credit_card">Cartão de credito</string>
+    <string name="debit_card">Cartão de debito</string>
+    <string name="pix">pix</string>
 </resources>
