@@ -13,9 +13,11 @@ import com.ipsoft.tocomsede.core.model.PaymentMethod
 import com.ipsoft.tocomsede.core.model.ResultState.Failure
 import com.ipsoft.tocomsede.core.model.ResultState.Loading
 import com.ipsoft.tocomsede.core.model.ResultState.Success
+import com.ipsoft.tocomsede.core.model.Store
 import com.ipsoft.tocomsede.data.cart.CartRepository
 import com.ipsoft.tocomsede.data.firebaserealtimedb.address.RealtimeAddressRepository
 import com.ipsoft.tocomsede.data.firebaserealtimedb.phone.RealtimePhoneRepository
+import com.ipsoft.tocomsede.data.firebaserealtimedb.store.RealtimeStoreRepository
 import com.ipsoft.tocomsede.utils.Cart
 import com.ipsoft.tocomsede.utils.UserInfo
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -26,11 +28,15 @@ import javax.inject.Inject
 class CartViewModel @Inject constructor(
     private val cartRepository: CartRepository,
     private val addressRepository: RealtimeAddressRepository,
-    private val phoneRepository: RealtimePhoneRepository
+    private val phoneRepository: RealtimePhoneRepository,
+    private val storeRepository: RealtimeStoreRepository
 ) :
     ViewModel(),
     Cart.CartListener,
     UserInfo.UserInfoListener {
+
+    private val _store = mutableStateOf(Store())
+    val store: State<Store> = _store
 
     private val _cartItemState: MutableState<CartItemState> = mutableStateOf(CartItemState())
     val cartItemState: State<CartItemState> = _cartItemState
@@ -61,6 +67,23 @@ class CartViewModel @Inject constructor(
         loadCart()
         loadFavoriteAddress()
         loadPhone()
+        loadStore()
+    }
+
+    private fun loadStore() {
+        viewModelScope.launch {
+            storeRepository.getStore().collect { result ->
+                when (result) {
+                    is Success -> {
+                        _store.value = result.data
+                    }
+
+                    else -> {
+                        _store.value = Store()
+                    }
+                }
+            }
+        }
     }
 
     fun loadFavoriteAddress() {

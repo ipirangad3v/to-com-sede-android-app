@@ -60,6 +60,7 @@ import com.ipsoft.tocomsede.core.model.PaymentMethod.CREDIT_CARD
 import com.ipsoft.tocomsede.core.model.PaymentMethod.DEBIT_CARD
 import com.ipsoft.tocomsede.core.model.PaymentMethod.MONEY
 import com.ipsoft.tocomsede.core.model.PaymentMethod.PIX
+import com.ipsoft.tocomsede.core.model.Store
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -76,6 +77,7 @@ fun CartScreen(
     val phoneState = cartViewModel.phoneState.value
     val isUserLoggedState = cartViewModel.userLoggedState.value
     var showDialog by remember { mutableStateOf(false) }
+    val store = cartViewModel.store.value
 
     if (cartItemState.checkoutSuccess) {
         onCheckoutSuccess()
@@ -187,7 +189,7 @@ fun CartScreen(
                                         Spacer(modifier = Modifier.padding(itemDividerPadding))
                                     }
                                     item {
-                                        PaymentMethodSelection(cartViewModel)
+                                        PaymentMethodSelection(cartViewModel, store)
                                     }
                                     if (cartViewModel.paymentState.value == MONEY) {
                                         item {
@@ -253,6 +255,22 @@ fun ChangeSelectContainer(cartViewModel: CartViewModel) {
                         verticalAlignment = Alignment.CenterVertically
                     ) {
                         RadioButton(
+                            selected = !cartViewModel.changePaymentState.value.hasChange,
+                            onClick = {
+                                cartViewModel.updateChange(
+                                    Change()
+                                )
+                            }
+                        )
+                        Text(
+                            text = stringResource(id = R.string.no_change),
+                            modifier = Modifier.padding(smallPadding)
+                        )
+                    }
+                    Row(
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        RadioButton(
                             selected = cartViewModel.changePaymentState.value.hasChange,
                             onClick = {
                                 cartViewModel.updateChange(
@@ -283,20 +301,6 @@ fun ChangeSelectContainer(cartViewModel: CartViewModel) {
                                 keyboardType = KeyboardType.Decimal
                             ),
                             singleLine = true
-                        )
-                    }
-                    Row {
-                        RadioButton(
-                            selected = !cartViewModel.changePaymentState.value.hasChange,
-                            onClick = {
-                                cartViewModel.updateChange(
-                                    Change()
-                                )
-                            }
-                        )
-                        Text(
-                            text = stringResource(id = R.string.no_change),
-                            modifier = Modifier.padding(smallPadding)
                         )
                     }
                 }
@@ -412,13 +416,8 @@ fun LoginContainer(onLoginClick: () -> Unit) {
 }
 
 @Composable
-fun PaymentMethodSelection(viewModel: CartViewModel) {
-    val validPayments = listOf(
-        MONEY,
-        PIX,
-        CREDIT_CARD,
-        DEBIT_CARD
-    )
+fun PaymentMethodSelection(viewModel: CartViewModel, store: Store) {
+    val validPayments = store.payments
 
     Surface {
         Box(
