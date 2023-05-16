@@ -10,7 +10,7 @@ import kotlinx.coroutines.flow.Flow
 interface CartRepository {
     suspend fun addItemToCart(
         item: Item,
-        quantity: Int,
+        quantity: Int
     ): ResultState<Boolean>
 
     suspend fun getCartItems(): Flow<ResultState<List<Item>>>
@@ -22,6 +22,6 @@ interface CartRepository {
     suspend fun checkout(
         address: Address,
         paymentMethod: PaymentMethod,
-        change: Change,
+        change: Change
     ): Flow<ResultState<Boolean>>
 }

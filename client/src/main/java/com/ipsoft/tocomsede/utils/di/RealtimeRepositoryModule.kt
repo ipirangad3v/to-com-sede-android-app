@@ -8,6 +8,8 @@ import com.ipsoft.tocomsede.data.firebaserealtimedb.orders.RealtimeOrdersReposit
 import com.ipsoft.tocomsede.data.firebaserealtimedb.orders.RealtimeOrdersRepositoryImpl
 import com.ipsoft.tocomsede.data.firebaserealtimedb.phone.RealtimePhoneRepository
 import com.ipsoft.tocomsede.data.firebaserealtimedb.phone.RealtimePhoneRepositoryImpl
+import com.ipsoft.tocomsede.data.firebaserealtimedb.store.RealtimeStoreRepository
+import com.ipsoft.tocomsede.data.firebaserealtimedb.store.RealtimeStoreRepositoryImpl
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn
@@ -35,4 +37,9 @@ abstract class RealtimeRepositoryModule {
     abstract fun providesRealtimeOrdersRepository(
         repo: RealtimeOrdersRepositoryImpl
     ): RealtimeOrdersRepository
+
+    @Binds
+    abstract fun providesRealtimeStoreRepository(
+        repo: RealtimeStoreRepositoryImpl
+    ): RealtimeStoreRepository
 }
