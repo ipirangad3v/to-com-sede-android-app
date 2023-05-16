@@ -83,4 +83,5 @@
     <string name="no_change">sem troco</string>
     <string name="change_for">troco para</string>
     <string name="store_closed">estamos fechados no momento, mas fique a vontade para ver nossos produtos</string>
+    <string name="address_not_found">Ops, parece que você ainda não adicionou um endereço de entrega</string>
 </resources>

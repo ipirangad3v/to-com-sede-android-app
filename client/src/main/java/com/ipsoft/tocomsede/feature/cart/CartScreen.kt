@@ -40,6 +40,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
@@ -47,6 +48,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.ipsoft.tocomsede.R
+import com.ipsoft.tocomsede.base.extensions.showMsg
 import com.ipsoft.tocomsede.base.ui.theme.darkBlue80
 import com.ipsoft.tocomsede.base.ui.theme.gray
 import com.ipsoft.tocomsede.base.ui.theme.itemDividerPadding
@@ -78,6 +80,7 @@ fun CartScreen(
     val isUserLoggedState = cartViewModel.userLoggedState.value
     var showDialog by remember { mutableStateOf(false) }
     val store = cartViewModel.store.value
+    val context = LocalContext.current
 
     if (cartItemState.checkoutSuccess) {
         onCheckoutSuccess()
@@ -204,7 +207,13 @@ fun CartScreen(
                                     }
                                     item {
                                         CheckoutButtonContainer {
-                                            showDialog = true
+                                            if (addressFavoriteState != null) {
+                                                showDialog = true
+                                            } else {
+                                                context.showMsg(
+                                                    context.getString(R.string.address_not_found)
+                                                )
+                                            }
                                         }
                                     }
                                 } else {
