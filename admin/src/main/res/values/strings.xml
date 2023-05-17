@@ -50,11 +50,11 @@
     <string name="login_to_continue">Faça o login para continuar</string>
     <string name="delivery_principal">principal</string>
     <string name="no_orders">Você ainda não fez nenhum pedido</string>
-    <string name="pending">Pendente</string>
-    <string name="delivering">saiu para entrega</string>
-    <string name="concluded">concluído</string>
-    <string name="canceled">cancelado</string>
-    <string name="confirmed">confirmado</string>
+    <string name="pending">Pendente ⏰</string>
+    <string name="delivering">saiu para entrega 🛵</string>
+    <string name="concluded">concluído ✅</string>
+    <string name="canceled">cancelado ❌</string>
+    <string name="confirmed">confirmado 👍</string>
     <string name="order_received">Você recebeu um pedido</string>
     <string name="login_to_see_orders">Faça login para ver seus pedidos</string>
     <string name="confirm_logout">Confirmar saida</string>

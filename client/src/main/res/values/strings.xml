@@ -1,6 +1,6 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <string name="app_name">tô com sede</string>
-    <string name="notification_message">Seu pedido foi atualizado para %1$s, vem ver</string>
+    <string name="notification_message">Seu pedido foi %1$s</string>
     <string name="error_loading_itens">Ocorreu um erro ao carregar os produtos</string>
     <string name="home">início</string>
     <string name="profile">Perfil</string>
@@ -50,11 +50,11 @@
     <string name="login_to_continue">Faça o login para continuar</string>
     <string name="delivery_principal">principal</string>
     <string name="no_orders">Você ainda não fez nenhum pedido</string>
-    <string name="pending">Pendente</string>
-    <string name="delivering">saiu para entrega</string>
-    <string name="concluded">concluído</string>
-    <string name="canceled">cancelado</string>
-    <string name="confirmed">confirmado</string>
+    <string name="pending">Pendente ⏰</string>
+    <string name="delivering">enviado para entrega 🛵</string>
+    <string name="concluded">concluído ✅</string>
+    <string name="canceled">cancelado ❌</string>
+    <string name="confirmed">confirmado 👍</string>
     <string name="status_changed">Pedido atualizado</string>
     <string name="login_to_see_orders">Faça login para ver seus pedidos</string>
     <string name="confirm_logout">Confirmar saida</string>
@@ -82,6 +82,7 @@
     <string name="change">troco</string>
     <string name="no_change">sem troco</string>
     <string name="change_for">troco para</string>
-    <string name="store_closed">estamos fechados no momento, mas fique a vontade para ver nossos produtos</string>
+    <string name="store_closed" tools:ignore="Typos">estamos fechados no momento, mas fique a vontade para ver nossos produtos</string>
     <string name="address_not_found">Ops, parece que você ainda não adicionou um endereço de entrega</string>
+    <string name="canceled_notification" tools:ignore="Typos">cancelado 😢, infelizmente não pudemos aceitar seu pedido no momento.</string>
 </resources>

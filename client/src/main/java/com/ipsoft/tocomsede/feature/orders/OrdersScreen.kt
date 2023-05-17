@@ -13,16 +13,12 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.CheckCircle
 import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ElevatedButton
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
@@ -228,33 +224,16 @@ fun OrderListItem(
                     text = order.dateInMillis.millisToDateTime(),
                     style = MaterialTheme.typography.bodyMedium
                 )
-                Row(
-                    horizontalArrangement = Arrangement.spacedBy(mediumPadding),
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
-                    Text(
-                        text = when (order.status) {
-                            OrderStatus.PENDING -> stringResource(id = R.string.pending)
-                            OrderStatus.DELIVERING -> stringResource(id = R.string.delivering)
-                            OrderStatus.CONCLUDED -> stringResource(id = R.string.concluded)
-                            OrderStatus.CANCELED -> stringResource(id = R.string.canceled)
-                            OrderStatus.CONFIRMED -> stringResource(id = R.string.confirmed)
-                        },
-                        style = MaterialTheme.typography.bodyMedium
-                    )
-                    Icon(
-                        modifier = Modifier.size(largePadding),
-                        imageVector = Icons.Filled.CheckCircle,
-                        contentDescription = null,
-                        tint = when (order.status) {
-                            OrderStatus.PENDING -> Color.Yellow
-                            OrderStatus.DELIVERING -> Color.Blue
-                            OrderStatus.CONCLUDED -> Color.Green
-                            OrderStatus.CANCELED -> Color.Red
-                            OrderStatus.CONFIRMED -> Color.Green
-                        }
-                    )
-                }
+                Text(
+                    text = when (order.status) {
+                        OrderStatus.PENDING -> stringResource(id = R.string.pending)
+                        OrderStatus.DELIVERING -> stringResource(id = R.string.delivering)
+                        OrderStatus.CONCLUDED -> stringResource(id = R.string.concluded)
+                        OrderStatus.CANCELED -> stringResource(id = R.string.canceled)
+                        OrderStatus.CONFIRMED -> stringResource(id = R.string.confirmed)
+                    },
+                    style = MaterialTheme.typography.bodyMedium
+                )
             }
             Spacer(modifier = Modifier.padding(smallPadding))
 

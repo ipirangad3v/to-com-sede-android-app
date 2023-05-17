@@ -17,7 +17,6 @@ import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
-import androidx.compose.material.icons.filled.CheckCircle
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
 import androidx.compose.material3.CenterAlignedTopAppBar
@@ -482,18 +481,6 @@ fun OrderDetailsContainer(order: Order) {
                             OrderStatus.CONFIRMED -> stringResource(id = R.string.confirmed)
                         },
                         style = MaterialTheme.typography.bodyMedium
-                    )
-                    Icon(
-                        modifier = Modifier.size(largePadding),
-                        imageVector = Icons.Filled.CheckCircle,
-                        contentDescription = null,
-                        tint = when (order.status) {
-                            OrderStatus.PENDING -> Color.Yellow
-                            OrderStatus.DELIVERING -> Color.Blue
-                            OrderStatus.CONCLUDED -> Color.Green
-                            OrderStatus.CANCELED -> Color.Red
-                            OrderStatus.CONFIRMED -> Color.Green
-                        }
                     )
                 }
             }

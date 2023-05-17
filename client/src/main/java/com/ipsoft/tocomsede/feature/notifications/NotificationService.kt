@@ -83,10 +83,10 @@ class NotificationService : Service() {
                                 getString(string.notification_message).format(
                                     when (order.status) {
                                         OrderStatus.CONFIRMED -> getString(string.confirmed)
-                                        OrderStatus.CANCELED -> getString(string.canceled)
                                         OrderStatus.DELIVERING -> getString(string.delivering)
                                         OrderStatus.CONCLUDED -> getString(string.concluded)
                                         OrderStatus.PENDING -> getString(string.pending)
+                                        OrderStatus.CANCELED -> getString(string.canceled_notification)
                                     }
                                 )
                             )
@@ -102,8 +102,11 @@ class NotificationService : Service() {
                 }
             }
 
-            override fun onChildRemoved(snapshot: DataSnapshot) = Unit
-            override fun onChildMoved(snapshot: DataSnapshot, previousChildName: String?) = Unit
+            override fun onChildRemoved(snapshot: DataSnapshot) =
+                Unit
+
+            override fun onChildMoved(snapshot: DataSnapshot, previousChildName: String?) =
+                Unit
 
             override fun onCancelled(error: DatabaseError) = Unit
         })
