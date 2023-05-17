@@ -2,16 +2,19 @@ package com.ipsoft.tocomsedeadmin.feature.account
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.CenterAlignedTopAppBar
+import androidx.compose.material3.Checkbox
 import androidx.compose.material3.ElevatedButton
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
@@ -24,14 +27,19 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Alignment.Companion.CenterHorizontally
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
 import com.bumptech.glide.integration.compose.GlideImage
+import com.ipsoft.tocomsede.core.model.PaymentMethod
+import com.ipsoft.tocomsede.core.model.Store
 import com.ipsoft.tocomsede.core.utils.UserInfo
 import com.ipsoft.tocomsedeadmin.R
 import com.ipsoft.tocomsedeadmin.base.ui.theme.darkBlue80
@@ -47,6 +55,7 @@ fun AccountScreen(
     onLogoutClick: () -> Unit
 ) {
     val isUserLoggedState = viewModel.isUserLogged.value
+    val storeState = viewModel.storeState.value
     var showDialog by remember { mutableStateOf(false) }
 
     if (showDialog) {
@@ -103,6 +112,12 @@ fun AccountScreen(
                 if (isUserLoggedState) {
                     item { UserInfoBanner() }
                     item { Spacer(modifier = Modifier.padding(mediumPadding)) }
+                    item {
+                        StoreInfo(
+                            storeState = storeState,
+                            viewModel = viewModel
+                        )
+                    }
                     item { Spacer(modifier = Modifier.padding(mediumPadding)) }
                     item {
                         LogoutButton {
@@ -123,6 +138,88 @@ fun AccountScreen(
                                 Modifier.padding(largePadding)
                             )
                         }
+                    }
+                }
+            }
+        }
+    }
+}
+
+@Composable
+fun StoreInfo(storeState: Store, viewModel: AccountViewModel) {
+    val context = LocalContext.current
+
+    Surface(
+        Modifier
+            .fillMaxWidth()
+            .size(500.dp)
+    ) {
+        LazyColumn(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(largePadding),
+            horizontalAlignment = Alignment.Start,
+            verticalArrangement = Arrangement.Top
+        ) {
+            item {
+                Text(
+                    text = stringResource(id = R.string.store_configs),
+                    style = MaterialTheme.typography.titleLarge
+                )
+            }
+            item {
+                Spacer(modifier = Modifier.padding(mediumPadding))
+            }
+            item {
+                Text(
+                    text = stringResource(id = R.string.payment_method),
+                    style = MaterialTheme.typography.titleMedium
+                )
+            }
+            item {
+                Spacer(modifier = Modifier.padding(smallPadding))
+            }
+            storeState.payments.forEach { payment ->
+                item {
+                    Row(verticalAlignment = Alignment.CenterVertically) {
+                        Checkbox(
+                            checked = viewModel.storeState.value.payments.contains(payment),
+                            onCheckedChange = {
+                                viewModel.togglePaymentMethod(payment)
+                            }
+                        )
+                        Text(
+                            text = when (payment) {
+                                PaymentMethod.MONEY -> context.getString(R.string.money)
+                                PaymentMethod.CREDIT_CARD -> context.getString(R.string.credit_card)
+                                PaymentMethod.DEBIT_CARD -> context.getString(R.string.debit_card)
+                                PaymentMethod.PIX -> context.getString(R.string.pix)
+                            },
+                            style = MaterialTheme.typography.bodyMedium
+                        )
+                    }
+                }
+            }
+            storeState.nonSelectedPayments.forEach { payment ->
+                item {
+                    Row(verticalAlignment = Alignment.CenterVertically) {
+                        Checkbox(
+                            checked = !viewModel.storeState.value.nonSelectedPayments.contains(
+                                payment
+                            ),
+                            onCheckedChange = {
+                                viewModel.togglePaymentMethod(payment)
+                            }
+                        )
+                        Text(
+                            text = when (payment) {
+                                PaymentMethod.MONEY -> context.getString(R.string.money)
+                                PaymentMethod.CREDIT_CARD -> context.getString(R.string.credit_card)
+                                PaymentMethod.DEBIT_CARD -> context.getString(R.string.debit_card)
+                                PaymentMethod.PIX -> context.getString(R.string.pix)
+                            },
+                            style = MaterialTheme.typography.bodyMedium
+                        )
                     }
                 }
             }

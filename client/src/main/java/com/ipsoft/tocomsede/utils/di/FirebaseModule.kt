@@ -23,11 +23,11 @@ object FirebaseModule {
 
     @Provides
     fun providesRealtimeOrdersRepository(
-        dbReference: DatabaseReference,
+        dbReference: DatabaseReference
     ) = RealtimeOrdersRepositoryImpl(dbReference)
 
     @Provides
     fun providesRealtimeUsersRepository(
-        dbReference: DatabaseReference,
+        dbReference: DatabaseReference
     ): RealtimeUsersRepository = RealtimeUsersRepositoryImpl(dbReference)
 }

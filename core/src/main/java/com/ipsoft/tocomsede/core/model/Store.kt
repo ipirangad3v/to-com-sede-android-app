@@ -13,6 +13,9 @@ data class Store(
         payments = emptyList()
     )
 
+    val nonSelectedPayments
+        get() = PaymentMethod.values().filter { !payments.contains(it) }
+
     fun toFirebaseStore() = FirebaseStore(
         defaultDeliveryFee = this.defaultDeliveryFee,
         open = this.open,
