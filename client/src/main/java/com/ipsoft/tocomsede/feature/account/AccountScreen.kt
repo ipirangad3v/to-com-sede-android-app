@@ -48,7 +48,7 @@ import com.ipsoft.tocomsede.base.ui.theme.darkBlue80
 import com.ipsoft.tocomsede.base.ui.theme.largePadding
 import com.ipsoft.tocomsede.base.ui.theme.mediumPadding
 import com.ipsoft.tocomsede.base.ui.theme.smallPadding
-import com.ipsoft.tocomsede.utils.UserInfo
+import com.ipsoft.tocomsede.core.utils.UserInfo
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -130,12 +130,10 @@ fun AccountScreen(
                             onPhoneClick()
                         }
                     }
-                    if (isUserLoggedState) {
-                        item { Spacer(modifier = Modifier.padding(mediumPadding)) }
-                        item {
-                            LogoutButton {
-                                showDialog = true
-                            }
+                    item { Spacer(modifier = Modifier.padding(mediumPadding)) }
+                    item {
+                        LogoutButton {
+                            showDialog = true
                         }
                     }
                 } else {

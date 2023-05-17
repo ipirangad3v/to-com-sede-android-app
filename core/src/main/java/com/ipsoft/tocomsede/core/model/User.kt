@@ -5,5 +5,12 @@ data class User(
     val email: String,
     val phone: String,
     val photoUrl: String? = null,
-    val uid: String
-)
+    val uid: String,
+) {
+    constructor() : this(
+        name = "",
+        email = "",
+        phone = "",
+        uid = ""
+    )
+}

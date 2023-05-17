@@ -36,7 +36,7 @@ fun QuantitySelector(
             verticalAlignment = Alignment.CenterVertically
         ) {
             ElevatedButton(
-                enabled = storeState.isOpen,
+                enabled = storeState.open,
                 onClick = { if (available && selectedQuantity.value > 1) selectedQuantity.value-- }
             ) {
                 Text(
@@ -50,7 +50,7 @@ fun QuantitySelector(
             Text(text = selectedQuantity.value.toString())
             Spacer(modifier = Modifier.padding(mediumPadding))
             ElevatedButton(
-                enabled = storeState.isOpen,
+                enabled = storeState.open,
                 onClick = { if (available && selectedQuantity.value < maxQuantity) selectedQuantity.value++ }
             ) {
                 Text(

@@ -47,6 +47,10 @@ import com.ipsoft.tocomsede.base.ui.theme.darkBlue80
 import com.ipsoft.tocomsede.base.ui.theme.lightBlue
 import com.ipsoft.tocomsede.core.model.ResultState
 import com.ipsoft.tocomsede.core.model.User
+import com.ipsoft.tocomsede.core.utils.UserInfo
+import com.ipsoft.tocomsede.core.utils.UserInfo.UserInfoListener
+import com.ipsoft.tocomsede.core.utils.UserInfo.isUserLogged
+import com.ipsoft.tocomsede.core.utils.UserInfo.loggedUser
 import com.ipsoft.tocomsede.data.cart.CartRepository
 import com.ipsoft.tocomsede.data.user.PreferencesRepository
 import com.ipsoft.tocomsede.feature.account.AccountScreen
@@ -59,10 +63,6 @@ import com.ipsoft.tocomsede.feature.itemdetails.ItemDetailsScreen
 import com.ipsoft.tocomsede.feature.notifications.NotificationService
 import com.ipsoft.tocomsede.feature.orders.OrdersScreen
 import com.ipsoft.tocomsede.feature.phone.PhoneScreen
-import com.ipsoft.tocomsede.utils.UserInfo
-import com.ipsoft.tocomsede.utils.UserInfo.UserInfoListener
-import com.ipsoft.tocomsede.utils.UserInfo.isUserLogged
-import com.ipsoft.tocomsede.utils.UserInfo.loggedUser
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 import javax.inject.Inject

@@ -1,5 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <style name="Theme.ToComSede" parent="android:Theme.Material.Light.NoActionBar" />
+    <style name="Theme.ToComSede" parent="Theme.MaterialComponents.Light.NoActionBar.Bridge" />
+    <style name="Theme.FirebaseAuthUIDark" parent="Theme.ToComSede">
+        <item name="android:textColor">@color/auth_ui_dark_text_color</item>
+        <item name="colorPrimaryDark">@color/auth_ui_dark_color_primary_dark</item>
+        <item name="colorPrimary">@color/auth_ui_dark_color_primary</item>
+        <item name="colorAccent">@color/auth_ui_dark_color_accent</item>
+    </style>
 </resources>

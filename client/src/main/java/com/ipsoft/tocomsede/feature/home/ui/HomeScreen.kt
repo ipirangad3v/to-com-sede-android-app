@@ -49,7 +49,7 @@ import com.ipsoft.tocomsede.base.ui.theme.mediumPadding
 import com.ipsoft.tocomsede.base.ui.theme.smallPadding
 import com.ipsoft.tocomsede.base.ui.theme.xxLargePadding
 import com.ipsoft.tocomsede.base.util.network.NetworkHandler
-import com.ipsoft.tocomsede.utils.UserInfo
+import com.ipsoft.tocomsede.core.utils.UserInfo
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -161,7 +161,7 @@ fun HomeScreen(
                                     UserBanner()
                                 }
 
-                                if (!storeState.isOpen) {
+                                if (!storeState.open) {
                                     Text(
                                         text = stringResource(id = R.string.store_closed),
                                         modifier = Modifier

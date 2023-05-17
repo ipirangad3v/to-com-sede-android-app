@@ -6,10 +6,12 @@ import java.util.Date
 data class Order(
     val items: List<Item>,
     val dateInMillis: String = Date().time.toString(),
-    val status: OrderStatus = OrderStatus.PENDING,
+    var status: OrderStatus = OrderStatus.PENDING,
     val address: Address? = null,
     val paymentMethod: PaymentMethod = MONEY,
     val change: Change = Change(),
+    var id: String = "",
+    val user: User? = null,
 ) {
     @Suppress("unused")
     constructor() : this(

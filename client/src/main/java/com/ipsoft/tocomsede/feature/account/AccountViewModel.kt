@@ -4,7 +4,7 @@ import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
-import com.ipsoft.tocomsede.utils.UserInfo
+import com.ipsoft.tocomsede.core.utils.UserInfo
 import javax.inject.Inject
 
 class AccountViewModel @Inject constructor() : ViewModel(), UserInfo.UserInfoListener {

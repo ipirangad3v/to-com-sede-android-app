@@ -145,7 +145,7 @@ fun ItemDetailsScreen(
                     Box(modifier = Modifier.padding(padding)) {
                         val context = LocalContext.current
                         LazyColumn(modifier = Modifier.fillMaxSize()) {
-                            if (!storeState.isOpen) {
+                            if (!storeState.open) {
                                 item {
                                     Text(
                                         text = stringResource(id = R.string.store_closed),
@@ -210,7 +210,7 @@ fun ItemAddContainer(
             Spacer(modifier = Modifier.weight(1f))
 
             ElevatedButton(
-                enabled = storeState.isOpen,
+                enabled = storeState.open,
                 onClick = {
                     itemDetailScreenState.item?.let { item ->
                         if (canAddToCart) {

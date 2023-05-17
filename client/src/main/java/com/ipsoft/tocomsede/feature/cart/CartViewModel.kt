@@ -14,12 +14,12 @@ import com.ipsoft.tocomsede.core.model.ResultState.Failure
 import com.ipsoft.tocomsede.core.model.ResultState.Loading
 import com.ipsoft.tocomsede.core.model.ResultState.Success
 import com.ipsoft.tocomsede.core.model.Store
+import com.ipsoft.tocomsede.core.utils.UserInfo
 import com.ipsoft.tocomsede.data.cart.CartRepository
 import com.ipsoft.tocomsede.data.firebaserealtimedb.address.RealtimeAddressRepository
 import com.ipsoft.tocomsede.data.firebaserealtimedb.phone.RealtimePhoneRepository
 import com.ipsoft.tocomsede.data.firebaserealtimedb.store.RealtimeStoreRepository
 import com.ipsoft.tocomsede.utils.Cart
-import com.ipsoft.tocomsede.utils.UserInfo
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject

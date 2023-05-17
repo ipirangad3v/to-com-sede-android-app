@@ -2,7 +2,7 @@ package com.ipsoft.tocomsede.data.firebaserealtimedb.phone
 
 import com.google.firebase.database.DatabaseReference
 import com.ipsoft.tocomsede.core.model.ResultState
-import com.ipsoft.tocomsede.utils.UserInfo
+import com.ipsoft.tocomsede.core.utils.UserInfo
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.callbackFlow

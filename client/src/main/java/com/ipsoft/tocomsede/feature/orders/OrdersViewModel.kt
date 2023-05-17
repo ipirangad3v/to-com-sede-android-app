@@ -9,8 +9,8 @@ import com.ipsoft.tocomsede.core.model.Order
 import com.ipsoft.tocomsede.core.model.ResultState
 import com.ipsoft.tocomsede.core.model.ResultState.Failure
 import com.ipsoft.tocomsede.core.model.ResultState.Success
+import com.ipsoft.tocomsede.core.utils.UserInfo
 import com.ipsoft.tocomsede.data.firebaserealtimedb.orders.RealtimeOrdersRepository
-import com.ipsoft.tocomsede.utils.UserInfo
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject

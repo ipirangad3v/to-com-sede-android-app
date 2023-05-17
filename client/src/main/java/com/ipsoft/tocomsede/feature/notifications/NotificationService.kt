@@ -26,7 +26,7 @@ import com.ipsoft.tocomsede.base.util.Constants.NOTIFICATION_CHANNEL_ID
 import com.ipsoft.tocomsede.base.util.Constants.NOTIFICATION_CHANNEL_NAME
 import com.ipsoft.tocomsede.core.model.Order
 import com.ipsoft.tocomsede.core.model.OrderStatus
-import com.ipsoft.tocomsede.utils.UserInfo.userUid
+import com.ipsoft.tocomsede.core.utils.UserInfo.userUid
 
 class NotificationService : Service() {
 

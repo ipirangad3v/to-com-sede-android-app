@@ -7,8 +7,9 @@ import com.ipsoft.tocomsede.core.model.Item
 import com.ipsoft.tocomsede.core.model.Order
 import com.ipsoft.tocomsede.core.model.PaymentMethod
 import com.ipsoft.tocomsede.core.model.ResultState
+import com.ipsoft.tocomsede.core.utils.UserInfo
+import com.ipsoft.tocomsede.core.utils.UserInfo.userUid
 import com.ipsoft.tocomsede.utils.Cart
-import com.ipsoft.tocomsede.utils.UserInfo.userUid
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.callbackFlow
@@ -60,7 +61,13 @@ class CartRepositoryImpl @Inject constructor(
             return@callbackFlow
         } else {
             val order =
-                Order(cart.getItems().toList(), address = address, paymentMethod = paymentMethod, change = change)
+                Order(
+                    cart.getItems().toList(),
+                    address = address,
+                    paymentMethod = paymentMethod,
+                    change = change,
+                    user = UserInfo.loggedUser
+                )
             ordersReference.push().setValue(order).addOnCompleteListener {
                 if (it.isSuccessful) {
                     cart.clearCart()

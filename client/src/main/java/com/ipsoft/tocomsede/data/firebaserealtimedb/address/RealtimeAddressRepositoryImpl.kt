@@ -4,7 +4,7 @@ import com.google.firebase.database.DatabaseReference
 import com.ipsoft.tocomsede.core.exception.UserNotLoggedException
 import com.ipsoft.tocomsede.core.model.Address
 import com.ipsoft.tocomsede.core.model.ResultState
-import com.ipsoft.tocomsede.utils.UserInfo.userUid
+import com.ipsoft.tocomsede.core.utils.UserInfo.userUid
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.callbackFlow

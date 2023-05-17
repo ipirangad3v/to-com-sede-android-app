@@ -1,16 +1,11 @@
-package com.ipsoft.tocomsede.utils
+package com.ipsoft.tocomsede.core.utils
 
-import android.util.Log
 import com.ipsoft.tocomsede.core.model.User
 
 object UserInfo {
 
     private val listeners = mutableListOf<UserInfoListener>()
     var loggedUser: User? = null
-        get() {
-            Log.d("Info", "loggedUser: $field")
-            return field
-        }
         set(value) {
             field = value
             notifyListeners()

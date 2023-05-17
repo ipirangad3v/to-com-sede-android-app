@@ -24,7 +24,7 @@ class RealtimeStoreRepositoryImpl @Inject constructor(
         val valueEvent = object : ValueEventListener {
 
             override fun onDataChange(snapshot: DataSnapshot) {
-                val isOpen = snapshot.child("isOpen").getValue(Boolean::class.java)
+                val isOpen = snapshot.child("open").getValue(Boolean::class.java)
                 val defaultDeliveryFee =
                     snapshot.child("defaultDeliveryFee").getValue(Double::class.java)
 

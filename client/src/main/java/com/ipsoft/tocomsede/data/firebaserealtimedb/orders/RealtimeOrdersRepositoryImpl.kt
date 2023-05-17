@@ -6,7 +6,7 @@ import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.ValueEventListener
 import com.ipsoft.tocomsede.core.model.Order
 import com.ipsoft.tocomsede.core.model.ResultState
-import com.ipsoft.tocomsede.utils.UserInfo.userUid
+import com.ipsoft.tocomsede.core.utils.UserInfo.userUid
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.callbackFlow
@@ -22,7 +22,7 @@ class RealtimeOrdersRepositoryImpl(
         val valueEvent = object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
                 val orders = snapshot.children.map {
-                    it.getValue(Order::class.java)
+                    it.getValue(Order::class.java).apply { this?.id = it.key ?: "" }
                 }
                 trySend(ResultState.Success(orders.filterNotNull()))
             }

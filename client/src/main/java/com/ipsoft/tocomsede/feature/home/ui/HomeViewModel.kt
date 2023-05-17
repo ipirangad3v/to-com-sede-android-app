@@ -8,9 +8,9 @@ import androidx.lifecycle.viewModelScope
 import com.ipsoft.tocomsede.core.model.Category
 import com.ipsoft.tocomsede.core.model.ResultState
 import com.ipsoft.tocomsede.core.model.Store
+import com.ipsoft.tocomsede.core.utils.UserInfo
 import com.ipsoft.tocomsede.data.firebaserealtimedb.items.RealtimeItemRepository
 import com.ipsoft.tocomsede.data.firebaserealtimedb.store.RealtimeStoreRepository
-import com.ipsoft.tocomsede.utils.UserInfo
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
