@@ -53,6 +53,7 @@ import com.ipsoft.tocomsede.core.utils.UserInfo.UserInfoListener
 import com.ipsoft.tocomsede.core.utils.UserInfo.isUserLogged
 import com.ipsoft.tocomsede.core.utils.UserInfo.loggedUser
 import com.ipsoft.tocomsede.data.cart.CartRepository
+import com.ipsoft.tocomsede.data.firebaserealtimedb.user.RealtimeUsersRepository
 import com.ipsoft.tocomsede.data.user.PreferencesRepository
 import com.ipsoft.tocomsede.feature.account.AccountScreen
 import com.ipsoft.tocomsede.feature.address.form.AddressFormScreen
@@ -80,7 +81,11 @@ class MainActivity : ComponentActivity(), UserInfoListener {
     lateinit var preferencesRepository: PreferencesRepository
 
     @Inject
+    lateinit var realtimeUsersRepository: RealtimeUsersRepository
+
+    @Inject
     lateinit var cartRepository: CartRepository
+
 
     private val signInLauncher = registerForActivityResult(
         FirebaseAuthUIActivityResultContract()
@@ -94,16 +99,20 @@ class MainActivity : ComponentActivity(), UserInfoListener {
     )
 
     private fun firebaseDeleteAccount() {
-        val user = FirebaseAuth.getInstance().currentUser
-        user?.delete()
-            ?.addOnCompleteListener { task ->
-                if (task.isSuccessful) {
-                    lifecycleScope.launch {
-                        preferencesRepository.clearUser()
+        FirebaseAuth.getInstance().currentUser?.let {
+            realtimeUsersRepository.deleteUserNode(it.uid)
+            it.delete()
+                .addOnCompleteListener { task ->
+                    if (task.isSuccessful) {
+                        lifecycleScope.launch {
+                            preferencesRepository.clearUser()
+                        }
+                        UserInfo.clear()
                     }
-                    UserInfo.clear()
                 }
-            }
+
+        }
+
     }
 
     @OptIn(ExperimentalMaterial3Api::class)
@@ -130,7 +139,7 @@ class MainActivity : ComponentActivity(), UserInfoListener {
                             bottomBarState.value = false
                         }
 
-                        else -> {
+                        else                                                                                                                        -> {
                             bottomBarState.value = true
                         }
                     }

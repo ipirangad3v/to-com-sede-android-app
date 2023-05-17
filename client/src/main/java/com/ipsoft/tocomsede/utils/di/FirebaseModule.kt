@@ -5,6 +5,8 @@ import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
 import com.ipsoft.tocomsede.data.firebaserealtimedb.orders.RealtimeOrdersRepositoryImpl
+import com.ipsoft.tocomsede.data.firebaserealtimedb.user.RealtimeUsersRepository
+import com.ipsoft.tocomsede.data.firebaserealtimedb.user.RealtimeUsersRepositoryImpl
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -21,6 +23,11 @@ object FirebaseModule {
 
     @Provides
     fun providesRealtimeOrdersRepository(
-        dbReference: DatabaseReference
+        dbReference: DatabaseReference,
     ) = RealtimeOrdersRepositoryImpl(dbReference)
+
+    @Provides
+    fun providesRealtimeUsersRepository(
+        dbReference: DatabaseReference,
+    ): RealtimeUsersRepository = RealtimeUsersRepositoryImpl(dbReference)
 }
