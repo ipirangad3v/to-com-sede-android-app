@@ -74,7 +74,7 @@
     <string name="invalid_phone">Telefone inválido</string>
     <string name="not_informed">Não informado</string>
     <string name="cep_not_found">CEP não encontrado, tente novamente</string>
-    <string name="payment_method">Método de pagamento</string>
+    <string name="payment_method">Métodos de pagamento</string>
     <string name="new_order">Novo pedido</string>
     <string name="money">dinheiro</string>
     <string name="credit_card">Cartão de credito</string>
@@ -104,4 +104,5 @@
     <string name="confirm_status_change">Mudar status do pedido</string>
     <string name="confirm_status_change_ask">Deseja mudar o status desse pedido para %1$s?</string>
     <string name="delivered_at">Entregue em</string>
+    <string name="store_configs">Configurações da loja</string>
 </resources>

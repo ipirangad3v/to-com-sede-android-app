@@ -86,7 +86,6 @@ class MainActivity : ComponentActivity(), UserInfoListener {
     @Inject
     lateinit var cartRepository: CartRepository
 
-
     private val signInLauncher = registerForActivityResult(
         FirebaseAuthUIActivityResultContract()
     ) { res ->
@@ -110,9 +109,7 @@ class MainActivity : ComponentActivity(), UserInfoListener {
                         UserInfo.clear()
                     }
                 }
-
         }
-
     }
 
     @OptIn(ExperimentalMaterial3Api::class)
@@ -139,7 +136,7 @@ class MainActivity : ComponentActivity(), UserInfoListener {
                             bottomBarState.value = false
                         }
 
-                        else                                                                                                                        -> {
+                        else -> {
                             bottomBarState.value = true
                         }
                     }
