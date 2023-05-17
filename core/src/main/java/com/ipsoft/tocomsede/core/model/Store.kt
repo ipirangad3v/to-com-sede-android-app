@@ -4,6 +4,7 @@ data class Store(
     val open: Boolean,
     val defaultDeliveryFee: Double,
     val payments: List<PaymentMethod>,
+    val timeForAutoCancellationInMillis: Long = 300000,//5 minutes
 ) {
     @Suppress("unused")
     constructor() : this(

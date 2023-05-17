@@ -205,8 +205,19 @@ fun CartScreen(
                                     item {
                                         Spacer(modifier = Modifier.padding(itemDividerPadding))
                                     }
+                                    if (!store.open) {
+                                        item {
+                                            Text(
+                                                text = stringResource(id = R.string.store_closed_cart),
+                                                modifier = Modifier
+                                                    .fillMaxWidth()
+                                                    .padding(largePadding),
+                                                color = Color.Red
+                                            )
+                                        }
+                                    }
                                     item {
-                                        CheckoutButtonContainer {
+                                        CheckoutButtonContainer(store.open) {
                                             if (addressFavoriteState != null) {
                                                 showDialog = true
                                             } else {
@@ -358,7 +369,7 @@ fun CheckoutAddress(addressFavoriteState: Address?, onEditClick: () -> Unit) {
 }
 
 @Composable
-fun CheckoutButtonContainer(onClick: () -> Unit) {
+fun CheckoutButtonContainer(storeOpen: Boolean, onClick: () -> Unit) {
     Surface {
         Box(
             modifier = Modifier
@@ -367,6 +378,7 @@ fun CheckoutButtonContainer(onClick: () -> Unit) {
             contentAlignment = Alignment.BottomCenter
         ) {
             ElevatedButton(
+                enabled = storeOpen,
                 onClick = { onClick() },
                 modifier = Modifier
                     .fillMaxWidth()
