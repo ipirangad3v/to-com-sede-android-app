@@ -17,6 +17,7 @@ import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
 import com.ipsoft.tocomsede.core.model.FirebaseToComSedeUser
 import com.ipsoft.tocomsede.core.model.Order
+import com.ipsoft.tocomsede.core.model.OrderStatus
 import com.ipsoft.tocomsede.core.utils.UserInfo.userUid
 import com.ipsoft.tocomsedeadmin.MainActivity
 import com.ipsoft.tocomsedeadmin.R.drawable
@@ -37,14 +38,14 @@ class NotificationService : Service() {
 
     private val orders = mutableListOf<Order>()
 
-    private val sendNotification
-        get() = orders.isNotEmpty()
+    private val isFirstFetch
+        get() = orders.isEmpty()
 
-    private fun listsAreDifferent(
-        orders: List<Order>,
-        receivedOrders: List<Order>
+    private fun hasNewPendingOrders(
+        receivedOrders: List<Order>,
     ): Boolean {
-        if (orders.size != receivedOrders.size) return true
+
+        if (orders.filter { it.status == OrderStatus.PENDING }.size < receivedOrders.filter { it.status == OrderStatus.PENDING }.size) return true
         return false
     }
 
@@ -74,20 +75,20 @@ class NotificationService : Service() {
 
         val ordersListener = object : ValueEventListener {
             override fun onDataChange(dataSnapshot: DataSnapshot) {
+                val receivedOrders = mutableListOf<Order>()
                 for (userSnapshot in dataSnapshot.children) {
                     val user = userSnapshot.getValue(FirebaseToComSedeUser::class.java)
                     if (user?.orders != null) {
-                        val receivedOrders =
-                            user.orders?.map { it.value.copy(id = it.key) } ?: emptyList()
-                        if (listsAreDifferent(orders, receivedOrders)) {
-                            if (sendNotification) {
-                                sendNotification(pendingIntent)
-                            }
-                            orders.clear()
-                            orders.addAll(receivedOrders)
+                        user.orders?.forEach { order ->
+                            receivedOrders.add(order.value.copy(id = order.key))
                         }
                     }
                 }
+                if (hasNewPendingOrders(receivedOrders) && !isFirstFetch) {
+                    sendNotification(pendingIntent)
+                }
+                orders.clear()
+                orders.addAll(receivedOrders)
             }
 
             override fun onCancelled(error: DatabaseError) = Unit

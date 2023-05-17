@@ -13,8 +13,11 @@ import kotlinx.coroutines.flow.callbackFlow
 import javax.inject.Inject
 
 class OrdersRepositoryImpl @Inject constructor(
-    private val dbReference: DatabaseReference
+    private val dbReference: DatabaseReference,
 ) : OrdersRepository {
+
+    val orders: MutableList<Order> =
+        mutableListOf()
 
     private val ordersReference
         get() = dbReference.child("users")
@@ -26,14 +29,12 @@ class OrdersRepositoryImpl @Inject constructor(
                 for (userSnapshot in dataSnapshot.children) {
                     val user = userSnapshot.getValue(FirebaseToComSedeUser::class.java)
                     if (user?.orders != null) {
-                        val orders: MutableList<Order> =
-                            mutableListOf()
                         user.orders?.forEach { order ->
                             orders.add(order.value.copy(id = order.key))
                         }
-                        trySend(ResultState.Success(orders))
                     }
                 }
+                trySend(ResultState.Success(orders))
             }
 
             override fun onCancelled(databaseError: DatabaseError) {
