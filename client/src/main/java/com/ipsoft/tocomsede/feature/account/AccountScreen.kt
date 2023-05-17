@@ -74,7 +74,7 @@ fun AccountScreen(
                 ElevatedButton(
                     onClick = {
                         onLogoutClick()
-                        showDeleteDialog = false
+                        showDialog = false
                     }
                 ) {
                     Text("OK")
@@ -92,7 +92,7 @@ fun AccountScreen(
                 ElevatedButton(
                     onClick = {
                         onDeleteAccountClick()
-                        showDialog = false
+                        showDeleteDialog = false
                     }
                 ) {
                     Text(stringResource(id = R.string.delete_account))
