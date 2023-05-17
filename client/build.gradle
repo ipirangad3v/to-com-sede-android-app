@@ -18,8 +18,8 @@ android {
         minSdk 24
         targetSdk 33
         compileSdkVersion 33
-        versionCode 3
-        versionName "0.0.8"
+        versionCode 4
+        versionName "0.0.9"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables {
@@ -27,10 +27,27 @@ android {
         }
     }
 
+    signingConfigs {
+        release {
+            keyAlias 'to_com_sede_key'
+            keyPassword 'Yosemitesam1945@1097'
+            storeFile file('/Users/anthoni/android_keys/to_com_sede_key')
+            storePassword 'Yosemitesam1945@1097'
+        }
+    }
+
     buildTypes {
+        debug {
+            applicationIdSuffix ".debug"
+            debuggable true
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+
+        }
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.release
         }
     }
     compileOptions {
