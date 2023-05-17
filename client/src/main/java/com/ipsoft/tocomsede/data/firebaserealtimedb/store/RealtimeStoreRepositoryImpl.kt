@@ -32,10 +32,10 @@ class RealtimeStoreRepositoryImpl @Inject constructor(
 
                 val payments: List<PaymentMethod> = paymentsMap?.entries?.filter { it.value }?.map {
                     when (it.key) {
-                        "CREDIT_CARD" -> PaymentMethod.CREDIT_CARD
-                        "DEBIT_CARD" -> PaymentMethod.DEBIT_CARD
-                        "MONEY" -> PaymentMethod.MONEY
-                        "PIX" -> PaymentMethod.PIX
+                        "credit_CARD" -> PaymentMethod.CREDIT_CARD
+                        "debit_CARD" -> PaymentMethod.DEBIT_CARD
+                        "money" -> PaymentMethod.MONEY
+                        "pix" -> PaymentMethod.PIX
                         else -> PaymentMethod.MONEY
                     }
                 } ?: emptyList()

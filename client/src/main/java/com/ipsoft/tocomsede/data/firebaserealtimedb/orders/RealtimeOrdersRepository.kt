@@ -6,4 +6,6 @@ import kotlinx.coroutines.flow.Flow
 
 interface RealtimeOrdersRepository {
     suspend fun getOrders(): Flow<ResultState<List<Order>>>
+    suspend fun getOrderById(id: String): Flow<ResultState<Order?>>
+    suspend fun updateOrder(order: Order): Flow<ResultState<Order>>
 }
