@@ -1,0 +1,122 @@
+{
+  "project_info": {
+    "project_number": "751625457769",
+    "firebase_url": "https://to-com-sede-f5027-default-rtdb.firebaseio.com",
+    "project_id": "to-com-sede-f5027",
+    "storage_bucket": "to-com-sede-f5027.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:751625457769:android:887586f092382089c652f8",
+        "android_client_info": {
+          "package_name": "com.ipsoft.tocomsede"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "751625457769-osmdfief2dosnir9qje2ahj60igm26ms.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.ipsoft.tocomsede",
+            "certificate_hash": "1f97af281961bab565582be393845074ee12a7a0"
+          }
+        },
+        {
+          "client_id": "751625457769-9mqhq7gkrqkhibln0lsl4d7pq78tcl43.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD4wZFJ1ZBUpLHIRoLJkmVLLMPgUjRVyaI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "751625457769-9mqhq7gkrqkhibln0lsl4d7pq78tcl43.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:751625457769:android:bca01141d195ff2cc652f8",
+        "android_client_info": {
+          "package_name": "com.ipsoft.tocomsede.debug"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "751625457769-4hnjbla6omvg31f0gapf0pl9n35abe1g.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.ipsoft.tocomsede.debug",
+            "certificate_hash": "e52469ab51d8126b68800836ab789d7b2469dff4"
+          }
+        },
+        {
+          "client_id": "751625457769-9mqhq7gkrqkhibln0lsl4d7pq78tcl43.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD4wZFJ1ZBUpLHIRoLJkmVLLMPgUjRVyaI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "751625457769-9mqhq7gkrqkhibln0lsl4d7pq78tcl43.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:751625457769:android:817fc8dc0a02625ec652f8",
+        "android_client_info": {
+          "package_name": "com.ipsoft.tocomsedeadmin"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "751625457769-nf8nmvk3gri7lrdehpi7vi0o136k7hbd.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.ipsoft.tocomsedeadmin",
+            "certificate_hash": "e52469ab51d8126b68800836ab789d7b2469dff4"
+          }
+        },
+        {
+          "client_id": "751625457769-9mqhq7gkrqkhibln0lsl4d7pq78tcl43.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD4wZFJ1ZBUpLHIRoLJkmVLLMPgUjRVyaI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "751625457769-9mqhq7gkrqkhibln0lsl4d7pq78tcl43.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
