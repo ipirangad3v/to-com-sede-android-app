@@ -1,10 +1,11 @@
-package com.ipsoft.tocomsede.feature.orders
+package com.ipsoft.tocomsede.feature.orders.orderslist
 
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.animation.slideInVertically
 import androidx.compose.animation.slideOutVertically
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -33,6 +34,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.navigation.NavController
 import com.ipsoft.tocomsede.R
 import com.ipsoft.tocomsede.base.ui.theme.darkBlue80
 import com.ipsoft.tocomsede.base.ui.theme.gray
@@ -49,7 +51,11 @@ import com.ipsoft.tocomsede.core.model.PaymentMethod
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun OrdersScreen(viewModel: OrdersViewModel = hiltViewModel(), onLoginClick: () -> Unit) {
+fun OrdersScreen(
+    navController: NavController,
+    viewModel: OrdersViewModel = hiltViewModel(),
+    onLoginClick: () -> Unit
+) {
     val ordersState = viewModel.state.value
 
     val isUserLoggedState = viewModel.userLoggedState.value
@@ -137,7 +143,7 @@ fun OrdersScreen(viewModel: OrdersViewModel = hiltViewModel(), onLoginClick: () 
                                                 .reversed()
                                                 .forEach { order ->
                                                     item {
-                                                        OrderListItem(order = order)
+                                                        OrderListItem(order = order, navController)
                                                     }
                                                     item {
                                                         Spacer(
@@ -207,13 +213,20 @@ fun OrdersScreen(viewModel: OrdersViewModel = hiltViewModel(), onLoginClick: () 
 
 @Composable
 fun OrderListItem(
-    order: Order
+    order: Order,
+    navController: NavController
 ) {
     Surface(color = Color.White) {
         Column(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(vertical = largePadding, horizontal = largePadding)
+                .clickable {
+                    navController.navigate(
+                        "order_details" +
+                            "/${order.id}"
+                    )
+                }
         ) {
             // Order date and status
             Row(

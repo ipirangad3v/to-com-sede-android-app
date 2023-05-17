@@ -88,4 +88,12 @@
     <string name="confirm_account_deletion">Confirmar exclussão de conta</string>
     <string name="confirm_account_deletion_ask">Excluir sua conta ira excluir permanente seus dados, juntamente com endereços salvos e pedidos. Essa ação é irreversivel, tem certeza que deseja continuar?</string>
     <string name="delete_account">Excluir conta</string>
+    <string name="email">email</string>
+    <string name="order_items">Items do pedido</string>
+    <string name="dont_need_change">Não precisa de troco</string>
+    <string name="name">nome</string>
+    <string name="client_details">Detalhes do cliente</string>
+    <string name="order_details">Detalhes do pedido</string>
+    <string name="not_informed_number">Não informado</string>
+    <string name="delivered_at">Entregue em</string>
 </resources>

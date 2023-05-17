@@ -41,6 +41,7 @@ import com.firebase.ui.auth.data.model.FirebaseAuthUIAuthenticationResult
 import com.google.firebase.auth.FirebaseAuth
 import com.ipsoft.tocomsede.base.ui.components.Screen
 import com.ipsoft.tocomsede.base.ui.components.Screen.Companion.ITEM_ID
+import com.ipsoft.tocomsede.base.ui.components.Screen.Companion.ORDER_ID
 import com.ipsoft.tocomsede.base.ui.components.Screen.Companion.items
 import com.ipsoft.tocomsede.base.ui.theme.ToComSedeTheme
 import com.ipsoft.tocomsede.base.ui.theme.darkBlue80
@@ -61,7 +62,8 @@ import com.ipsoft.tocomsede.feature.cart.CartScreen
 import com.ipsoft.tocomsede.feature.home.ui.HomeScreen
 import com.ipsoft.tocomsede.feature.itemdetails.ItemDetailsScreen
 import com.ipsoft.tocomsede.feature.notifications.NotificationService
-import com.ipsoft.tocomsede.feature.orders.OrdersScreen
+import com.ipsoft.tocomsede.feature.orders.orderdetails.OrderDetailsScreen
+import com.ipsoft.tocomsede.feature.orders.orderslist.OrdersScreen
 import com.ipsoft.tocomsede.feature.phone.PhoneScreen
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
@@ -98,12 +100,10 @@ class MainActivity : ComponentActivity(), UserInfoListener {
                 if (task.isSuccessful) {
                     lifecycleScope.launch {
                         preferencesRepository.clearUser()
-
                     }
                     UserInfo.clear()
                 }
             }
-
     }
 
     @OptIn(ExperimentalMaterial3Api::class)
@@ -126,7 +126,7 @@ class MainActivity : ComponentActivity(), UserInfoListener {
                     val navBackStackEntry by navController.currentBackStackEntryAsState()
 
                     when (navBackStackEntry?.destination?.route) {
-                        Screen.ItemDetails.route, Screen.AddressForm.route, Screen.AddressList.route, Screen.Phone.route -> {
+                        Screen.ItemDetails.route, Screen.AddressForm.route, Screen.AddressList.route, Screen.Phone.route, Screen.OrderDetails.route -> {
                             bottomBarState.value = false
                         }
 
@@ -240,7 +240,7 @@ class MainActivity : ComponentActivity(), UserInfoListener {
                                 )
                             }
                             composable(Screen.Orders.route) {
-                                OrdersScreen {
+                                OrdersScreen(navController = navController) {
                                     launchLoginActivity(isDarkTheme)
                                 }
                             }
@@ -284,6 +284,20 @@ class MainActivity : ComponentActivity(), UserInfoListener {
                             ) { navBackEntry ->
                                 ItemDetailsScreen(
                                     itemId = navBackEntry.arguments?.getInt(ITEM_ID)
+                                ) {
+                                    navController.navigateUp()
+                                }
+                            }
+                            composable(
+                                Screen.OrderDetails.route,
+                                arguments = listOf(
+                                    navArgument(ORDER_ID) {
+                                        type = NavType.StringType
+                                    }
+                                )
+                            ) { navBackEntry ->
+                                OrderDetailsScreen(
+                                    orderId = navBackEntry.arguments?.getString(ORDER_ID)
                                 ) {
                                     navController.navigateUp()
                                 }

@@ -103,4 +103,5 @@
     <string name="this_order_was">esse pedido foi</string>
     <string name="confirm_status_change">Mudar status do pedido</string>
     <string name="confirm_status_change_ask">Deseja mudar o status desse pedido para %1$s?</string>
+    <string name="delivered_at">Entregue em</string>
 </resources>

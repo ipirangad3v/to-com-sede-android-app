@@ -5,6 +5,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.Build
+import androidx.compose.material.icons.filled.Check
 import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.List
 import androidx.compose.material.icons.filled.Person
@@ -26,6 +27,8 @@ sealed class Screen(
     object ItemDetails :
         Screen("item_details/{$ITEM_ID}", R.string.item_details, Icons.Filled.ArrowBack)
 
+    object OrderDetails : Screen("order_details/{$ORDER_ID}", R.string.order_details, Icons.Filled.Check)
+
     object AddressForm : Screen("address_form", R.string.address_form, Icons.Filled.Build)
 
     object AddressList : Screen("address_list", R.string.addresses, Icons.Filled.Add)
@@ -35,5 +38,6 @@ sealed class Screen(
     companion object {
         val items = listOf(Home, Cart, Orders, Account)
         const val ITEM_ID = "itemId"
+        const val ORDER_ID = "orderId"
     }
 }

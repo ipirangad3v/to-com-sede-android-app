@@ -1,4 +1,4 @@
-package com.ipsoft.tocomsedeadmin.feature.orderdetails
+package com.ipsoft.tocomsede.feature.orders.orderdetails
 
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.fadeIn
@@ -17,11 +17,9 @@ import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
-import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
 import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.CircularProgressIndicator
-import androidx.compose.material3.ElevatedButton
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -31,15 +29,18 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.ipsoft.tocomsede.R
+import com.ipsoft.tocomsede.base.ui.theme.darkBlue80
+import com.ipsoft.tocomsede.base.ui.theme.largePadding
+import com.ipsoft.tocomsede.base.ui.theme.mediumPadding
+import com.ipsoft.tocomsede.base.ui.theme.smallPadding
 import com.ipsoft.tocomsede.core.extensions.millisToDateTime
 import com.ipsoft.tocomsede.core.extensions.toCurrency
 import com.ipsoft.tocomsede.core.model.Address
@@ -47,11 +48,6 @@ import com.ipsoft.tocomsede.core.model.Order
 import com.ipsoft.tocomsede.core.model.OrderStatus
 import com.ipsoft.tocomsede.core.model.PaymentMethod
 import com.ipsoft.tocomsede.core.model.User
-import com.ipsoft.tocomsedeadmin.R
-import com.ipsoft.tocomsedeadmin.base.ui.theme.darkBlue80
-import com.ipsoft.tocomsedeadmin.base.ui.theme.largePadding
-import com.ipsoft.tocomsedeadmin.base.ui.theme.mediumPadding
-import com.ipsoft.tocomsedeadmin.base.ui.theme.smallPadding
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -60,46 +56,9 @@ fun OrderDetailsScreen(
     orderId: String?,
     onBackClick: () -> Unit
 ) {
-    val context = LocalContext.current
-
     val orderState = orderDetailsViewModel.orderState.value
 
     val visible = remember { mutableStateOf(!orderState.isLoading) }
-
-    val showDialog: MutableState<Boolean> = remember { mutableStateOf(false) }
-
-    val orderChangeTitle: MutableState<String> = remember {
-        mutableStateOf(
-            context.getString(R.string.confirmed)
-        )
-    }
-    val onStatusChangeClick: MutableState<() -> Unit> = remember {
-        mutableStateOf({})
-    }
-
-    if (showDialog.value) {
-        AlertDialog(
-            onDismissRequest = { showDialog.value = false },
-            title = { Text(stringResource(id = R.string.confirm_status_change)) },
-            text = {
-                Text(
-                    stringResource(id = R.string.confirm_status_change_ask).format(
-                        orderChangeTitle.value
-                    )
-                )
-            },
-            confirmButton = {
-                ElevatedButton(
-                    onClick = {
-                        onStatusChangeClick.value.invoke()
-                        showDialog.value = false
-                    }
-                ) {
-                    Text("OK")
-                }
-            }
-        )
-    }
 
     LaunchedEffect(true) {
         orderId?.let { orderDetailsViewModel.getOrderById(orderId = it) }
@@ -200,16 +159,6 @@ fun OrderDetailsScreen(
                                     }
                                     item { Spacer(modifier = Modifier.size(smallPadding)) }
                                 }
-                                item {
-                                    StatusDetailsContainer(
-                                        order = order,
-                                        orderDetailsViewModel,
-                                        orderChangeTitle,
-                                        onStatusChangeClick,
-                                        showDialog
-                                    )
-                                }
-                                item { Spacer(modifier = Modifier.size(smallPadding)) }
                             }
                         }
                     }
@@ -217,141 +166,6 @@ fun OrderDetailsScreen(
             }
         }
     )
-}
-
-@Composable
-fun StatusDetailsContainer(
-    order: Order,
-    viewModel: OrderDetailsViewModel,
-    orderChangeTitle: MutableState<String>,
-    onStatusChangeClick: MutableState<() -> Unit>,
-    showDialog: MutableState<Boolean>
-) {
-    val context = LocalContext.current
-
-    if (order.status != OrderStatus.CANCELED && order.status != OrderStatus.CONCLUDED) {
-        Surface(color = Color.White) {
-            Column(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalAlignment = Alignment.CenterHorizontally,
-                verticalArrangement = Arrangement.Center
-            ) {
-                Text(
-                    text = stringResource(id = R.string.change_order_status),
-                    style = MaterialTheme.typography.titleMedium,
-                    modifier = Modifier.padding(smallPadding)
-                )
-                Spacer(modifier = Modifier.size(smallPadding))
-                when (order.status) {
-                    OrderStatus.PENDING -> {
-                        Row(
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .padding(smallPadding),
-                            verticalAlignment = Alignment.CenterVertically,
-                            horizontalArrangement = Arrangement.SpaceEvenly
-                        ) {
-                            ElevatedButton(onClick = {
-                                orderChangeTitle.value = context.getString(R.string.canceled)
-                                onStatusChangeClick.value = {
-                                    viewModel.updateOrder(
-                                        order.copy(
-                                            status = OrderStatus.CANCELED
-                                        )
-                                    )
-                                }
-                                showDialog.value = true
-                            }) {
-                                Text(text = stringResource(id = R.string.cancel_order))
-                            }
-                            ElevatedButton(onClick = {
-                                orderChangeTitle.value = context.getString(R.string.confirmed)
-                                onStatusChangeClick.value = {
-                                    viewModel.updateOrder(
-                                        order.copy(
-                                            status = OrderStatus.CONFIRMED
-                                        )
-                                    )
-                                }
-                                showDialog.value = true
-                            }) {
-                                Text(text = stringResource(id = R.string.accept_order))
-                            }
-                        }
-                    }
-
-                    OrderStatus.CONFIRMED -> {
-                        ElevatedButton(onClick = {
-                            onStatusChangeClick.value = {
-                                orderChangeTitle.value = context.getString(R.string.delivering)
-                                viewModel.updateOrder(
-                                    order.copy(
-                                        status = OrderStatus.DELIVERING
-                                    )
-                                )
-                            }
-                            showDialog.value = true
-                        }) {
-                            Text(text = stringResource(id = R.string.delivering))
-                        }
-                    }
-
-                    OrderStatus.DELIVERING -> {
-                        ElevatedButton(onClick = {
-                            orderChangeTitle.value = context.getString(R.string.concluded)
-                            onStatusChangeClick.value = {
-                                viewModel.updateOrder(
-                                    order.copy(
-                                        status = OrderStatus.CONCLUDED
-                                    )
-                                )
-                            }
-                            showDialog.value = true
-                        }) {
-                            Text(text = stringResource(id = R.string.concluded))
-                        }
-                    }
-
-                    OrderStatus.CONCLUDED -> {
-                        Row(
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .padding(largePadding),
-                            horizontalArrangement = Arrangement.Center,
-                            verticalAlignment = Alignment.CenterVertically
-
-                        ) {
-                            Text(
-                                text = stringResource(id = R.string.this_order_was),
-                                color = Color.Green
-                            )
-
-                            Text(
-                                text = stringResource(id = R.string.concluded),
-                                color = Color.Green
-                            )
-                        }
-                    }
-
-                    OrderStatus.CANCELED -> {
-                        Row(
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .padding(smallPadding),
-                            verticalAlignment = Alignment.CenterVertically,
-                            horizontalArrangement = Arrangement.Center
-                        ) {
-                            Spacer(modifier = Modifier.padding(smallPadding))
-                            Text(
-                                text = stringResource(id = R.string.canceled),
-                                color = Color.Red
-                            )
-                        }
-                    }
-                }
-            }
-        }
-    }
 }
 
 @Composable
@@ -444,7 +258,7 @@ fun ClientDetailsContainer(client: User) {
                     style = MaterialTheme.typography.bodyMedium
                 )
                 Text(
-                    text = client.phone.ifEmpty { stringResource(id = R.string.not_informed) },
+                    text = client.phone.ifEmpty { stringResource(id = R.string.not_informed_number) },
                     style = MaterialTheme.typography.bodyMedium
                 )
             }

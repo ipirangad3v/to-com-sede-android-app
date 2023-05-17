@@ -59,7 +59,7 @@ fun AccountScreen(
     onLoginClick: () -> Unit,
     onPhoneClick: () -> Unit,
     onLogoutClick: () -> Unit,
-    onDeleteAccountClick: () -> Unit,
+    onDeleteAccountClick: () -> Unit
 ) {
     val isUserLoggedState = viewModel.isUserLogged.value
     var showDialog by remember { mutableStateOf(false) }
@@ -200,7 +200,6 @@ fun DeleteAccountButton(function: () -> Unit) {
             style = MaterialTheme.typography.titleMedium
         )
     }
-
 }
 
 @OptIn(ExperimentalGlideComposeApi::class)
