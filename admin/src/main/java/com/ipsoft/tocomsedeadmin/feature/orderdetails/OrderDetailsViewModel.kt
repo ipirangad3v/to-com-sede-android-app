@@ -8,8 +8,8 @@ import com.ipsoft.tocomsede.core.model.Order
 import com.ipsoft.tocomsede.core.model.ResultState
 import com.ipsoft.tocomsedeadmin.data.orders.OrdersRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
-import javax.inject.Inject
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
 @HiltViewModel
 class OrderDetailsViewModel @Inject constructor(private val ordersRepository: OrdersRepository) :

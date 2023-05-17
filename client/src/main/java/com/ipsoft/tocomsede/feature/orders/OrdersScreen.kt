@@ -251,7 +251,7 @@ fun OrderListItem(
                             OrderStatus.DELIVERING -> Color.Blue
                             OrderStatus.CONCLUDED -> Color.Green
                             OrderStatus.CANCELED -> Color.Red
-                            OrderStatus.CONFIRMED -> Color.Gray
+                            OrderStatus.CONFIRMED -> Color.Green
                         }
                     )
                 }

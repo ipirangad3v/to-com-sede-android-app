@@ -18,6 +18,7 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.CheckCircle
+import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
 import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.CircularProgressIndicator
@@ -31,11 +32,13 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.ipsoft.tocomsede.core.extensions.millisToDateTime
@@ -58,9 +61,46 @@ fun OrderDetailsScreen(
     orderId: String?,
     onBackClick: () -> Unit
 ) {
+    val context = LocalContext.current
+
     val orderState = orderDetailsViewModel.orderState.value
 
     val visible = remember { mutableStateOf(!orderState.isLoading) }
+
+    val showDialog: MutableState<Boolean> = remember { mutableStateOf(false) }
+
+    val orderChangeTitle: MutableState<String> = remember {
+        mutableStateOf(
+            context.getString(R.string.confirmed)
+        )
+    }
+    val onStatusChangeClick: MutableState<() -> Unit> = remember {
+        mutableStateOf({})
+    }
+
+    if (showDialog.value) {
+        AlertDialog(
+            onDismissRequest = { showDialog.value = false },
+            title = { Text(stringResource(id = R.string.confirm_status_change)) },
+            text = {
+                Text(
+                    stringResource(id = R.string.confirm_status_change_ask).format(
+                        orderChangeTitle.value
+                    )
+                )
+            },
+            confirmButton = {
+                ElevatedButton(
+                    onClick = {
+                        onStatusChangeClick.value.invoke()
+                        showDialog.value = false
+                    }
+                ) {
+                    Text("OK")
+                }
+            }
+        )
+    }
 
     LaunchedEffect(true) {
         orderId?.let { orderDetailsViewModel.getOrderById(orderId = it) }
@@ -98,17 +138,22 @@ fun OrderDetailsScreen(
                     modifier = Modifier.fillMaxSize(),
                     contentAlignment = Alignment.Center
                 ) {
-                    Text(text = it)
-                    Spacer(modifier = Modifier.padding(smallPadding))
-                    Button(
-                        onClick = {
-                            if (orderId != null) {
-                                orderDetailsViewModel.getOrderById(orderId)
-                            }
-                        },
-                        modifier = Modifier.wrapContentSize()
+                    Column(
+                        modifier = Modifier.fillMaxSize(),
+                        verticalArrangement = Arrangement.Center
                     ) {
-                        Text(text = stringResource(id = R.string.try_again))
+                        Text(text = it)
+                        Spacer(modifier = Modifier.padding(smallPadding))
+                        Button(
+                            onClick = {
+                                if (orderId != null) {
+                                    orderDetailsViewModel.getOrderById(orderId)
+                                }
+                            },
+                            modifier = Modifier.wrapContentSize()
+                        ) {
+                            Text(text = stringResource(id = R.string.try_again))
+                        }
                     }
                 }
             }
@@ -158,7 +203,10 @@ fun OrderDetailsScreen(
                                 item {
                                     StatusDetailsContainer(
                                         order = order,
-                                        orderDetailsViewModel
+                                        orderDetailsViewModel,
+                                        orderChangeTitle,
+                                        onStatusChangeClick,
+                                        showDialog
                                     )
                                 }
                                 item { Spacer(modifier = Modifier.size(smallPadding)) }
@@ -172,104 +220,133 @@ fun OrderDetailsScreen(
 }
 
 @Composable
-fun StatusDetailsContainer(order: Order, viewModel: OrderDetailsViewModel) {
-    Surface(color = Color.White) {
-        Column(
-            modifier = Modifier.fillMaxWidth(),
-            horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.Center
-        ) {
-            Text(
-                text = stringResource(id = R.string.change_order_status),
-                style = MaterialTheme.typography.titleMedium,
-                modifier = Modifier.padding(smallPadding)
-            )
-            Spacer(modifier = Modifier.size(smallPadding))
-            when (order.status) {
-                OrderStatus.PENDING -> {
-                    Row(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(smallPadding),
-                        verticalAlignment = Alignment.CenterVertically,
-                        horizontalArrangement = Arrangement.SpaceEvenly
-                    ) {
-                        ElevatedButton(onClick = {
-                            viewModel.updateOrder(
-                                order.copy(
-                                    status = OrderStatus.CANCELED
-                                )
-                            )
-                        }) {
-                            Text(text = stringResource(id = R.string.cancel_order))
+fun StatusDetailsContainer(
+    order: Order,
+    viewModel: OrderDetailsViewModel,
+    orderChangeTitle: MutableState<String>,
+    onStatusChangeClick: MutableState<() -> Unit>,
+    showDialog: MutableState<Boolean>
+) {
+    val context = LocalContext.current
+
+    if (order.status != OrderStatus.CANCELED && order.status != OrderStatus.CONCLUDED) {
+        Surface(color = Color.White) {
+            Column(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalAlignment = Alignment.CenterHorizontally,
+                verticalArrangement = Arrangement.Center
+            ) {
+                Text(
+                    text = stringResource(id = R.string.change_order_status),
+                    style = MaterialTheme.typography.titleMedium,
+                    modifier = Modifier.padding(smallPadding)
+                )
+                Spacer(modifier = Modifier.size(smallPadding))
+                when (order.status) {
+                    OrderStatus.PENDING -> {
+                        Row(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(smallPadding),
+                            verticalAlignment = Alignment.CenterVertically,
+                            horizontalArrangement = Arrangement.SpaceEvenly
+                        ) {
+                            ElevatedButton(onClick = {
+                                orderChangeTitle.value = context.getString(R.string.canceled)
+                                onStatusChangeClick.value = {
+                                    viewModel.updateOrder(
+                                        order.copy(
+                                            status = OrderStatus.CANCELED
+                                        )
+                                    )
+                                }
+                                showDialog.value = true
+                            }) {
+                                Text(text = stringResource(id = R.string.cancel_order))
+                            }
+                            ElevatedButton(onClick = {
+                                orderChangeTitle.value = context.getString(R.string.confirmed)
+                                onStatusChangeClick.value = {
+                                    viewModel.updateOrder(
+                                        order.copy(
+                                            status = OrderStatus.CONFIRMED
+                                        )
+                                    )
+                                }
+                                showDialog.value = true
+                            }) {
+                                Text(text = stringResource(id = R.string.accept_order))
+                            }
                         }
+                    }
+
+                    OrderStatus.CONFIRMED -> {
                         ElevatedButton(onClick = {
-                            viewModel.updateOrder(
-                                order.copy(
-                                    status = OrderStatus.CONFIRMED
+                            onStatusChangeClick.value = {
+                                orderChangeTitle.value = context.getString(R.string.delivering)
+                                viewModel.updateOrder(
+                                    order.copy(
+                                        status = OrderStatus.DELIVERING
+                                    )
                                 )
-                            )
+                            }
+                            showDialog.value = true
                         }) {
-                            Text(text = stringResource(id = R.string.accept_order))
+                            Text(text = stringResource(id = R.string.delivering))
                         }
                     }
-                }
 
-                OrderStatus.CONFIRMED -> {
-                    ElevatedButton(onClick = {
-                        viewModel.updateOrder(
-                            order.copy(
-                                status = OrderStatus.DELIVERING
+                    OrderStatus.DELIVERING -> {
+                        ElevatedButton(onClick = {
+                            orderChangeTitle.value = context.getString(R.string.concluded)
+                            onStatusChangeClick.value = {
+                                viewModel.updateOrder(
+                                    order.copy(
+                                        status = OrderStatus.CONCLUDED
+                                    )
+                                )
+                            }
+                            showDialog.value = true
+                        }) {
+                            Text(text = stringResource(id = R.string.concluded))
+                        }
+                    }
+
+                    OrderStatus.CONCLUDED -> {
+                        Row(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(largePadding),
+                            horizontalArrangement = Arrangement.Center,
+                            verticalAlignment = Alignment.CenterVertically
+
+                        ) {
+                            Text(
+                                text = stringResource(id = R.string.this_order_was),
+                                color = Color.Green
                             )
-                        )
-                    }) {
-                        Text(text = stringResource(id = R.string.delivering))
-                    }
-                }
 
-                OrderStatus.DELIVERING -> {
-                    ElevatedButton(onClick = {
-                        viewModel.updateOrder(
-                            order.copy(
-                                status = OrderStatus.CONCLUDED
+                            Text(
+                                text = stringResource(id = R.string.concluded),
+                                color = Color.Green
                             )
-                        )
-                    }) {
-                        Text(text = stringResource(id = R.string.concluded))
+                        }
                     }
-                }
 
-                OrderStatus.CONCLUDED -> {
-                    Row(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(largePadding),
-                        horizontalArrangement = Arrangement.Center
-                    ) {
-                        Text(
-                            text = stringResource(id = R.string.this_order_was),
-                            color = Color.Green
-                        )
-
-                        Text(
-                            text = stringResource(id = R.string.concluded),
-                            color = Color.Green
-                        )
-                    }
-                }
-
-                OrderStatus.CANCELED -> {
-                    Row(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(smallPadding),
-                        verticalAlignment = Alignment.CenterVertically
-                    ) {
-                        Spacer(modifier = Modifier.padding(smallPadding))
-                        Text(
-                            text = stringResource(id = R.string.canceled),
-                            modifier = Modifier.weight(1f)
-                        )
+                    OrderStatus.CANCELED -> {
+                        Row(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(smallPadding),
+                            verticalAlignment = Alignment.CenterVertically,
+                            horizontalArrangement = Arrangement.Center
+                        ) {
+                            Spacer(modifier = Modifier.padding(smallPadding))
+                            Text(
+                                text = stringResource(id = R.string.canceled),
+                                color = Color.Red
+                            )
+                        }
                     }
                 }
             }
@@ -415,7 +492,7 @@ fun OrderDetailsContainer(order: Order) {
                             OrderStatus.DELIVERING -> Color.Blue
                             OrderStatus.CONCLUDED -> Color.Green
                             OrderStatus.CANCELED -> Color.Red
-                            OrderStatus.CONFIRMED -> Color.Gray
+                            OrderStatus.CONFIRMED -> Color.Green
                         }
                     )
                 }

@@ -82,26 +82,18 @@ class OrdersRepositoryImpl @Inject constructor(
 
     override suspend fun updateOrder(order: Order): Flow<ResultState<Order>> = callbackFlow {
         trySend(ResultState.Loading)
-        if (order.user?.uid != null) {
-            ordersReference.child(order.user?.uid!!).child("orders").child(order.id).setValue(order)
-                .addOnCompleteListener {
-                    if (it.isSuccessful) {
-                        trySend(ResultState.Success(order))
-                    } else {
-                        trySend(
-                            ResultState.Failure(
-                                it.exception ?: Exception("Error updating order")
-                            )
+        ordersReference.child(order.user?.uid!!).child("orders").child(order.id).setValue(order)
+            .addOnCompleteListener {
+                if (it.isSuccessful) {
+                    trySend(ResultState.Success(order))
+                } else {
+                    trySend(
+                        ResultState.Failure(
+                            it.exception ?: Exception("Error updating order")
                         )
-                    }
+                    )
                 }
-        } else {
-            trySend(
-                ResultState.Failure(
-                    Exception("Error updating order")
-                )
-            )
-        }
+            }
         awaitClose {
             close()
         }

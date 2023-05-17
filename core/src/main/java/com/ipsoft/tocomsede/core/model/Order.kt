@@ -17,7 +17,8 @@ data class Order(
     constructor() : this(
         items = emptyList(),
         dateInMillis = Date().time.toString(),
-        status = OrderStatus.PENDING
+        status = OrderStatus.PENDING,
+        user = null,
     )
 
     val total

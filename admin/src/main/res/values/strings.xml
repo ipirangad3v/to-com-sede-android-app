@@ -101,4 +101,6 @@
     <string name="cancel_order">cancelar pedido</string>
     <string name="change_order_status">Mudar status do pedido</string>
     <string name="this_order_was">esse pedido foi</string>
+    <string name="confirm_status_change">Mudar status do pedido</string>
+    <string name="confirm_status_change_ask">Deseja mudar o status desse pedido para %1$s?</string>
 </resources>
