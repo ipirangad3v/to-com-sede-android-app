@@ -77,7 +77,7 @@ fun AccountScreen(
                         showDialog = false
                     }
                 ) {
-                    Text("OK")
+                    Text(stringResource(id = R.string.logout))
                 }
             }
         )
@@ -85,7 +85,7 @@ fun AccountScreen(
 
     if (showDeleteDialog) {
         AlertDialog(
-            onDismissRequest = { showDialog = false },
+            onDismissRequest = { showDeleteDialog = false },
             title = { Text(stringResource(id = R.string.confirm_account_deletion)) },
             text = { Text(stringResource(id = R.string.confirm_account_deletion_ask)) },
             confirmButton = {
