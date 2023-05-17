@@ -85,4 +85,7 @@
     <string name="store_closed" tools:ignore="Typos">estamos fechados no momento, mas fique a vontade para ver nossos produtos</string>
     <string name="address_not_found">Ops, parece que você ainda não adicionou um endereço de entrega</string>
     <string name="canceled_notification" tools:ignore="Typos">cancelado 😢, infelizmente não pudemos aceitar seu pedido no momento.</string>
+    <string name="confirm_account_deletion">Confirmar exclussão de conta</string>
+    <string name="confirm_account_deletion_ask">Excluir sua conta ira excluir permanente seus dados, juntamente com endereços salvos e pedidos. Essa ação é irreversivel, tem certeza que deseja continuar?</string>
+    <string name="delete_account">Excluir conta</string>
 </resources>

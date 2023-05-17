@@ -91,6 +91,21 @@ class MainActivity : ComponentActivity(), UserInfoListener {
         AuthUI.IdpConfig.GoogleBuilder().build()
     )
 
+    private fun firebaseDeleteAccount() {
+        val user = FirebaseAuth.getInstance().currentUser
+        user?.delete()
+            ?.addOnCompleteListener { task ->
+                if (task.isSuccessful) {
+                    lifecycleScope.launch {
+                        preferencesRepository.clearUser()
+
+                    }
+                    UserInfo.clear()
+                }
+            }
+
+    }
+
     @OptIn(ExperimentalMaterial3Api::class)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -249,7 +264,9 @@ class MainActivity : ComponentActivity(), UserInfoListener {
                                     onLoginClick = {
                                         launchLoginActivity(isDarkTheme)
                                     }
-                                )
+                                ) {
+                                    firebaseDeleteAccount()
+                                }
                             }
                             composable(Screen.AddressList.route) {
                                 AddressList(onNewAddressClick = { navController.navigate(Screen.AddressForm.route) }) {

@@ -29,7 +29,13 @@ object UserInfo {
         listeners.forEach { it.onUserInfoChanged(isUserLogged) }
     }
 
+    fun clear() {
+        loggedUser = null
+        notifyListeners()
+    }
+
     interface UserInfoListener {
         fun onUserInfoChanged(isUserLogged: Boolean)
+
     }
 }

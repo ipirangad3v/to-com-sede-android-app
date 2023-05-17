@@ -24,6 +24,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -57,10 +58,12 @@ fun AccountScreen(
     onAddressesClick: () -> Unit,
     onLoginClick: () -> Unit,
     onPhoneClick: () -> Unit,
-    onLogoutClick: () -> Unit
+    onLogoutClick: () -> Unit,
+    onDeleteAccountClick: () -> Unit,
 ) {
     val isUserLoggedState = viewModel.isUserLogged.value
     var showDialog by remember { mutableStateOf(false) }
+    var showDeleteDialog by remember { mutableStateOf(false) }
 
     if (showDialog) {
         AlertDialog(
@@ -71,10 +74,28 @@ fun AccountScreen(
                 ElevatedButton(
                     onClick = {
                         onLogoutClick()
-                        showDialog = false
+                        showDeleteDialog = false
                     }
                 ) {
                     Text("OK")
+                }
+            }
+        )
+    }
+
+    if (showDeleteDialog) {
+        AlertDialog(
+            onDismissRequest = { showDialog = false },
+            title = { Text(stringResource(id = R.string.confirm_account_deletion)) },
+            text = { Text(stringResource(id = R.string.confirm_account_deletion_ask)) },
+            confirmButton = {
+                ElevatedButton(
+                    onClick = {
+                        onDeleteAccountClick()
+                        showDialog = false
+                    }
+                ) {
+                    Text(stringResource(id = R.string.delete_account))
                 }
             }
         )
@@ -136,6 +157,11 @@ fun AccountScreen(
                             showDialog = true
                         }
                     }
+                    item {
+                        DeleteAccountButton {
+                            showDeleteDialog = true
+                        }
+                    }
                 } else {
                     item {
                         Text(
@@ -156,6 +182,25 @@ fun AccountScreen(
             InfoFooter()
         }
     }
+}
+
+@Composable
+fun DeleteAccountButton(function: () -> Unit) {
+    TextButton(
+        onClick = function,
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(mediumPadding),
+        colors = ButtonDefaults.textButtonColors(
+            contentColor = Color.Red
+        )
+    ) {
+        Text(
+            text = stringResource(id = R.string.delete_account),
+            style = MaterialTheme.typography.titleMedium
+        )
+    }
+
 }
 
 @OptIn(ExperimentalGlideComposeApi::class)
