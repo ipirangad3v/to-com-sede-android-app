@@ -344,24 +344,38 @@ fun OrderDetailsContainer(order: Order) {
                 )
             }
             Spacer(modifier = Modifier.padding(smallPadding))
-            Row(modifier = Modifier.fillMaxWidth()) {
-                Text(
-                    text = stringResource(id = R.string.change_for),
-                    style = MaterialTheme.typography.bodyMedium,
-                    modifier = Modifier.weight(1f)
-                )
-                Text(
-                    text = if (order.change.hasChange) {
-                        order.change.toString().toCurrency()
-                            .toCurrency()
-                    } else {
-                        stringResource(id = R.string.dont_need_change)
-                    },
-                    style = MaterialTheme.typography.bodyMedium,
-                    color = Color.Gray
-                )
+            if (order.paymentMethod == PaymentMethod.MONEY) {
+                Row(modifier = Modifier.fillMaxWidth()) {
+                    Text(
+                        text = stringResource(id = R.string.change_for),
+                        style = MaterialTheme.typography.bodyMedium,
+                        modifier = Modifier.weight(1f)
+                    )
+                    Text(
+                        text = if (order.change.hasChange) {
+                            order.change.changeFor.toString().toCurrency()
+                        } else {
+                            stringResource(id = R.string.dont_need_change)
+                        },
+                        style = MaterialTheme.typography.bodyMedium,
+                        color = Color.Gray
+                    )
+                }
+                Spacer(modifier = Modifier.padding(smallPadding))
+                Row(modifier = Modifier.fillMaxWidth()) {
+                    Text(
+                        text = stringResource(id = R.string.your_change),
+                        style = MaterialTheme.typography.bodyMedium,
+                        modifier = Modifier.weight(1f)
+                    )
+                    Text(
+                        text = (order.change.changeFor - order.total).toString().toCurrency(),
+                        style = MaterialTheme.typography.bodyMedium,
+                        color = Color.Gray
+                    )
+                }
+                Spacer(modifier = Modifier.padding(smallPadding))
             }
-            Spacer(modifier = Modifier.padding(smallPadding))
             Row(modifier = Modifier.fillMaxWidth()) {
                 Text(
                     text = stringResource(id = R.string.total),
