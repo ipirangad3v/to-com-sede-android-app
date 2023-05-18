@@ -1,5 +1,7 @@
 package com.ipsoft.tocomsede.feature.account
 
+import android.content.Intent
+import android.net.Uri
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -129,7 +131,7 @@ fun AccountScreen(
             Spacer(modifier = Modifier.padding(mediumPadding))
             LazyColumn(
                 modifier = Modifier
-                    .fillMaxSize()
+                    .fillMaxWidth()
                     .padding(mediumPadding),
                 verticalArrangement = Arrangement.Top,
                 horizontalAlignment = CenterHorizontally
@@ -227,31 +229,6 @@ fun UserInfoBanner() {
 }
 
 @Composable
-fun InfoFooter() {
-    Surface(
-        modifier = Modifier
-            .fillMaxWidth()
-    ) {
-        Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(mediumPadding),
-            horizontalArrangement = Arrangement.SpaceBetween,
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            Text(
-                text = stringResource(id = R.string.app_name),
-                style = MaterialTheme.typography.bodySmall
-            )
-            Text(
-                text = stringResource(id = R.string.version).format(LocalContext.current.getVerCode()),
-                style = MaterialTheme.typography.bodySmall
-            )
-        }
-    }
-}
-
-@Composable
 fun LogoutButton(onLogoutClick: () -> Unit = {}) {
     ElevatedButton(
         onClick = onLogoutClick,
@@ -290,4 +267,80 @@ fun MenuItem(imageVector: ImageVector, title: String, onClick: () -> Unit) {
             )
         }
     }
+}
+
+@Composable
+fun InfoFooter() {
+    Surface(
+        modifier = Modifier
+            .fillMaxWidth()
+    ) {
+        Column(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(mediumPadding)
+        ) {
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(mediumPadding),
+                horizontalArrangement = Arrangement.Center,
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Text(
+                    text = stringResource(id = R.string.app_name),
+                    style = MaterialTheme.typography.bodySmall
+                )
+                Spacer(modifier = Modifier.padding(smallPadding))
+                Text(
+                    text = stringResource(id = R.string.version).format(LocalContext.current.getVerCode()),
+                    style = MaterialTheme.typography.bodySmall
+                )
+            }
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(mediumPadding),
+                horizontalArrangement = Arrangement.Center,
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Text(
+                    text = stringResource(id = R.string.developed_by),
+                    style = MaterialTheme.typography.bodySmall
+                )
+                Spacer(modifier = Modifier.padding(smallPadding))
+                ClickableLinkText(
+                    stringResource(id = R.string.developer_name),
+                    stringResource(id = R.string.linktree_url)
+                )
+            }
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(mediumPadding),
+                horizontalArrangement = Arrangement.Center,
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Text(
+                    text = stringResource(id = R.string.all_rights_reserved),
+                    style = MaterialTheme.typography.bodySmall
+                )
+            }
+        }
+    }
+}
+
+@Composable
+fun ClickableLinkText(title: String, url: String) {
+    val context = LocalContext.current
+
+    Text(
+        style = MaterialTheme.typography.titleMedium,
+        text = title,
+        color = darkBlue80,
+        modifier = Modifier.clickable {
+            val intent = Intent(Intent.ACTION_VIEW, Uri.parse(url))
+            context.startActivity(intent)
+        }
+    )
 }
