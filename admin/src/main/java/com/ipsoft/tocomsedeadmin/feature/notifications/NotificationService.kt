@@ -42,9 +42,8 @@ class NotificationService : Service() {
         get() = orders.isEmpty()
 
     private fun hasNewPendingOrders(
-        receivedOrders: List<Order>,
+        receivedOrders: List<Order>
     ): Boolean {
-
         if (orders.filter { it.status == OrderStatus.PENDING }.size < receivedOrders.filter { it.status == OrderStatus.PENDING }.size) return true
         return false
     }

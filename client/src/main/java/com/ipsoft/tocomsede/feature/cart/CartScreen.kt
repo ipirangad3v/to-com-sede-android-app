@@ -78,24 +78,25 @@ fun CartScreen(
     val addressFavoriteState = cartViewModel.favoriteAddressState.value
     val phoneState = cartViewModel.phoneState.value
     val isUserLoggedState = cartViewModel.userLoggedState.value
-    var showDialog by remember { mutableStateOf(false) }
+    var showMakerOrderDialog by remember { mutableStateOf(false) }
     val store = cartViewModel.store.value
+    val isChangeCorrect = cartViewModel.isChangeCorrect.value
     val context = LocalContext.current
 
     if (cartItemState.checkoutSuccess) {
         onCheckoutSuccess()
     }
 
-    if (showDialog) {
+    if (showMakerOrderDialog) {
         AlertDialog(
-            onDismissRequest = { showDialog = false },
+            onDismissRequest = { showMakerOrderDialog = false },
             title = { Text(stringResource(id = R.string.confirm_order)) },
             text = { Text(stringResource(id = R.string.confirm_order_ask)) },
             confirmButton = {
                 ElevatedButton(
                     onClick = {
                         cartViewModel.checkout()
-                        showDialog = false
+                        showMakerOrderDialog = false
                     }
                 ) {
                     Text("OK")
@@ -218,8 +219,15 @@ fun CartScreen(
                                     }
                                     item {
                                         CheckoutButtonContainer(store.open) {
-                                            if (addressFavoriteState != null) {
-                                                showDialog = true
+                                            val changeNeedFix =
+                                                !isChangeCorrect && cartViewModel.changePaymentState.value.hasChange
+                                            if (changeNeedFix) {
+                                                context.showMsg(
+                                                    context.getString(R.string.change_value_not_correct)
+                                                )
+                                            }
+                                            if (addressFavoriteState != null && !changeNeedFix) {
+                                                showMakerOrderDialog = true
                                             } else {
                                                 context.showMsg(
                                                     context.getString(R.string.address_not_found)
@@ -307,7 +315,7 @@ fun ChangeSelectContainer(cartViewModel: CartViewModel) {
                         )
                         OutlinedTextField(
                             enabled = cartViewModel.changePaymentState.value.hasChange,
-                            isError = cartViewModel.changePaymentState.value.changeFor == 0.0,
+                            isError = !cartViewModel.isChangeCorrect.value,
                             value = cartViewModel.changePaymentState.value.changeFor.toString(),
                             onValueChange = {
                                 cartViewModel.updateChange(
@@ -369,7 +377,10 @@ fun CheckoutAddress(addressFavoriteState: Address?, onEditClick: () -> Unit) {
 }
 
 @Composable
-fun CheckoutButtonContainer(storeOpen: Boolean, onClick: () -> Unit) {
+fun CheckoutButtonContainer(
+    storeOpen: Boolean,
+    onClick: () -> Unit
+) {
     Surface {
         Box(
             modifier = Modifier

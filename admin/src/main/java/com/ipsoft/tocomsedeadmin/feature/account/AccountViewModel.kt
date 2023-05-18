@@ -11,8 +11,8 @@ import com.ipsoft.tocomsede.core.model.Store
 import com.ipsoft.tocomsede.core.utils.UserInfo
 import com.ipsoft.tocomsedeadmin.data.store.RealtimeStoreRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
-import javax.inject.Inject
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
 @HiltViewModel
 class AccountViewModel @Inject constructor(

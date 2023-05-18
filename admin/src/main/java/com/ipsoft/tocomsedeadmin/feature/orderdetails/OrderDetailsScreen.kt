@@ -538,8 +538,7 @@ fun OrderDetailsContainer(order: Order) {
                 )
                 Text(
                     text = if (order.change.hasChange) {
-                        order.change.toString().toCurrency()
-                            .toCurrency()
+                        order.change.changeFor.toString().toCurrency()
                     } else {
                         stringResource(id = R.string.dont_need_change)
                     },

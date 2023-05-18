@@ -13,7 +13,7 @@ import kotlinx.coroutines.flow.callbackFlow
 import javax.inject.Inject
 
 class OrdersRepositoryImpl @Inject constructor(
-    private val dbReference: DatabaseReference,
+    private val dbReference: DatabaseReference
 ) : OrdersRepository {
 
     val orders: MutableList<Order> =

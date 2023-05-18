@@ -6,6 +6,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.ipsoft.tocomsede.base.ui.state.CartItemState
+import com.ipsoft.tocomsede.core.extensions.currencyToDouble
 import com.ipsoft.tocomsede.core.model.Address
 import com.ipsoft.tocomsede.core.model.Change
 import com.ipsoft.tocomsede.core.model.Item
@@ -60,6 +61,10 @@ class CartViewModel @Inject constructor(
 
     private val _phoneState: MutableState<String?> = mutableStateOf(null)
     val phoneState: State<String?> = _phoneState
+
+    private val _isChangeCorrect: MutableState<Boolean> =
+        mutableStateOf(_changePaymentState.value.changeFor > _cartTotalState.value.currencyToDouble())
+    val isChangeCorrect: State<Boolean> = _isChangeCorrect
 
     init {
         UserInfo.addListener(this)
@@ -161,6 +166,11 @@ class CartViewModel @Inject constructor(
         loadCart()
     }
 
+    private fun updateChangeIsCorrect(change: Change) {
+        _isChangeCorrect.value =
+            change.changeFor > _cartTotalState.value.currencyToDouble()
+    }
+
     override fun onUserInfoChanged(isUserLogged: Boolean) {
         _userLoggedState.value = isUserLogged
     }
@@ -197,5 +207,6 @@ class CartViewModel @Inject constructor(
 
     fun updateChange(change: Change) {
         _changePaymentState.value = change
+        updateChangeIsCorrect(change)
     }
 }
