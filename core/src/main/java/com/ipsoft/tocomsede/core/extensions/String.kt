@@ -9,6 +9,11 @@ fun String.toCurrency(currency: String = "R$"): String =
         ""
     }
 
+fun String.currencyToDouble(): Double {
+    val value = this.replace("R$", "").replace(",", ".").trim()
+    return value.toDoubleOrNull() ?: 0.0
+}
+
 fun String.isValidCep(): Boolean {
     val regex = Regex("^\\d{8}\$")
     return regex.matches(this)

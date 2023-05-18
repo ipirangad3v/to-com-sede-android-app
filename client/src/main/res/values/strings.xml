@@ -97,4 +97,5 @@
     <string name="not_informed_number">Não informado</string>
     <string name="delivered_at">Entregue em</string>
     <string name="store_closed_cart">Estamos fechados por agora. Não é possivel fazer pedidos no momento</string>
+    <string name="change_value_not_correct">"O valor do troco precisa ser maior "</string>
 </resources>
