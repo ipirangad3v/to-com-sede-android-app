@@ -65,7 +65,7 @@ fun AccountScreen(
     onLoginClick: () -> Unit,
     onPhoneClick: () -> Unit,
     onLogoutClick: () -> Unit,
-    onDeleteAccountClick: () -> Unit,
+    onDeleteAccountClick: () -> Unit
 ) {
     val isUserLoggedState = viewModel.isUserLogged.value
     var showDialog by remember { mutableStateOf(false) }
@@ -342,7 +342,8 @@ fun ClickableLinkImage(url: String) {
             val intent = Intent(Intent.ACTION_VIEW, Uri.parse(url))
             context.startActivity(intent)
         },
-        painter = painterResource(id = R.drawable.ipsoft_logo), contentDescription = stringResource(
+        painter = painterResource(id = R.drawable.ipsoft_logo),
+        contentDescription = stringResource(
             id = R.string.developer_name
         )
     )
