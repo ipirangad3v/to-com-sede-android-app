@@ -2,6 +2,7 @@ package com.ipsoft.tocomsede.feature.account
 
 import android.content.Intent
 import android.net.Uri
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -10,6 +11,7 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.CircleShape
@@ -40,6 +42,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -48,6 +51,7 @@ import com.bumptech.glide.integration.compose.GlideImage
 import com.ipsoft.tocomsede.R
 import com.ipsoft.tocomsede.base.extensions.getVerCode
 import com.ipsoft.tocomsede.base.ui.theme.darkBlue80
+import com.ipsoft.tocomsede.base.ui.theme.defaultIpsoftSize
 import com.ipsoft.tocomsede.base.ui.theme.largePadding
 import com.ipsoft.tocomsede.base.ui.theme.mediumPadding
 import com.ipsoft.tocomsede.base.ui.theme.smallPadding
@@ -61,7 +65,7 @@ fun AccountScreen(
     onLoginClick: () -> Unit,
     onPhoneClick: () -> Unit,
     onLogoutClick: () -> Unit,
-    onDeleteAccountClick: () -> Unit
+    onDeleteAccountClick: () -> Unit,
 ) {
     val isUserLoggedState = viewModel.isUserLogged.value
     var showDialog by remember { mutableStateOf(false) }
@@ -309,8 +313,7 @@ fun InfoFooter() {
                     style = MaterialTheme.typography.bodySmall
                 )
                 Spacer(modifier = Modifier.padding(smallPadding))
-                ClickableLinkText(
-                    stringResource(id = R.string.developer_name),
+                ClickableLinkImage(
                     stringResource(id = R.string.linktree_url)
                 )
             }
@@ -331,16 +334,16 @@ fun InfoFooter() {
 }
 
 @Composable
-fun ClickableLinkText(title: String, url: String) {
+fun ClickableLinkImage(url: String) {
     val context = LocalContext.current
 
-    Text(
-        style = MaterialTheme.typography.titleMedium,
-        text = title,
-        color = darkBlue80,
-        modifier = Modifier.clickable {
+    Image(
+        modifier = Modifier.width(defaultIpsoftSize).clickable {
             val intent = Intent(Intent.ACTION_VIEW, Uri.parse(url))
             context.startActivity(intent)
-        }
+        },
+        painter = painterResource(id = R.drawable.ipsoft_logo), contentDescription = stringResource(
+            id = R.string.developer_name
+        )
     )
 }
