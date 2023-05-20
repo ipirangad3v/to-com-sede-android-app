@@ -11,3 +11,4 @@ val xxLargePadding = 48.dp
 val defaultCartElevation = 6.dp
 
 val defaultImageSize = 180.dp
+val defaultIpsoftSize = defaultImageSize * 0.5f
