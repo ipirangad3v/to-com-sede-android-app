@@ -9,7 +9,6 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -123,8 +122,6 @@ class MainActivity : ComponentActivity(), UserInfoListener {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-                    val isDarkTheme = isSystemInDarkTheme()
-
                     val bottomBarState = rememberSaveable { (mutableStateOf(true)) }
 
                     val navController = rememberNavController()
@@ -212,7 +209,7 @@ class MainActivity : ComponentActivity(), UserInfoListener {
                         ) {
                             composable(Screen.Home.route) {
                                 HomeScreen(navController = navController) {
-                                    launchLoginActivity(isDarkTheme)
+                                    launchLoginActivity()
                                 }
                             }
                             composable(Screen.Cart.route) {
@@ -226,7 +223,7 @@ class MainActivity : ComponentActivity(), UserInfoListener {
                                         navController.navigate(Screen.Phone.route)
                                     },
                                     onLoginClick = {
-                                        launchLoginActivity(isDarkTheme)
+                                        launchLoginActivity()
                                     },
                                     onCheckoutSuccess = {
                                         navController.navigate(Screen.Orders.route) {
@@ -247,7 +244,7 @@ class MainActivity : ComponentActivity(), UserInfoListener {
                             }
                             composable(Screen.Orders.route) {
                                 OrdersScreen(navController = navController) {
-                                    launchLoginActivity(isDarkTheme)
+                                    launchLoginActivity()
                                 }
                             }
                             composable(Screen.Phone.route) {
@@ -268,7 +265,7 @@ class MainActivity : ComponentActivity(), UserInfoListener {
                                         navController.navigate(Screen.Phone.route)
                                     },
                                     onLoginClick = {
-                                        launchLoginActivity(isDarkTheme)
+                                        launchLoginActivity()
                                     }
                                 ) {
                                     firebaseDeleteAccount()
@@ -341,25 +338,15 @@ class MainActivity : ComponentActivity(), UserInfoListener {
             }
     }
 
-    private fun launchLoginActivity(isDarkTheme: Boolean) {
-        if (isDarkTheme) {
-            signInLauncher.launch(
-                AuthUI.getInstance()
-                    .createSignInIntentBuilder()
-                    .setAvailableProviders(providers)
-                    .setTheme(R.style.Theme_FirebaseAuthUIDark)
-                    .setLogo(R.drawable.sem_fundo)
-                    .build()
-            )
-        } else {
-            signInLauncher.launch(
-                AuthUI.getInstance()
-                    .createSignInIntentBuilder()
-                    .setAvailableProviders(providers)
-                    .setLogo(R.drawable.sem_fundo)
-                    .build()
-            )
-        }
+    private fun launchLoginActivity() {
+        signInLauncher.launch(
+            AuthUI.getInstance()
+                .createSignInIntentBuilder()
+                .setLogo(R.drawable.to_com_sede_logo)
+                .setTheme(R.style.Theme_FirebaseAuthUI)
+                .setAvailableProviders(providers)
+                .build()
+        )
     }
 
     override fun onResume() {
