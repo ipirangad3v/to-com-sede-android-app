@@ -1,0 +1,35 @@
+name: Gerar APK
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    name: Gerar APK
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout do código-fonte
+        uses: actions/checkout@v2
+
+      - name: Configurar ambiente Java
+        uses: actions/setup-java@v2
+        with:
+          java-version: '11'
+
+      - name: Gerar número de versão
+        id: version
+        run: |
+          echo "VERSION_CODE=$GITHUB_RUN_NUMBER" >> $GITHUB_ENV
+          echo "VERSION_NAME=$(date +'%Y.%m.%d')-$GITHUB_RUN_NUMBER" >> $GITHUB_ENV
+
+      - name: Construir APK admin
+        run: ./gradlew :admin:assembleDebug --versionCode=$VERSION_CODE --versionName=$VERSION_NAME
+
+      - name: Salvar APK admin como artefato
+        uses: actions/upload-artifact@v2
+        with:
+          name: app-admin-$VERSION_NAME.apk
+          path: app/build/outputs/apk/debug/app-debug.apk
