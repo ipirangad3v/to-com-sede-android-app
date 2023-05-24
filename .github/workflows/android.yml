@@ -15,9 +15,11 @@ jobs:
         uses: actions/checkout@v2
 
       - name: Configurar ambiente Java
-        uses: actions/setup-java@v2
+        uses: actions/setup-java@v3
         with:
-          java-version: '11'
+          java-version: 17
+          distribution: adopt
+          cache: gradle
 
       - name: Gerar número de versão
         id: version
