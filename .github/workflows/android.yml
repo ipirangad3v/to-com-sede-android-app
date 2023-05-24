@@ -7,7 +7,7 @@ on:
 
 jobs:
   build:
-    name: Gerar APK
+    name: Gerar APK admin
     runs-on: ubuntu-latest
 
     steps:
