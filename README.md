@@ -5,7 +5,7 @@
             alt="playtore link"  /></a>
 
 <video width="320" height="240" controls>
-  <source src="screenshots/tocomsede.mp4" type="video/mp4">
+  <source src="https://github.com/ipirangad3v/to-com-sede-android-app/blob/main/screenshots/tocomsede.mp4" type="video/mp4">
   Seu navegador não suporta o elemento de vídeo.
 </video>
 
