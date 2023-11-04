@@ -4,10 +4,7 @@
             src="https://PlayBadges.pavi2410.me/badge/full?id=com.ipsoft.tocomsede"
             alt="playtore link"  /></a>
 
-<video width="320" height="240" controls>
-  <source src="https://github.com/ipirangad3v/to-com-sede-android-app/blob/main/screenshots/tocomsede.mp4" type="video/mp4">
-  Seu navegador não suporta o elemento de vídeo.
-</video>
+<img src=https://github.com/ipirangad3v/to-com-sede-android-app/blob/master/screenshots/tocomsede.gif height=590/>
 
 <a href="https://play.google.com/store/apps/details?id=com.ipsoft.tocomsede"><img src="https://github.com/AnthoniIP/Biblie/blob/master/screenshots/playstore.png" alt="Download on play store" width="200"></a>
 
