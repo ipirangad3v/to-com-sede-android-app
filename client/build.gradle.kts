@@ -1,0 +1,151 @@
+plugins {
+        id("com.android.application")
+        id("org.jetbrains.kotlin.android")
+        id("com.google.gms.google-services")
+        id("com.google.firebase.crashlytics")
+        kotlin("kapt")
+        id("com.google.dagger.hilt.android")
+        id("org.jlleitschuh.gradle.ktlint")
+    }
+
+    android {
+        compileSdk = 34
+
+        defaultConfig {
+            namespace = "com.ipsoft.tocomsede"
+            applicationId = "com.ipsoft.tocomsede"
+            minSdk = 24
+            targetSdk = 34
+            versionCode = 13
+            versionName = "0.0.18"
+
+            testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+            vectorDrawables.useSupportLibrary = true
+        }
+
+        val STORE_PASSWORD: String by project
+        val KEY_PASSWORD: String by project
+        val STORE_FILE: String by project
+        val KEY_ALIAS: String by project
+
+        signingConfigs {
+            create("release") {
+                keyAlias = KEY_ALIAS
+                keyPassword = KEY_PASSWORD
+                storeFile = file(STORE_FILE)
+                storePassword = STORE_PASSWORD
+            }
+        }
+
+        buildTypes {
+            getByName("debug") {
+                applicationIdSuffix = ".debug"
+                isDebuggable = true
+                isMinifyEnabled = false
+                proguardFiles(
+                    getDefaultProguardFile("proguard-android-optimize.txt"),
+                    "proguard-rules.pro"
+                )
+            }
+            getByName("release") {
+                isMinifyEnabled = false
+                proguardFiles(
+                    getDefaultProguardFile("proguard-android-optimize.txt"),
+                    "proguard-rules.pro"
+                )
+                signingConfig = signingConfigs.getByName("release")
+            }
+        }
+
+        compileOptions {
+            sourceCompatibility = JavaVersion.VERSION_17
+            targetCompatibility = JavaVersion.VERSION_17
+        }
+
+        kotlinOptions {
+            jvmTarget = "17"
+        }
+
+        buildFeatures {
+            compose = true
+        }
+
+        composeOptions {
+            kotlinCompilerExtensionVersion = "1.5.3"
+        }
+
+        packagingOptions {
+            resources {
+                excludes += "/META-INF/{AL2.0,LGPL2.1}"
+            }
+        }
+    }
+
+    dependencies {
+        implementation("androidx.core:core-ktx:1.12.0")
+        implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.6.2")
+        implementation("androidx.activity:activity-compose:1.8.0")
+        implementation(platform("androidx.compose:compose-bom:2023.04.01"))
+        implementation(platform("com.google.firebase:firebase-bom:32.0.0"))
+        implementation("com.google.firebase:firebase-analytics-ktx")
+        implementation("androidx.compose.ui:ui")
+        implementation("androidx.compose.ui:ui-graphics")
+        implementation("androidx.compose.ui:ui-tooling-preview")
+        implementation("com.google.firebase:firebase-crashlytics-ktx")
+        implementation("com.google.firebase:firebase-analytics-ktx")
+        implementation("androidx.compose.material3:material3")
+        implementation("androidx.compose.material:material:1.5.4")
+        implementation("com.google.firebase:firebase-messaging-ktx:23.3.1")
+        implementation(project(":core"))
+        testImplementation("junit:junit:4.13.2")
+        androidTestImplementation("androidx.test.ext:junit:1.1.5")
+        androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
+        androidTestImplementation(platform("androidx.compose:compose-bom:2023.04.01"))
+        androidTestImplementation("androidx.compose.ui:ui-test-junit4")
+        debugImplementation("androidx.compose.ui:ui-tooling")
+        debugImplementation("androidx.compose.ui:ui-test-manifest")
+
+        // mockito
+        testImplementation("org.mockito:mockito-core:5.3.1")
+
+        // robolectric
+        testImplementation("org.robolectric:robolectric:4.10.3")
+
+        //Navigation
+        val nav_version = "2.7.5"
+        implementation("androidx.navigation:navigation-compose:$nav_version")
+        implementation("androidx.hilt:hilt-navigation-compose:1.0.0")
+
+        //Hilt
+        implementation("com.google.dagger:hilt-android:2.48.1")
+        kapt("com.google.dagger:hilt-compiler:2.48.1")
+
+        //Firebase auth
+        implementation("com.firebaseui:firebase-ui-auth:8.0.2")
+
+        // Firebase realtime database
+        implementation("com.google.firebase:firebase-database-ktx")
+
+        // Glide
+        implementation("com.github.bumptech.glide:compose:1.0.0-alpha.1")
+
+        // Coroutines
+        implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.7.3")
+
+        // Datastore
+        implementation("androidx.datastore:datastore-preferences:1.0.0")
+
+        // retrofit
+        implementation("com.squareup.retrofit2:retrofit:2.9.0")
+
+        // gson
+        implementation("com.squareup.retrofit2:converter-gson:2.9.0")
+
+        // Logging interceptor
+        implementation("com.squareup.okhttp3:logging-interceptor:5.0.0-alpha.6")
+    }
+
+// Allow references to generated code
+    kapt {
+        correctErrorTypes = true
+    }
